@@ -1,9 +1,11 @@
 package com.exemplo.ejle_commerce;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.textInfo.setText("Texto alterado via ViewBinding");
+        binding.btnLogin.setOnClickListener(view -> {
+            startActivity(new Intent(this, LoginActivity.class));
+        });
     }
 }
