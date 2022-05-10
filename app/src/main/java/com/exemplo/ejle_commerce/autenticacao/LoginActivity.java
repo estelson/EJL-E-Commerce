@@ -1,16 +1,24 @@
 package com.exemplo.ejle_commerce.autenticacao;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.exemplo.ejle_commerce.R;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.exemplo.ejle_commerce.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
+
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                String email = result.getData().getStringExtra("email");
+                binding.edtEmail.setText(email);
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         binding.btnCadastro.setOnClickListener(view -> {
-            startActivity(new Intent(this, CadastroActivity.class));
+            Intent intent = new Intent(this, CadastroActivity.class);
+            resultLauncher.launch(intent);
         });
     }
 

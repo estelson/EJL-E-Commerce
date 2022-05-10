@@ -1,5 +1,6 @@
 package com.exemplo.ejle_commerce.autenticacao;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -72,6 +73,11 @@ public class CadastroActivity extends AppCompatActivity {
 
                         usuario.setId(id);
                         usuario.salvar();
+
+                        Intent intent = new Intent();
+                        intent.putExtra("email", usuario.getEmail());
+                        setResult(RESULT_OK, intent);
+                        finish();
 
                         Toast.makeText(this, "Usuário incluído com sucesso", Toast.LENGTH_SHORT).show();
                     } else {
