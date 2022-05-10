@@ -107,6 +107,7 @@
                 android:textColor="@color/white"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="16dp"
+                android:onClick="validarDados"
                 app:layout_constraintBottom_toTopOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -116,14 +117,14 @@
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:indeterminateTint="@color/color_laranja"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnCriarConta"/>
+                app:layout_constraintTop_toBottomOf="@+id/btnCriarConta"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
