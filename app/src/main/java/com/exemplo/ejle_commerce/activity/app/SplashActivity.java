@@ -1,4 +1,4 @@
-package com.exemplo.ejle_commerce.activity;
+package com.exemplo.ejle_commerce.activity.app;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.exemplo.ejle_commerce.MainActivity;
+import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -18,7 +18,7 @@ public class SplashActivity extends AppCompatActivity {
 
         new Handler(getMainLooper()).postDelayed(() -> {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivityUsuario.class));
         }, 3000);
     }
 

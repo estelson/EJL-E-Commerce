@@ -1,4 +1,4 @@
-package com.exemplo.ejle_commerce;
+package com.exemplo.ejle_commerce.activity.usuario;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,17 +7,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
-import com.exemplo.ejle_commerce.databinding.ActivityMainBinding;
+import com.exemplo.ejle_commerce.databinding.ActivityMainUsuarioBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityUsuario extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+    private ActivityMainUsuarioBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.btnLogin.setOnClickListener(view -> {
