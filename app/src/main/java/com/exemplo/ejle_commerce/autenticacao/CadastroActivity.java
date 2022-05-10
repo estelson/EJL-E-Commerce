@@ -1,19 +1,20 @@
 package com.exemplo.ejle_commerce.autenticacao;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.exemplo.ejle_commerce.databinding.ActivityRecuperarContaBinding;
+import com.exemplo.ejle_commerce.databinding.ActivityCadastroBinding;
 
-public class RecuperarContaActivity extends AppCompatActivity {
+public class CadastroActivity extends AppCompatActivity {
 
-    private ActivityRecuperarContaBinding binding;
+    private ActivityCadastroBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRecuperarContaBinding.inflate(getLayoutInflater());
+        binding = ActivityCadastroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         configClicks();
@@ -23,5 +24,10 @@ public class RecuperarContaActivity extends AppCompatActivity {
         binding.include.ibVoltar.setOnClickListener(view -> {
             finish();
         });
+
+        binding.btnLogin.setOnClickListener(view -> {
+            finish();
+        });
     }
+
 }

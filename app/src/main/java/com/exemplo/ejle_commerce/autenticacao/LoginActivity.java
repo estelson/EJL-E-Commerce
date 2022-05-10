@@ -25,6 +25,10 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnRecuperarSenha.setOnClickListener(view -> {
             startActivity(new Intent(this, RecuperarContaActivity.class));
         });
+
+        binding.btnCadastro.setOnClickListener(view -> {
+            startActivity(new Intent(this, CadastroActivity.class));
+        });
     }
 
 }
