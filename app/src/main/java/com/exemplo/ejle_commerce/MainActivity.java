@@ -2,11 +2,13 @@ package com.exemplo.ejle_commerce;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.databinding.ActivityMainBinding;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +21,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.btnLogin.setOnClickListener(view -> {
-            startActivity(new Intent(this, LoginActivity.class));
+            if(FirebaseHelper.getAutenticado()) {
+                Toast.makeText(this, "Usuário já autenticado", Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
         });
     }
 }
