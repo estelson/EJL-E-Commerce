@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.databinding.DialogFormCategoriaBinding;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaCategoriaBinding;
 
 public class LojaCategoriaFragment extends Fragment {
@@ -43,9 +44,16 @@ public class LojaCategoriaFragment extends Fragment {
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
 
-        View view = getLayoutInflater().inflate(R.layout.dialog_form_categoria, null);
+        DialogFormCategoriaBinding categoriaBinding = DialogFormCategoriaBinding.inflate(LayoutInflater.from(getContext()));
+        builder.setView(categoriaBinding.getRoot());
 
-        builder.setView(view);
+        categoriaBinding.btnFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        categoriaBinding.btnSalvar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
 
         dialog = builder.create();
         dialog.show();
