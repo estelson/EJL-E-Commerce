@@ -7,11 +7,18 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.exemplo.ejle_commerce.activity.loja.MainActivityEmpresa;
+import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.databinding.ActivityLoginBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Usuario;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,11 +64,37 @@ public class LoginActivity extends AppCompatActivity {
     private void login(String email, String senha) {
         FirebaseHelper.getAuth().signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
+                recuperarUsuario(task.getResult().getUser().getUid());
+
                 finish();
             } else {
                 binding.progressBar.setVisibility(View.GONE);
 
                 Toast.makeText(this, FirebaseHelper.validaErros(task.getException().getMessage()), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void recuperarUsuario(String id) {
+        DatabaseReference usuarioRef = FirebaseHelper.getDatabaseReference()
+                .child("usuarios")
+                .child(id);
+
+        usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                finish();
+
+                if(snapshot.exists()) { // Se for usuário...
+                    startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
+                } else { // Se for a loja
+                    startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

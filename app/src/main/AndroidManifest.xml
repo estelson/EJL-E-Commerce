@@ -9,6 +9,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EJLECommerce">
         <activity
+            android:name=".activity.loja.MainActivityEmpresa"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".autenticacao.CadastroActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

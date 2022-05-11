@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.exemplo.ejle_commerce.databinding.ActivityCadastroBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
+import com.exemplo.ejle_commerce.model.Loja;
 import com.exemplo.ejle_commerce.model.Usuario;
 
 public class CadastroActivity extends AppCompatActivity {
