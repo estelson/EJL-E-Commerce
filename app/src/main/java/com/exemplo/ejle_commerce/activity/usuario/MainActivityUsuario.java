@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
+import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.databinding.ActivityMainUsuarioBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
@@ -20,14 +24,8 @@ public class MainActivityUsuario extends AppCompatActivity {
         binding = ActivityMainUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.btnLogin.setOnClickListener(view -> {
-            if(FirebaseHelper.getAutenticado()) {
-                FirebaseHelper.getAuth().signOut();
-
-                Toast.makeText(this, "Usuário já autenticado", Toast.LENGTH_SHORT).show();
-            } else {
-                startActivity(new Intent(this, LoginActivity.class));
-            }
-        });
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
     }
 }

@@ -26,7 +26,7 @@
         app:labelVisibilityMode="labeled"
         app:menu="@menu/menu_usuario"
         app:itemTextColor="@drawable/item_selected"
-        app:itemColorTint="@drawable/item_selected"
+        app:itemIconTint="@drawable/item_selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
