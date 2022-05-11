@@ -14,7 +14,6 @@ import com.exemplo.ejle_commerce.activity.loja.MainActivityEmpresa;
 import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.databinding.ActivityLoginBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
-import com.exemplo.ejle_commerce.model.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

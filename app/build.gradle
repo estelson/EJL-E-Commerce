@@ -56,4 +56,8 @@ dependencies {
     // Declare the dependency for the Cloud Storage library
     implementation 'com.google.firebase:firebase-storage'
 
+    // Possibilidade   de  adicionar  controle  de permissões personalizadas ao app
+    // https://github.com/ParkSangGwon/TedPermission
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0' // 2.2.3
+
 }
