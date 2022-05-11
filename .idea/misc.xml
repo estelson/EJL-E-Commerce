@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/bg_add.xml" value="0.2315" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/bg_add_circle.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/bg_borda_cinza.xml" value="0.2315" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/bg_dialog.xml" value="0.2315" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_add.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_carrinho.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_categorias_list.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_config.xml" value="0.2315" />
@@ -15,6 +19,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_perfil.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_produtos.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/item_selected.xml" value="0.2315" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/placeholder_form_categorias.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_cadastro.xml" value="0.3488372093023256" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_login.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_main.xml" value="0.35833333333333334" />
@@ -22,6 +27,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_main_usuario.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_recuperar_conta.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_splash.xml" value="0.35833333333333334" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/dialog_form_categoria.xml" value="0.3572916666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/fragment_loja_categoria.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/fragment_loja_config.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/fragment_loja_pedido.xml" value="0.35833333333333334" />

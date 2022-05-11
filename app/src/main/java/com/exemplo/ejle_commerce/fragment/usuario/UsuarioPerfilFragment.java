@@ -40,6 +40,6 @@ public class UsuarioPerfilFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        binding = null;
+        //binding = null;
     }
 }
