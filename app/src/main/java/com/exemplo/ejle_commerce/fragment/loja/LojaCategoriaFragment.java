@@ -23,20 +23,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.adapter.CategoriaAdapter;
 import com.exemplo.ejle_commerce.databinding.DialogFormCategoriaBinding;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaCategoriaBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Categoria;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class LojaCategoriaFragment extends Fragment {
+public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.OnClick {
 
     // public static final int REQUEST_GALERIA = 100;
 
@@ -50,6 +58,9 @@ public class LojaCategoriaFragment extends Fragment {
 
     private Categoria categoria;
 
+    private CategoriaAdapter categoriaAdapter;
+    private List<Categoria> categoriasList = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLojaCategoriaBinding.inflate(inflater, container, false);
@@ -62,7 +73,54 @@ public class LojaCategoriaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        recuperarCategorias();
+
         configClicks();
+
+        configRv();
+    }
+
+    private void configRv() {
+        binding.rvCategorias.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvCategorias.setHasFixedSize(true);
+
+        categoriaAdapter = new CategoriaAdapter(categoriasList, this);
+
+        binding.rvCategorias.setAdapter(categoriaAdapter);
+    }
+
+    private void recuperarCategorias() {
+        DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
+                .child("categorias");
+
+        categoriaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    categoriasList.clear();
+
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Categoria categoria = ds.getValue(Categoria.class);
+                        categoriasList.add(categoria);
+                    }
+
+                    binding.textInfo.setText("");
+                } else {
+                    binding.textInfo.setText("Nenhuma categoria cadastrada");
+                }
+
+                binding.progressBar.setVisibility(View.GONE);
+
+                Collections.reverse(categoriasList);
+
+                categoriaAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void configClicks() {
@@ -81,7 +139,7 @@ public class LojaCategoriaFragment extends Fragment {
         });
 
         categoriaBinding.btnSalvar.setOnClickListener(v -> {
-            String nomeCategoria = categoriaBinding.edtCategoria.getText().toString();
+            String nomeCategoria = categoriaBinding.edtCategoria.getText().toString().trim();
             if(!nomeCategoria.isEmpty()) {
                 ocultarTeclado();
 
@@ -213,4 +271,8 @@ public class LojaCategoriaFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(categoriaBinding.edtCategoria.getWindowToken(), inputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    @Override
+    public void onClickListener(Categoria categoria) {
+        Toast.makeText(getContext(), categoria.getNome(), Toast.LENGTH_LONG).show();
+    }
 }

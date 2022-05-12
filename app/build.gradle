@@ -60,4 +60,12 @@ dependencies {
     // https://github.com/ParkSangGwon/TedPermission
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0' // 2.2.3
 
+    // Biblioteca que adiciona a função de SWIPE em uma lista
+    // https://github.com/tsuryo/Swipeable-RecyclerView
+    implementation 'com.github.tsuryo:Swipeable-RecyclerView:1.1'
+
+    // Image downloading and caching library for Android
+    // https://square.github.io/picasso/
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

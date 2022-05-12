@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.model.Categoria;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -37,6 +38,10 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Categoria categoria = categoriasList.get(position);
 
+        holder.nomeCategoria.setText(categoria.getNome());
+
+        Picasso.get().load(categoria.getUrlImagem()).into(holder.imagemCategoria);
+
         holder.itemView.setOnClickListener(v -> {
             onClick.onClickListener(categoria);
         });
@@ -52,11 +57,14 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        ImageView imagemCategoria;
+        TextView nomeCategoria;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ImageView imagemCategoria = itemView.findViewById(R.id.imagemCategoria);
-            TextView nomeCategoria = itemView.findViewById(R.id.nomeCategoria);
+            imagemCategoria = itemView.findViewById(R.id.imagemCategoria);
+            nomeCategoria = itemView.findViewById(R.id.nomeCategoria);
         }
     }
 
