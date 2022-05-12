@@ -16,7 +16,7 @@ public class Categoria {
         this.setId(categoriaRef.push().getKey());
     }
 
-    public void Salvar() {
+    public void salvar() {
         DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
                 .child("categorias")
                 .child(this.getId());
@@ -24,7 +24,7 @@ public class Categoria {
         categoriaRef.setValue(this);
     }
 
-    public void Delete() {
+    public void delete() {
         DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
                 .child("categorias")
                 .child(this.getId());
