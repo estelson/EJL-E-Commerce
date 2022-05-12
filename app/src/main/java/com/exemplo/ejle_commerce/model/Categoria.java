@@ -2,6 +2,7 @@ package com.exemplo.ejle_commerce.model;
 
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
 
 public class Categoria {
 
@@ -21,6 +22,21 @@ public class Categoria {
                 .child(this.getId());
 
         categoriaRef.setValue(this);
+    }
+
+    public void Delete() {
+        DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
+                .child("categorias")
+                .child(this.getId());
+
+        categoriaRef.removeValue();
+
+        StorageReference storageReference = FirebaseHelper.getStorageReference()
+                .child("imagens")
+                .child("categorias")
+                .child(this.getId() + ".jpeg");
+
+        storageReference.delete();
     }
 
     public String getId() {

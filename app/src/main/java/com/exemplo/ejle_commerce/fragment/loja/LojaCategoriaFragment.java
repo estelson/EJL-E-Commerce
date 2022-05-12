@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.CategoriaAdapter;
+import com.exemplo.ejle_commerce.databinding.DialogDeleteBinding;
 import com.exemplo.ejle_commerce.databinding.DialogFormCategoriaBinding;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaCategoriaBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +89,18 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
         categoriaAdapter = new CategoriaAdapter(categoriasList, this);
 
         binding.rvCategorias.setAdapter(categoriaAdapter);
+
+        binding.rvCategorias.setListener(new SwipeLeftRightCallback.Listener() {
+            @Override
+            public void onSwipedLeft(int position) {
+
+            }
+
+            @Override
+            public void onSwipedRight(int position) {
+                showDialogDelete(categoriasList.get(position));
+            }
+        });
     }
 
     private void recuperarCategorias() {
@@ -127,6 +141,41 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
         binding.btnAddCategoria.setOnClickListener(v -> {
             showDialog();
         });
+    }
+
+    private void showDialogDelete(Categoria categoria) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog2);
+
+        DialogDeleteBinding deleteBinding = DialogDeleteBinding.inflate(LayoutInflater.from(getContext()));
+
+        deleteBinding.btnFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+
+            categoriaAdapter.notifyDataSetChanged();
+        });
+
+        deleteBinding.btnSim.setOnClickListener(v -> {
+            categoriasList.remove(categoria);
+
+            if(categoriasList.isEmpty()) {
+                binding.textInfo.setText("Nenhuma categoria cadastrada");
+            } else {
+                binding.textInfo.setText("");
+            }
+
+            categoria.Delete();
+
+            categoriaAdapter.notifyDataSetChanged();
+
+            dialog.dismiss();
+
+            Toast.makeText(getContext(), "Categoria excluída com sucesso", Toast.LENGTH_SHORT).show();
+        });
+
+        builder.setView(deleteBinding.getRoot());
+
+        dialog = builder.create();
+        dialog.show();
     }
 
     private void showDialog() {
@@ -190,6 +239,8 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
                 categoria = null;
 
                 dialog.dismiss();
+
+                Toast.makeText(getContext(), "Categoria incluída com sucesso", Toast.LENGTH_SHORT).show();
             });
         }).addOnFailureListener(e -> {
             dialog.dismiss();
