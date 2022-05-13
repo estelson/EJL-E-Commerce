@@ -1,6 +1,7 @@
 package com.exemplo.ejle_commerce.activity.loja;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -11,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -71,6 +73,52 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         binding.imagemProduto2.setOnClickListener(v -> {
             showBottomSheet(2);
         });
+    }
+
+    public void validarDados(View view) {
+        String titulo = binding.edtTitulo.getText().toString().trim();
+        String descricao = binding.edtDescricao.getText().toString().trim();
+        String valorAntigo = binding.edtValorAntigo.getText().toString().trim();
+        String valorAtual = binding.edtValorAtual.getText().toString().trim();
+
+        if(!titulo.isEmpty()) {
+            if(!descricao.isEmpty()) {
+                if(produto == null) {
+                    produto = new Produto();
+                }
+
+                produto.setTitulo(titulo);
+                produto.setDescricao(descricao);
+                produto.setValorAntigo(10);
+                produto.setValorAtual(8);
+
+                if(novoProduto) { // Inclusão de produto
+                    if(imagemUploadList.size() == 3) {
+                        for (int i = 0; i < imagemUploadList.size(); i++) {
+                            salvarImagemFirebase(imagemUploadList.get(i));
+                        }
+                    } else {
+                        ocultarTeclado();
+
+                        Toast.makeText(this, "Selecione 3 imagens para o produto", Toast.LENGTH_SHORT).show();
+                    }
+                } else { // Alteração de produto
+                    if(imagemUploadList.size() > 0) {
+                        for (int i = 0; i < imagemUploadList.size(); i++) {
+                            salvarImagemFirebase(imagemUploadList.get(i));
+                        }
+                    } else {
+                        produto.salvar(false);
+                    }
+                }
+            } else {
+                binding.edtDescricao.requestFocus();
+                binding.edtDescricao.setError("Informe a descrição do produto");
+            }
+        } else {
+            binding.edtTitulo.requestFocus();
+            binding.edtTitulo.setError("Informe o título do produto");
+        }
     }
 
     private void showBottomSheet(int imgCode) {
@@ -249,21 +297,26 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         }
     }
 
-    private void salvarImagemFirebase(int index, String caminhoImagem) {
+    private void salvarImagemFirebase(ImagemUpload imagemUpload) {
+        int index = imagemUpload.getIndex();
+        String caminhoImagem = imagemUpload.getCaminhoImagem();
+
         StorageReference storageReference = FirebaseHelper.getStorageReference()
                 .child("imagens")
-                .child("anuncios")
+                .child("produtos")
                 .child(produto.getId())
                 .child("imagem" + index + ".jpeg");
 
         UploadTask uploadTask = storageReference.putFile(Uri.parse(caminhoImagem));
         uploadTask.addOnSuccessListener(taskSnapshot -> {
             storageReference.getDownloadUrl().addOnCompleteListener(task -> {
-                if(novoProduto) {
-                    produto.getUrlsImagens().add(index, task.getResult().toString());
-                } else {
-                    produto.getUrlsImagens().set(index, task.getResult().toString());
-                }
+                imagemUpload.setCaminhoImagem(task.getResult().toString());
+
+//                if(novoProduto) {
+                    produto.getUrlsImagens().add(imagemUpload);
+//                } else {
+//                    produto.getUrlsImagens().set(index, task.getResult().toString());
+//                }
 
                 if(imagemUploadList.size() == index + 1) {
                     produto.salvar(novoProduto);
@@ -351,6 +404,11 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         }
 
         return bitmap;
+    }
+
+    private void ocultarTeclado() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(binding.edtTitulo.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }
