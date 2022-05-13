@@ -68,4 +68,10 @@ dependencies {
     // https://square.github.io/picasso/
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    // CurrencyEditText is an extension of Android's EditText view object. It is a module  designed
+    // to provide ease-of-use when using an EditText field for gathering currency information  from
+    // a user.
+    // https://github.com/BlacKCaT27/CurrencyEditText
+    implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
+
 }

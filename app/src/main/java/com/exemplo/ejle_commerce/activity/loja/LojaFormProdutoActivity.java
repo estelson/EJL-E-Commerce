@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class LojaFormProdutoActivity extends AppCompatActivity {
 
@@ -59,6 +60,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         configClicks();
+
+        iniciarComponentes();
     }
 
     private void configClicks() {
@@ -78,38 +81,46 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
     public void validarDados(View view) {
         String titulo = binding.edtTitulo.getText().toString().trim();
         String descricao = binding.edtDescricao.getText().toString().trim();
-        String valorAntigo = binding.edtValorAntigo.getText().toString().trim();
-        String valorAtual = binding.edtValorAtual.getText().toString().trim();
+        double valorAntigo = (double) binding.edtValorAntigo.getRawValue() / 100;
+        double valorAtual = (double) binding.edtValorAtual.getRawValue() / 100;
 
         if(!titulo.isEmpty()) {
             if(!descricao.isEmpty()) {
-                if(produto == null) {
-                    produto = new Produto();
-                }
-
-                produto.setTitulo(titulo);
-                produto.setDescricao(descricao);
-                produto.setValorAntigo(10);
-                produto.setValorAtual(8);
-
-                if(novoProduto) { // Inclusão de produto
-                    if(imagemUploadList.size() == 3) {
-                        for (int i = 0; i < imagemUploadList.size(); i++) {
-                            salvarImagemFirebase(imagemUploadList.get(i));
-                        }
-                    } else {
-                        ocultarTeclado();
-
-                        Toast.makeText(this, "Selecione 3 imagens para o produto", Toast.LENGTH_SHORT).show();
+                if(valorAtual > 0) {
+                    if(produto == null) {
+                        produto = new Produto();
                     }
-                } else { // Alteração de produto
-                    if(imagemUploadList.size() > 0) {
-                        for (int i = 0; i < imagemUploadList.size(); i++) {
-                            salvarImagemFirebase(imagemUploadList.get(i));
-                        }
-                    } else {
-                        produto.salvar(false);
+
+                    produto.setTitulo(titulo);
+                    produto.setDescricao(descricao);
+                    produto.setValorAtual(valorAtual);
+
+                    if(valorAntigo > 0) { // valorAntigo NÃO é obrigatório
+                        produto.setValorAntigo(valorAntigo);
                     }
+
+                    if(novoProduto) { // Inclusão de produto
+                        if(imagemUploadList.size() == 3) {
+                            for (int i = 0; i < imagemUploadList.size(); i++) {
+                                salvarImagemFirebase(imagemUploadList.get(i));
+                            }
+                        } else {
+                            ocultarTeclado();
+
+                            Toast.makeText(this, "Selecione 3 imagens para o produto", Toast.LENGTH_SHORT).show();
+                        }
+                    } else { // Alteração de produto
+                        if(imagemUploadList.size() > 0) {
+                            for (int i = 0; i < imagemUploadList.size(); i++) {
+                                salvarImagemFirebase(imagemUploadList.get(i));
+                            }
+                        } else {
+                            produto.salvar(false);
+                        }
+                    }
+                } else {
+                    binding.edtValorAtual.requestFocus();
+                    binding.edtValorAtual.setError("Informe um valor válido");
                 }
             } else {
                 binding.edtDescricao.requestFocus();
@@ -404,6 +415,11 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         }
 
         return bitmap;
+    }
+
+    private void iniciarComponentes() {
+        binding.edtValorAntigo.setLocale(new Locale("PT", "br"));
+        binding.edtValorAtual.setLocale(new Locale("PT", "br"));
     }
 
     private void ocultarTeclado() {
