@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -24,9 +26,14 @@ import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.databinding.ActivityLojaFormProdutoBinding;
 import com.exemplo.ejle_commerce.databinding.BottomSheetFormProdutoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
+import com.exemplo.ejle_commerce.model.Categoria;
 import com.exemplo.ejle_commerce.model.ImagemUpload;
 import com.exemplo.ejle_commerce.model.Produto;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
@@ -50,6 +57,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
     private boolean novoProduto = true;
 
     private List<ImagemUpload> imagemUploadList = new ArrayList<>();
+    private List<Categoria> categoriasList = new ArrayList<>();
 
     private String currentPhotoPath;
 
@@ -62,6 +70,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         configClicks();
 
         iniciarComponentes();
+
+        recuperarCategorias();
     }
 
     private void configClicks() {
@@ -75,6 +85,34 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 
         binding.imagemProduto2.setOnClickListener(v -> {
             showBottomSheet(2);
+        });
+    }
+
+    private void recuperarCategorias() {
+        DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
+                .child("categorias");
+
+        categoriaRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    categoriasList.clear();
+
+                    for(DataSnapshot ds : snapshot.getChildren()) {
+                        Categoria categoria = ds.getValue(Categoria.class);
+                        categoriasList.add(categoria);
+                    }
+                } else {
+
+                }
+
+                Log.i("INFOTESTE", "onDataChange: " + categoriasList.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
     }
 
