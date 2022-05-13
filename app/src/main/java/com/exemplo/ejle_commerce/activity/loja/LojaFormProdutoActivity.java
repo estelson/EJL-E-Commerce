@@ -21,8 +21,12 @@ import androidx.core.content.FileProvider;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.databinding.ActivityLojaFormProdutoBinding;
 import com.exemplo.ejle_commerce.databinding.BottomSheetFormProdutoBinding;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.ImagemUpload;
+import com.exemplo.ejle_commerce.model.Produto;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
@@ -38,6 +42,9 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
     private ActivityLojaFormProdutoBinding binding;
 
     private int resultCode = 0;
+
+    private Produto produto;
+    private boolean novoProduto = true;
 
     private List<ImagemUpload> imagemUploadList = new ArrayList<>();
 
@@ -224,10 +231,10 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 
         ImagemUpload imagemUpload = new ImagemUpload(request, caminhoImagem);
 
-        if(!imagemUploadList.isEmpty()) {
+        if (!imagemUploadList.isEmpty()) {
             boolean encontrou = false;
             for (int i = 0; i < imagemUploadList.size(); i++) {
-                if(imagemUploadList.get(i).getIndex() == request) {
+                if (imagemUploadList.get(i).getIndex() == request) {
                     encontrou = true;
                 }
             }
@@ -242,31 +249,64 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         }
     }
 
+    private void salvarImagemFirebase(int index, String caminhoImagem) {
+        StorageReference storageReference = FirebaseHelper.getStorageReference()
+                .child("imagens")
+                .child("anuncios")
+                .child(produto.getId())
+                .child("imagem" + index + ".jpeg");
+
+        UploadTask uploadTask = storageReference.putFile(Uri.parse(caminhoImagem));
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            storageReference.getDownloadUrl().addOnCompleteListener(task -> {
+                if(novoProduto) {
+                    produto.getUrlsImagens().add(index, task.getResult().toString());
+                } else {
+                    produto.getUrlsImagens().set(index, task.getResult().toString());
+                }
+
+                if(imagemUploadList.size() == index + 1) {
+                    produto.salvar(novoProduto);
+                }
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Erro ao gravar a imagem. Motivo: " + e.getMessage().toString(), Toast.LENGTH_LONG).show();
+        });
+    }
+
     private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     String caminhoImagem;
 
-                    if(resultCode <= 2) { // Galeria
+                    if (resultCode <= 2) { // Galeria
                         // Recupera o caminho da imagem
                         Uri imagemSelecionada = result.getData().getData();
 
-                        switch (resultCode) {
-                            case 0:
-                                binding.imagemProduto0.setImageBitmap(getBitmap(imagemSelecionada));
-                                binding.imagemProduto0Fake.setVisibility(View.GONE);
+                        try {
+                            caminhoImagem = imagemSelecionada.toString();
 
-                                break;
-                            case 1:
-                                binding.imagemProduto1.setImageBitmap(getBitmap(imagemSelecionada));
-                                binding.imagemProduto1Fake.setVisibility(View.GONE);
+                            switch (resultCode) {
+                                case 0:
+                                    binding.imagemProduto0.setImageBitmap(getBitmap(imagemSelecionada));
+                                    binding.imagemProduto0Fake.setVisibility(View.GONE);
 
-                                break;
-                            case 2:
-                                binding.imagemProduto2.setImageBitmap(getBitmap(imagemSelecionada));
-                                binding.imagemProduto2Fake.setVisibility(View.GONE);
+                                    break;
+                                case 1:
+                                    binding.imagemProduto1.setImageBitmap(getBitmap(imagemSelecionada));
+                                    binding.imagemProduto1Fake.setVisibility(View.GONE);
 
-                                break;
+                                    break;
+                                case 2:
+                                    binding.imagemProduto2.setImageBitmap(getBitmap(imagemSelecionada));
+                                    binding.imagemProduto2Fake.setVisibility(View.GONE);
+
+                                    break;
+                            }
+
+                            configUpload(caminhoImagem);
+                        } catch(Exception e) {
+                            Toast.makeText(this, "Não foi possível recuperar a imagem da galeria do dispositivo. Motivo:  " + e.getMessage().toString(), Toast.LENGTH_LONG).show();
                         }
                     } else { // Câmera
                         File file = new File(currentPhotoPath);
@@ -289,6 +329,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 
                                 break;
                         }
+
+                        configUpload(caminhoImagem);
                     }
                 }
             }
