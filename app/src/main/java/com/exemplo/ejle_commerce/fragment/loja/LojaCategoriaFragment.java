@@ -279,7 +279,7 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
             }
         };
 
-        showDialogPermissaoGaleria(permissionListener, new String[]{
+        showDialogPermissaoGaleria(permissionListener, new String[] {
                 Manifest.permission.READ_EXTERNAL_STORAGE
         });
     }
