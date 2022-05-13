@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.databinding.ActivityLojaFormProdutoBinding;
 import com.exemplo.ejle_commerce.databinding.BottomSheetFormProdutoBinding;
+import com.exemplo.ejle_commerce.model.ImagemUpload;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
@@ -28,6 +29,7 @@ import com.gun0912.tedpermission.normal.TedPermission;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
     private ActivityLojaFormProdutoBinding binding;
 
     private int resultCode = 0;
+
+    private List<ImagemUpload> imagemUploadList = new ArrayList<>();
 
     private String currentPhotoPath;
 
@@ -198,6 +202,44 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
     private void abrirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         resultLauncher.launch(intent);
+    }
+
+    private void configUpload(String caminhoImagem) {
+        int request = 0;
+
+        switch (resultCode) {
+            case 0:
+            case 3:
+                request = 0;
+                break;
+            case 1:
+            case 4:
+                request = 1;
+                break;
+            case 2:
+            case 5:
+                request = 2;
+                break;
+        }
+
+        ImagemUpload imagemUpload = new ImagemUpload(request, caminhoImagem);
+
+        if(!imagemUploadList.isEmpty()) {
+            boolean encontrou = false;
+            for (int i = 0; i < imagemUploadList.size(); i++) {
+                if(imagemUploadList.get(i).getIndex() == request) {
+                    encontrou = true;
+                }
+            }
+
+            if (encontrou) { // Está alterando a imagem na posição X
+                imagemUploadList.set(request, imagemUpload);
+            } else { // Está incluindo uma imagem na posição X
+                imagemUploadList.add(imagemUpload);
+            }
+        } else {
+            imagemUploadList.add(imagemUpload);
+        }
     }
 
     private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
