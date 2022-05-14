@@ -184,7 +184,8 @@
                     android:layout_marginTop="16dp"
                     android:text="Nenhuma categoria selecionada"
                     android:background="@drawable/bg_borda_laranja"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+                    android:onClick="showDialogCategorias"/>
 
                 <android.widget.Button
                     android:layout_width="match_parent"

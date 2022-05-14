@@ -19,12 +19,18 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.adapter.CategoriaDialogAdapter;
 import com.exemplo.ejle_commerce.databinding.ActivityLojaFormProdutoBinding;
 import com.exemplo.ejle_commerce.databinding.BottomSheetFormProdutoBinding;
+import com.exemplo.ejle_commerce.databinding.DialogDeleteBinding;
+import com.exemplo.ejle_commerce.databinding.DialogFormProdutoCategoriaBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Categoria;
 import com.exemplo.ejle_commerce.model.ImagemUpload;
@@ -43,13 +49,18 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class LojaFormProdutoActivity extends AppCompatActivity {
+public class LojaFormProdutoActivity extends AppCompatActivity implements CategoriaDialogAdapter.OnClick {
+
+    private List<String> idCategoriasSelecionadas = new ArrayList<>();
 
     private ActivityLojaFormProdutoBinding binding;
+
+    private DialogFormProdutoCategoriaBinding categoriaBinding;
 
     private int resultCode = 0;
 
@@ -60,6 +71,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
     private List<Categoria> categoriasList = new ArrayList<>();
 
     private String currentPhotoPath;
+
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +101,44 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         });
     }
 
+    private void configRv() {
+        categoriaBinding.rvCategorias.setLayoutManager(new LinearLayoutManager(this));
+        categoriaBinding.rvCategorias.setHasFixedSize(true);
+
+        CategoriaDialogAdapter categoriaDialogAdapter = new CategoriaDialogAdapter(idCategoriasSelecionadas, categoriasList, this);
+
+        categoriaBinding.rvCategorias.setAdapter(categoriaDialogAdapter);
+    }
+
+    public void showDialogCategorias(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog2);
+
+        categoriaBinding = DialogFormProdutoCategoriaBinding.inflate(LayoutInflater.from(this));
+
+        categoriaBinding.btnFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        categoriaBinding.btnSalvar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        if (categoriasList.isEmpty()) {
+            categoriaBinding.textInfo.setText("Nenhuma categoria cadastrada");
+        } else {
+            categoriaBinding.textInfo.setText("");
+        }
+
+        categoriaBinding.progressBar.setVisibility(View.GONE);
+
+        configRv();
+
+        builder.setView(categoriaBinding.getRoot());
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
     private void recuperarCategorias() {
         DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
                 .child("categorias");
@@ -95,10 +146,10 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         categoriaRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     categoriasList.clear();
 
-                    for(DataSnapshot ds : snapshot.getChildren()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
                         Categoria categoria = ds.getValue(Categoria.class);
                         categoriasList.add(categoria);
                     }
@@ -106,7 +157,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
 
                 }
 
-                Log.i("INFOTESTE", "onDataChange: " + categoriasList.size());
+                Collections.reverse(categoriasList);
             }
 
             @Override
@@ -122,10 +173,10 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         double valorAntigo = (double) binding.edtValorAntigo.getRawValue() / 100;
         double valorAtual = (double) binding.edtValorAtual.getRawValue() / 100;
 
-        if(!titulo.isEmpty()) {
-            if(!descricao.isEmpty()) {
-                if(valorAtual > 0) {
-                    if(produto == null) {
+        if (!titulo.isEmpty()) {
+            if (!descricao.isEmpty()) {
+                if (valorAtual > 0) {
+                    if (produto == null) {
                         produto = new Produto();
                     }
 
@@ -133,12 +184,12 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
                     produto.setDescricao(descricao);
                     produto.setValorAtual(valorAtual);
 
-                    if(valorAntigo > 0) { // valorAntigo NÃO é obrigatório
+                    if (valorAntigo > 0) { // valorAntigo NÃO é obrigatório
                         produto.setValorAntigo(valorAntigo);
                     }
 
-                    if(novoProduto) { // Inclusão de produto
-                        if(imagemUploadList.size() == 3) {
+                    if (novoProduto) { // Inclusão de produto
+                        if (imagemUploadList.size() == 3) {
                             for (int i = 0; i < imagemUploadList.size(); i++) {
                                 salvarImagemFirebase(imagemUploadList.get(i));
                             }
@@ -148,7 +199,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
                             Toast.makeText(this, "Selecione 3 imagens para o produto", Toast.LENGTH_SHORT).show();
                         }
                     } else { // Alteração de produto
-                        if(imagemUploadList.size() > 0) {
+                        if (imagemUploadList.size() > 0) {
                             for (int i = 0; i < imagemUploadList.size(); i++) {
                                 salvarImagemFirebase(imagemUploadList.get(i));
                             }
@@ -362,12 +413,12 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
                 imagemUpload.setCaminhoImagem(task.getResult().toString());
 
 //                if(novoProduto) {
-                    produto.getUrlsImagens().add(imagemUpload);
+                produto.getUrlsImagens().add(imagemUpload);
 //                } else {
 //                    produto.getUrlsImagens().set(index, task.getResult().toString());
 //                }
 
-                if(imagemUploadList.size() == index + 1) {
+                if (imagemUploadList.size() == index + 1) {
                     produto.salvar(novoProduto);
                 }
             });
@@ -407,7 +458,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
                             }
 
                             configUpload(caminhoImagem);
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             Toast.makeText(this, "Não foi possível recuperar a imagem da galeria do dispositivo. Motivo:  " + e.getMessage().toString(), Toast.LENGTH_LONG).show();
                         }
                     } else { // Câmera
@@ -465,4 +516,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(binding.edtTitulo.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    @Override
+    public void onClickListener(Categoria categoria) {
+
+    }
 }
