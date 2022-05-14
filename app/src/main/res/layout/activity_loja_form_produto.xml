@@ -179,10 +179,12 @@
                 </LinearLayout>
 
                 <android.widget.Button
+                    android:id="@+id/btnCategorias"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Nenhuma categoria selecionada"
+                    android:textColor="@android:color/darker_gray"
                     android:background="@drawable/bg_borda_laranja"
                     android:textAllCaps="false"
                     android:onClick="showDialogCategorias"/>
@@ -197,15 +199,15 @@
                     android:textAllCaps="false"
                     android:onClick="validarDados"/>
 
-<!--                <ProgressBar-->
-<!--                    android:id="@+id/progressBar"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_horizontal"-->
-<!--                    android:indeterminateTint="@color/color_laranja"-->
-<!--                    android:visibility="gone"-->
-<!--                    tools:visibility="visible"-->
-<!--                    android:layout_marginTop="8dp"/>-->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminateTint="@color/color_laranja"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginTop="8dp"/>
 
             </LinearLayout>
 

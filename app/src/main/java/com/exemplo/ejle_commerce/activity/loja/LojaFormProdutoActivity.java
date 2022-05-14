@@ -166,6 +166,24 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
         });
     }
 
+    private void categoriasSelecionadas() {
+        StringBuilder categorias = new StringBuilder();
+
+        for (int i = 0; i < categoriasSelecionadasList.size(); i++) {
+            if(i != categoriasSelecionadasList.size() - 1) {
+                categorias.append(categoriasSelecionadasList.get(i)).append(", ");
+            } else {
+                categorias.append(categoriasSelecionadasList.get(i));
+            }
+        }
+
+        if(!categoriasSelecionadasList.isEmpty()) {
+            binding.btnCategorias.setText(categorias);
+        } else {
+            binding.btnCategorias.setText("Nenhuma categoria selecionada");
+        }
+    }
+
     public void validarDados(View view) {
         String titulo = binding.edtTitulo.getText().toString().trim();
         String descricao = binding.edtDescricao.getText().toString().trim();
@@ -419,11 +437,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
             storageReference.getDownloadUrl().addOnCompleteListener(task -> {
                 imagemUpload.setCaminhoImagem(task.getResult().toString());
 
-//                if(novoProduto) {
                 produto.getUrlsImagens().add(imagemUpload);
-//                } else {
-//                    produto.getUrlsImagens().set(index, task.getResult().toString());
-//                }
 
                 if (imagemUploadList.size() == index + 1) {
                     produto.salvar(novoProduto);
@@ -432,6 +446,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Erro ao gravar a imagem. Motivo: " + e.getMessage().toString(), Toast.LENGTH_LONG).show();
         });
+
+        binding.progressBar.setVisibility(View.GONE);
     }
 
     private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
@@ -532,5 +548,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
             idCategoriasSelecionadas.remove(categoria.getId());
             categoriasSelecionadasList.remove(categoria.getNome());
         }
+
+        categoriasSelecionadas();
     }
 }
