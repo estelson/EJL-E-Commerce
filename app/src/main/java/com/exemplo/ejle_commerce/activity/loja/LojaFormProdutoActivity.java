@@ -69,6 +69,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 
     private List<ImagemUpload> imagemUploadList = new ArrayList<>();
     private List<Categoria> categoriasList = new ArrayList<>();
+    private List<String> categoriasSelecionadasList = new ArrayList<>();
 
     private String currentPhotoPath;
 
@@ -153,8 +154,6 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
                         Categoria categoria = ds.getValue(Categoria.class);
                         categoriasList.add(categoria);
                     }
-                } else {
-
                 }
 
                 Collections.reverse(categoriasList);
@@ -176,36 +175,44 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
         if (!titulo.isEmpty()) {
             if (!descricao.isEmpty()) {
                 if (valorAtual > 0) {
-                    if (produto == null) {
-                        produto = new Produto();
-                    }
-
-                    produto.setTitulo(titulo);
-                    produto.setDescricao(descricao);
-                    produto.setValorAtual(valorAtual);
-
-                    if (valorAntigo > 0) { // valorAntigo NÃO é obrigatório
-                        produto.setValorAntigo(valorAntigo);
-                    }
-
-                    if (novoProduto) { // Inclusão de produto
-                        if (imagemUploadList.size() == 3) {
-                            for (int i = 0; i < imagemUploadList.size(); i++) {
-                                salvarImagemFirebase(imagemUploadList.get(i));
-                            }
-                        } else {
-                            ocultarTeclado();
-
-                            Toast.makeText(this, "Selecione 3 imagens para o produto", Toast.LENGTH_SHORT).show();
+                    if(!idCategoriasSelecionadas.isEmpty()) {
+                        if (produto == null) {
+                            produto = new Produto();
                         }
-                    } else { // Alteração de produto
-                        if (imagemUploadList.size() > 0) {
-                            for (int i = 0; i < imagemUploadList.size(); i++) {
-                                salvarImagemFirebase(imagemUploadList.get(i));
-                            }
-                        } else {
-                            produto.salvar(false);
+
+                        produto.setTitulo(titulo);
+                        produto.setDescricao(descricao);
+                        produto.setValorAtual(valorAtual);
+
+                        if (valorAntigo > 0) { // valorAntigo NÃO é obrigatório
+                            produto.setValorAntigo(valorAntigo);
                         }
+
+                        produto.setIdsCategorias(idCategoriasSelecionadas);
+
+                        if (novoProduto) { // Inclusão de produto
+                            if (imagemUploadList.size() == 3) {
+                                for (int i = 0; i < imagemUploadList.size(); i++) {
+                                    salvarImagemFirebase(imagemUploadList.get(i));
+                                }
+                            } else {
+                                ocultarTeclado();
+
+                                Toast.makeText(this, "Selecione 3 imagens para o produto", Toast.LENGTH_SHORT).show();
+                            }
+                        } else { // Alteração de produto
+                            if (imagemUploadList.size() > 0) {
+                                for (int i = 0; i < imagemUploadList.size(); i++) {
+                                    salvarImagemFirebase(imagemUploadList.get(i));
+                                }
+                            } else {
+                                produto.salvar(false);
+                            }
+                        }
+                    } else {
+                        ocultarTeclado();
+
+                        Toast.makeText(this, "Selecione pelo menos uma categoria", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.edtValorAtual.requestFocus();
@@ -518,6 +525,12 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 
     @Override
     public void onClickListener(Categoria categoria) {
-
+        if(!idCategoriasSelecionadas.contains(categoria.getId())) { // Check
+            idCategoriasSelecionadas.add(categoria.getId());
+            categoriasSelecionadasList.add(categoria.getNome());
+        } else { // Uncheck
+            idCategoriasSelecionadas.remove(categoria.getId());
+            categoriasSelecionadasList.remove(categoria.getNome());
+        }
     }
 }
