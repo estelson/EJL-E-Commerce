@@ -127,54 +127,90 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:theme="@style/EditTextTheme">
+                    android:text="Título"
+                    android:layout_marginTop="16dp"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtTitulo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Título"
-                        android:backgroundTint="@android:color/transparent"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/edtTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:theme="@style/EditTextTheme">
+                    android:hint="Ex.: Mochila Adidas"
+                    android:background="@drawable/bg_edit_off"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtDescricao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Descrição"
-                        android:backgroundTint="@android:color/transparent"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descrição"
+                    android:layout_marginTop="16dp"/>
 
-                </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:id="@+id/edtDescricao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ex.: Mochila grande e muito confortável"
+                    android:background="@drawable/bg_edit_off"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
+                    android:orientation="horizontal">
 
-                    <com.blackcat.currencyedittext.CurrencyEditText
-                        android:id="@+id/edtValorAntigo"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent"/>
+                        android:orientation="vertical"
+                        android:layout_marginEnd="8dp">
 
-                    <com.blackcat.currencyedittext.CurrencyEditText
-                        android:id="@+id/edtValorAtual"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Valor antigo"
+                            android:layout_marginTop="16dp"/>
+
+                        <com.blackcat.currencyedittext.CurrencyEditText
+                            android:id="@+id/edtValorAntigo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edit_off"
+                            android:padding="16dp"
+                            android:hint="R$ 0,00"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="@android:color/transparent"/>
+                        android:orientation="vertical"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Valor atual"
+                            android:layout_marginTop="16dp"/>
+
+                        <com.blackcat.currencyedittext.CurrencyEditText
+                            android:id="@+id/edtValorAtual"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edit_off"
+                            android:padding="16dp"
+                            android:hint="R$ 0,00"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -207,7 +243,8 @@
                     android:indeterminateTint="@color/color_laranja"
                     android:visibility="gone"
                     tools:visibility="visible"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"/>
 
             </LinearLayout>
 
