@@ -204,8 +204,6 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
             if (!descricao.isEmpty()) {
                 if (valorAtual > 0) {
                     if(!idCategoriasSelecionadas.isEmpty()) {
-                        binding.progressBar.setVisibility(View.VISIBLE);
-
                         if (produto == null) {
                             produto = new Produto();
                         }
@@ -462,8 +460,6 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Erro ao gravar a imagem. Motivo: " + e.getMessage().toString(), Toast.LENGTH_LONG).show();
         });
-
-        binding.progressBar.setVisibility(View.GONE);
     }
 
     private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
