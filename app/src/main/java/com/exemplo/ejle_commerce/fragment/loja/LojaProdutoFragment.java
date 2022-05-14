@@ -5,24 +5,40 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.exemplo.ejle_commerce.activity.loja.LojaFormProdutoActivity;
+import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaProdutoBinding;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
+import com.exemplo.ejle_commerce.model.Produto;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
-public class LojaProdutoFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.OnClickListener {
+
+    private List<Produto> produtosList = new ArrayList<>();
+
+    private LojaProdutoAdapter lojaProdutoAdapter;
 
     private FragmentLojaProdutoBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         binding = FragmentLojaProdutoBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -30,6 +46,15 @@ public class LojaProdutoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         configClicks();
+
+        configRv();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        recuperarProdutos();
     }
 
     private void configClicks() {
@@ -38,11 +63,51 @@ public class LojaProdutoFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    private void configRv() {
+        binding.rvProdutos.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        binding.rvProdutos.setHasFixedSize(true);
 
-        //binding = null;
+        lojaProdutoAdapter = new LojaProdutoAdapter(produtosList, requireContext(), this);
+
+        binding.rvProdutos.setAdapter(lojaProdutoAdapter);
+    }
+
+    private void recuperarProdutos() {
+        DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
+                .child("produtos");
+
+        produtoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    produtosList.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Produto produto = ds.getValue(Produto.class);
+                        produtosList.add(produto);
+                    }
+
+                    binding.textInfo.setText("");
+                } else {
+                    binding.textInfo.setText("Nenhum produto cadastrado.");
+                }
+
+                binding.progressBar.setVisibility(View.GONE);
+
+                Collections.reverse(produtosList);
+
+                lojaProdutoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onClick(Produto produto) {
+        Toast.makeText(requireContext(), produto.getTitulo(), Toast.LENGTH_SHORT).show();
     }
 
 }
