@@ -194,7 +194,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
         }
     }
 
-    public void validarDados(View view) {
+    public void validarDadosLojaFormProduto(View view) {
         String titulo = binding.edtTitulo.getText().toString().trim();
         String descricao = binding.edtDescricao.getText().toString().trim();
         double valorAntigo = (double) binding.edtValorAntigo.getRawValue() / 100;
@@ -204,6 +204,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
             if (!descricao.isEmpty()) {
                 if (valorAtual > 0) {
                     if(!idCategoriasSelecionadas.isEmpty()) {
+                        binding.progressBar.setVisibility(View.VISIBLE);
+
                         if (produto == null) {
                             produto = new Produto();
                         }
@@ -223,6 +225,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
                                 for (int i = 0; i < imagemUploadList.size(); i++) {
                                     salvarImagemFirebase(imagemUploadList.get(i));
                                 }
+
+                                Toast.makeText(this, "Produto incluído com sucesso", Toast.LENGTH_SHORT).show();
                             } else {
                                 ocultarTeclado();
 
@@ -236,6 +240,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
                             } else {
                                 produto.salvar(false);
                             }
+
+                            Toast.makeText(this, "Produto incluído com sucesso", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         ocultarTeclado();
