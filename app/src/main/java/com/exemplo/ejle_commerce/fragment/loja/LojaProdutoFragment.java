@@ -105,9 +105,13 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
         });
     }
 
+    private void showDialog(Produto produto) {
+
+    }
+
     @Override
     public void onClick(Produto produto) {
-        Toast.makeText(requireContext(), produto.getTitulo(), Toast.LENGTH_SHORT).show();
+        showDialog(produto);
     }
 
 }
