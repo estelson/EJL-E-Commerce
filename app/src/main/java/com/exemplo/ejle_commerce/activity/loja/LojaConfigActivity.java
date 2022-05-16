@@ -1,10 +1,7 @@
 package com.exemplo.ejle_commerce.activity.loja;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -12,16 +9,30 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.exemplo.ejle_commerce.R;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.exemplo.ejle_commerce.databinding.ActivityLojaConfigBinding;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
+import com.exemplo.ejle_commerce.model.ImagemUpload;
+import com.exemplo.ejle_commerce.model.Loja;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
-import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 public class LojaConfigActivity extends AppCompatActivity {
 
@@ -29,11 +40,17 @@ public class LojaConfigActivity extends AppCompatActivity {
 
     private String caminhoImagem = null;
 
+    private Loja loja;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLojaConfigBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        recuperarLoja();
+
+        iniciarComponentes();
 
         configClicks();
     }
@@ -41,6 +58,84 @@ public class LojaConfigActivity extends AppCompatActivity {
     private void configClicks() {
         binding.imgLogo.setOnClickListener(v -> {
             verificarPermissaoGaleria();
+        });
+
+        binding.btnSalvar.setOnClickListener(v -> {
+            if(loja != null) {
+                validarDados();
+            } else {
+                Toast.makeText(this, "Ainda estamos recuperando as informações da loja. Por favor aguarde.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void recuperarLoja() {
+        DatabaseReference lojaRef = FirebaseHelper.getDatabaseReference()
+                .child("loja");
+
+        lojaRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                loja = snapshot.getValue(Loja.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void validarDados() {
+        String nomeLoja = binding.edtLoja.getText().toString().trim();
+        String cnpj = binding.edtCNPJ.getMasked();
+        double pedidoMinimo = (double) binding.edtPedidoMinimo.getRawValue() / 100;
+        double freteGratis = (double) binding.edtFrete.getRawValue() / 100;
+
+        if(caminhoImagem != null) {
+            if(!nomeLoja.isEmpty()) {
+                if(!cnpj.isEmpty()) {
+                    if(cnpj.length() == 18) {
+                        loja.setNome(nomeLoja);
+                        loja.setCnpj(cnpj);
+                        loja.setPedidoMinimo(pedidoMinimo);
+                        loja.setFreteGratis(freteGratis);
+
+                        salvarImagemFirebase();
+                    } else {
+                        binding.edtCNPJ.requestFocus();
+                        binding.edtCNPJ.setError("CNPJ inválido");
+                    }
+                } else {
+                    binding.edtCNPJ.requestFocus();
+                    binding.edtCNPJ.setError("Informe o CNPJ da loja");
+                }
+            } else {
+                binding.edtLoja.requestFocus();
+                binding.edtLoja.setError("Informe o nome da loja");
+            }
+        } else {
+            ocultarTeclado();
+
+            Toast.makeText(this, "Selecione uma logomarca para a loja", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void salvarImagemFirebase() {
+        StorageReference storageReference = FirebaseHelper.getStorageReference()
+                .child("imagens")
+                .child("loja")
+                .child(loja.getId() + ".jpeg");
+
+        UploadTask uploadTask = storageReference.putFile(Uri.parse(caminhoImagem));
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            storageReference.getDownloadUrl().addOnCompleteListener(task -> {
+                loja.setUrlLogo(task.getResult().toString());
+
+                loja.salvar();
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Erro ao gravar a imagem. Motivo: " + e.getMessage().toString(), Toast.LENGTH_LONG).show();
         });
     }
 
@@ -107,6 +202,16 @@ public class LojaConfigActivity extends AppCompatActivity {
         }
 
         return bitmap;
+    }
+
+    private void iniciarComponentes() {
+        binding.edtPedidoMinimo.setLocale(new Locale("PT", "br"));
+        binding.edtFrete.setLocale(new Locale("PT", "br"));
+    }
+
+    private void ocultarTeclado() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(binding.edtPedidoMinimo.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }

@@ -8,6 +8,10 @@ public class Loja {
 
     private String id;
     private String nome;
+    private String urlLogo;
+    private String cnpj;
+    private double pedidoMinimo;
+    private double freteGratis;
     private String email;
     private String senha;
     private String publicKey;
@@ -38,6 +42,38 @@ public class Loja {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getUrlLogo() {
+        return urlLogo;
+    }
+
+    public void setUrlLogo(String urlLogo) {
+        this.urlLogo = urlLogo;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public double getPedidoMinimo() {
+        return pedidoMinimo;
+    }
+
+    public void setPedidoMinimo(double pedidoMinimo) {
+        this.pedidoMinimo = pedidoMinimo;
+    }
+
+    public double getFreteGratis() {
+        return freteGratis;
+    }
+
+    public void setFreteGratis(double freteGratis) {
+        this.freteGratis = freteGratis;
     }
 
     public String getEmail() {
