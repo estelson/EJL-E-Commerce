@@ -35,7 +35,7 @@
                     android:src="@drawable/ic_empresa"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -86,7 +86,7 @@
                     android:src="@drawable/ic_pagamentos"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -137,7 +137,7 @@
                     android:src="@drawable/ic_cupom"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -188,7 +188,7 @@
                     android:src="@drawable/ic_ajuda"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -239,7 +239,7 @@
                     android:src="@drawable/ic_sair"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
