@@ -15,6 +15,7 @@ import com.exemplo.ejle_commerce.model.Categoria;
 import com.exemplo.ejle_commerce.model.Produto;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.MyViewHolder> {
@@ -45,6 +46,16 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 
         holder.txtNomeProduto.setText(produto.getTitulo());
 
+        if(produto.getValorAntigo() > 0 && produto.getValorAntigo() != produto.getValorAtual()) {
+            double resto = produto.getValorAntigo() - produto.getValorAtual();
+            double porcentagem = (resto / produto.getValorAntigo() * 100);
+
+            DecimalFormat df = new DecimalFormat("##0.00");
+            holder.txtDescontoProduto.setText(context.getString(R.string.valor_off, df.format(porcentagem), "%"));
+        } else {
+            holder.txtDescontoProduto.setVisibility(View.GONE);
+        }
+
         for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
             if(produto.getUrlsImagens().get(i).getIndex() == 0) {
                 Picasso.get().load(produto.getUrlsImagens().get(i).getCaminhoImagem()).into(holder.imagemProduto);
@@ -52,7 +63,6 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
         }
 
         holder.txtValorProduto.setText(String.valueOf(produto.getValorAtual()));
-        holder.txtDescontoProduto.setText(String.valueOf("15% OFF"));
 
         holder.itemView.setOnClickListener(v -> {
             onClickListener.onClick(produto);
