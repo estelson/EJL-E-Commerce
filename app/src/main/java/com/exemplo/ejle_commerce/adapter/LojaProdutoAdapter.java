@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.model.Categoria;
 import com.exemplo.ejle_commerce.model.Produto;
+import com.exemplo.ejle_commerce.util.GetMask;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -62,7 +63,7 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
             }
         }
 
-        holder.txtValorProduto.setText(String.valueOf(produto.getValorAtual()));
+        holder.txtValorProduto.setText(context.getString(R.string.valor, GetMask.getValor(produto.getValorAtual())));
 
         holder.itemView.setOnClickListener(v -> {
             onClickListener.onClick(produto);
