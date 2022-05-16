@@ -101,6 +101,10 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
     }
 
     private void configProduto() {
+        novoProduto = false;
+
+        idCategoriasSelecionadas.addAll(produto.getIdsCategorias());
+
         Picasso.get().load(produto.getUrlsImagens().get(0).getCaminhoImagem()).into(binding.imagemProduto0);
         Picasso.get().load(produto.getUrlsImagens().get(1).getCaminhoImagem()).into(binding.imagemProduto1);
         Picasso.get().load(produto.getUrlsImagens().get(2).getCaminhoImagem()).into(binding.imagemProduto2);
@@ -111,20 +115,22 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
 
         binding.edtTitulo.setText(produto.getTitulo());
         binding.edtDescricao.setText(produto.getDescricao());
-        binding.edtValorAntigo.setText(String.valueOf(produto.getValorAntigo()));
-        binding.edtValorAtual.setText(String.valueOf(produto.getValorAtual()));
+        binding.edtValorAntigo.setText(String.valueOf(produto.getValorAntigo() * 10));
+        binding.edtValorAtual.setText(String.valueOf(produto.getValorAtual() * 10));
     }
 
     private void configCategoriasEdicao() {
-        for(Categoria categoria : categoriasList) {
-            if(produto.getIdsCategorias().contains(categoria.getId())) {
-                categoriasSelecionadasList.add(categoria.getNome());
+        if(!novoProduto) { // Edição
+            for (Categoria categoria : categoriasList) {
+                if (produto.getIdsCategorias().contains(categoria.getId())) {
+                    categoriasSelecionadasList.add(categoria.getNome());
+                }
             }
+
+            Collections.reverse(categoriasSelecionadasList);
+
+            categoriasSelecionadas();
         }
-
-        Collections.reverse(categoriasSelecionadasList);
-
-        categoriasSelecionadas();
     }
 
     private void configClicks() {
@@ -256,7 +262,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
                         if (novoProduto) { // Inclusão de produto
                             if (imagemUploadList.size() == 3) {
                                 for (int i = 0; i < imagemUploadList.size(); i++) {
-                                    salvarImagemFirebase(imagemUploadList.get(i));
+                                    salvarImagemFirebase(imagemUploadList.get(i), i);
                                 }
 
                                 Toast.makeText(this, "Produto incluído com sucesso", Toast.LENGTH_SHORT).show();
@@ -266,15 +272,17 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
                                 Toast.makeText(this, "Selecione 3 imagens para o produto", Toast.LENGTH_SHORT).show();
                             }
                         } else { // Alteração de produto
+                            ocultarTeclado();
+
                             if (imagemUploadList.size() > 0) {
                                 for (int i = 0; i < imagemUploadList.size(); i++) {
-                                    salvarImagemFirebase(imagemUploadList.get(i));
+                                    salvarImagemFirebase(imagemUploadList.get(i), i);
                                 }
                             } else {
                                 produto.salvar(false);
                             }
 
-                            Toast.makeText(this, "Produto incluído com sucesso", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Produto alterado com sucesso", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         ocultarTeclado();
@@ -471,7 +479,7 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
         }
     }
 
-    private void salvarImagemFirebase(ImagemUpload imagemUpload) {
+    private void salvarImagemFirebase(ImagemUpload imagemUpload, int count) {
         int index = imagemUpload.getIndex();
         String caminhoImagem = imagemUpload.getCaminhoImagem();
 
@@ -486,10 +494,20 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
             storageReference.getDownloadUrl().addOnCompleteListener(task -> {
                 imagemUpload.setCaminhoImagem(task.getResult().toString());
 
-                produto.getUrlsImagens().add(imagemUpload);
+                if(novoProduto) {
+                    produto.getUrlsImagens().add(imagemUpload);
+                } else {
+                    produto.getUrlsImagens().set(index, imagemUpload);
+                }
 
-                if (imagemUploadList.size() == index + 1) {
+                if (imagemUploadList.size() == count + 1) {
                     produto.salvar(novoProduto);
+
+                    imagemUploadList.clear();
+
+                    if(novoProduto) {
+                        finish();
+                    }
                 }
             });
         }).addOnFailureListener(e -> {
