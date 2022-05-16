@@ -85,17 +85,13 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
         produtoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    produtosList.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        Produto produto = ds.getValue(Produto.class);
-                        produtosList.add(produto);
-                    }
-
-                    binding.textInfo.setText("");
-                } else {
-                    binding.textInfo.setText("Nenhum produto cadastrado.");
+                produtosList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Produto produto = ds.getValue(Produto.class);
+                    produtosList.add(produto);
                 }
+
+                listEmpty();
 
                 binding.progressBar.setVisibility(View.GONE);
 
@@ -109,6 +105,14 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 
             }
         });
+    }
+
+    private void listEmpty() {
+        if(produtosList.isEmpty()) {
+            binding.textInfo.setText("Nenhum produto cadastrado.");
+        } else {
+            binding.textInfo.setText("");
+        }
     }
 
     private void showDialog(Produto produto) {
@@ -133,6 +137,15 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
         dialogBinding.cbRascunho.setOnCheckedChangeListener((check, b) -> {
             produto.setRascunho(check.isChecked());
             produto.salvar(false);
+        });
+
+        dialogBinding.btnRemover.setOnClickListener(v -> {
+            produto.remover();
+            dialog.dismiss();
+
+            Toast.makeText(requireContext(), "Produto removido com sucesso", Toast.LENGTH_SHORT).show();
+
+            listEmpty();
         });
 
         builder.setView(dialogBinding.getRoot());
