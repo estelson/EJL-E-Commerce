@@ -128,6 +128,13 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 
         dialogBinding.txtNomeProduto.setText(produto.getTitulo());
 
+        dialogBinding.cbRascunho.setChecked(produto.isRascunho());
+
+        dialogBinding.cbRascunho.setOnCheckedChangeListener((check, b) -> {
+            produto.setRascunho(check.isChecked());
+            produto.salvar(false);
+        });
+
         builder.setView(dialogBinding.getRoot());
 
         dialog = builder.create();
