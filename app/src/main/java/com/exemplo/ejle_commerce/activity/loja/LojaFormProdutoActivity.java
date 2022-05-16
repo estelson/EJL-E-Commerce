@@ -44,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,7 +92,39 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
     }
 
     private void getExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            produto = (Produto) bundle.getSerializable("produtoSelecionado");
 
+            configProduto();
+        }
+    }
+
+    private void configProduto() {
+        Picasso.get().load(produto.getUrlsImagens().get(0).getCaminhoImagem()).into(binding.imagemProduto0);
+        Picasso.get().load(produto.getUrlsImagens().get(1).getCaminhoImagem()).into(binding.imagemProduto1);
+        Picasso.get().load(produto.getUrlsImagens().get(2).getCaminhoImagem()).into(binding.imagemProduto2);
+
+        binding.imagemProduto0Fake.setVisibility(View.GONE);
+        binding.imagemProduto1Fake.setVisibility(View.GONE);
+        binding.imagemProduto2Fake.setVisibility(View.GONE);
+
+        binding.edtTitulo.setText(produto.getTitulo());
+        binding.edtDescricao.setText(produto.getDescricao());
+        binding.edtValorAntigo.setText(String.valueOf(produto.getValorAntigo()));
+        binding.edtValorAtual.setText(String.valueOf(produto.getValorAtual()));
+    }
+
+    private void configCategoriasEdicao() {
+        for(Categoria categoria : categoriasList) {
+            if(produto.getIdsCategorias().contains(categoria.getId())) {
+                categoriasSelecionadasList.add(categoria.getNome());
+            }
+        }
+
+        Collections.reverse(categoriasSelecionadasList);
+
+        categoriasSelecionadas();
     }
 
     private void configClicks() {
@@ -164,6 +197,8 @@ public class LojaFormProdutoActivity extends AppCompatActivity implements Catego
                         Categoria categoria = ds.getValue(Categoria.class);
                         categoriasList.add(categoria);
                     }
+
+                    configCategoriasEdicao();
                 }
 
                 Collections.reverse(categoriasList);

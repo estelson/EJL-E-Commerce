@@ -139,6 +139,15 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
             produto.salvar(false);
         });
 
+        dialogBinding.btnEditar.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), LojaFormProdutoActivity.class);
+            intent.putExtra("produtoSelecionado", produto);
+
+            startActivity(intent);
+
+            dialog.dismiss();
+        });
+
         dialogBinding.btnRemover.setOnClickListener(v -> {
             produto.remover();
             dialog.dismiss();
