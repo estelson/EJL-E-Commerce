@@ -9,11 +9,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.activity.loja.LojaFormProdutoActivity;
 import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
+import com.exemplo.ejle_commerce.databinding.DialogLojaProdutoBinding;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaProdutoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Produto;
@@ -21,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +37,8 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
     private LojaProdutoAdapter lojaProdutoAdapter;
 
     private FragmentLojaProdutoBinding binding;
+
+    private AlertDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -106,7 +112,26 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
     }
 
     private void showDialog(Produto produto) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog);
 
+        DialogLojaProdutoBinding dialogBinding = DialogLojaProdutoBinding.inflate(LayoutInflater.from(requireContext()));
+
+        dialogBinding.btnFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
+            if(produto.getUrlsImagens().get(i).getIndex() == 0) {
+                Picasso.get().load(produto.getUrlsImagens().get(i).getCaminhoImagem()).into(dialogBinding.imagemProduto);
+            }
+        }
+
+        dialogBinding.txtNomeProduto.setText(produto.getTitulo());
+
+        builder.setView(dialogBinding.getRoot());
+
+        dialog = builder.create();
+        dialog.show();
     }
 
     @Override
