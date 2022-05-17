@@ -47,7 +47,7 @@ public class LojaConfigFragment extends Fragment {
             FirebaseHelper.getAuth().signOut();
 
             requireActivity().finish();
-            
+
             startActivity(MainActivityUsuario.class);
         });
     }
