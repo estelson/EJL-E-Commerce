@@ -78,4 +78,9 @@ dependencies {
     // https://github.com/santalu/maskara
     implementation 'com.github.santalu:maskara:1.0.0'
 
+    // Like Button is a library that allows you to create a button with animation effects similar to
+    // Twitter's heart when you like something.
+    // https://github.com/jd-alexander/LikeButton
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
 }
