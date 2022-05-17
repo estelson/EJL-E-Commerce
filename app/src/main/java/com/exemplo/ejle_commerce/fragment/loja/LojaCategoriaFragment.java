@@ -87,7 +87,7 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
         binding.rvCategorias.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvCategorias.setHasFixedSize(true);
 
-        categoriaAdapter = new CategoriaAdapter(categoriasList, this);
+        categoriaAdapter = new CategoriaAdapter(R.layout.item_categoria_vertical, false, categoriasList, this);
 
         binding.rvCategorias.setAdapter(categoriaAdapter);
 

@@ -17,11 +17,15 @@ import java.util.List;
 
 public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyViewHolder> {
 
+    private int layout;
+    private boolean background;
     private List<Categoria> categoriasList;
-
     private OnClick onClick;
+    private int row_index = 0;
 
-    public CategoriaAdapter(List<Categoria> categoriasList, OnClick onClick) {
+    public CategoriaAdapter(int layout, boolean background, List<Categoria> categoriasList, OnClick onClick) {
+        this.layout = layout;
+        this.background = background;
         this.categoriasList = categoriasList;
         this.onClick = onClick;
     }
