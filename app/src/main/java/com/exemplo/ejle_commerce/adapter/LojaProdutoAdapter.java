@@ -6,14 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Categoria;
 import com.exemplo.ejle_commerce.model.Produto;
 import com.exemplo.ejle_commerce.util.GetMask;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -22,15 +26,19 @@ import java.util.List;
 public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.MyViewHolder> {
 
     private List<Produto> produtosList;
-
     private Context context;
-
+    private boolean favorito;
+    private List<String> idsFavoritos;
     private OnClickListener onClickListener;
+    private OnClickFavorito onClickFavorito;
 
-    public LojaProdutoAdapter(List<Produto> produtosList, Context context, OnClickListener onClickListener) {
+    public LojaProdutoAdapter(List<Produto> produtosList, Context context, boolean favorito, List<String> idsFavoritos, OnClickListener onClickListener, OnClickFavorito onClickFavorito) {
         this.produtosList = produtosList;
         this.context = context;
+        this.favorito = favorito;
+        this.idsFavoritos = idsFavoritos;
         this.onClickListener = onClickListener;
+        this.onClickFavorito = onClickFavorito;
     }
 
     @NonNull
@@ -47,6 +55,12 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
 
         holder.txtNomeProduto.setText(produto.getTitulo());
 
+        if(favorito) {
+            if(idsFavoritos.contains(produto.getId())) {
+                holder.likeButton.setLiked(true);
+            }
+        }
+
         if(produto.getValorAntigo() > 0 && produto.getValorAntigo() != produto.getValorAtual()) {
             double resto = produto.getValorAntigo() - produto.getValorAtual();
             double porcentagem = (resto / produto.getValorAntigo() * 100);
@@ -56,6 +70,25 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
         } else {
             holder.txtDescontoProduto.setVisibility(View.GONE);
         }
+
+        holder.likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                if(FirebaseHelper.getAutenticado()) {
+                    onClickFavorito.onClickFavorito(produto.getId());
+                } else {
+                    Toast.makeText(context, "Você não está autenticado no app.", Toast.LENGTH_SHORT).show();
+                    holder.likeButton.setLiked(false);
+
+                    // TODO: Criar dialog para levar o usuário à tela de login
+                }
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                onClickFavorito.onClickFavorito(produto.getId());
+            }
+        });
 
         for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
             if(produto.getUrlsImagens().get(i).getIndex() == 0) {
@@ -79,8 +112,14 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
         void onClick(Produto produto);
     }
 
+    public interface OnClickFavorito {
+        void onClickFavorito(String idProduto);
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imagemProduto;
+
+        LikeButton likeButton;
 
         TextView txtNomeProduto;
         TextView txtValorProduto;
@@ -90,6 +129,8 @@ public class LojaProdutoAdapter extends RecyclerView.Adapter<LojaProdutoAdapter.
             super(itemView);
 
             imagemProduto = itemView.findViewById(R.id.imagemProduto);
+
+            likeButton = itemView.findViewById(R.id.likeButton);
 
             txtNomeProduto = itemView.findViewById(R.id.txtNomeProduto);
             txtValorProduto = itemView.findViewById(R.id.txtValorProduto);
