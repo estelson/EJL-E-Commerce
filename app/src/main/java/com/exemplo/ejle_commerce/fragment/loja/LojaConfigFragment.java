@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.exemplo.ejle_commerce.activity.loja.LojaConfigActivity;
+import com.exemplo.ejle_commerce.activity.loja.LojaRecebimentosActivity;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaConfigBinding;
 
 public class LojaConfigFragment extends Fragment {
@@ -34,6 +35,10 @@ public class LojaConfigFragment extends Fragment {
     private void configClicks() {
         binding.btnConfigLoja.setOnClickListener(v -> {
             startActivity(LojaConfigActivity.class);
+        });
+
+        binding.btnPagamentos.setOnClickListener(v -> {
+            startActivity(LojaRecebimentosActivity.class);
         });
     }
 
