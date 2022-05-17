@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment;
 
 import com.exemplo.ejle_commerce.activity.loja.LojaConfigActivity;
 import com.exemplo.ejle_commerce.activity.loja.LojaRecebimentosActivity;
+import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaConfigBinding;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 
 public class LojaConfigFragment extends Fragment {
 
@@ -39,6 +41,14 @@ public class LojaConfigFragment extends Fragment {
 
         binding.btnPagamentos.setOnClickListener(v -> {
             startActivity(LojaRecebimentosActivity.class);
+        });
+
+        binding.btnSair.setOnClickListener(v -> {
+            FirebaseHelper.getAuth().signOut();
+
+            requireActivity().finish();
+            
+            startActivity(MainActivityUsuario.class);
         });
     }
 
