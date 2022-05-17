@@ -14,9 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.CategoriaAdapter;
 import com.exemplo.ejle_commerce.databinding.FragmentUsuarioHomeBinding;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Categoria;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.OnClick {
@@ -39,6 +45,8 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
         super.onViewCreated(view, savedInstanceState);
 
         configRv();
+
+        recuperarCategorias();
     }
 
     private void configRv() {
@@ -48,6 +56,32 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
         categoriaAdapter = new CategoriaAdapter(R.layout.item_categoria_horizontal, true, categoriasList, this);
 
         binding.rvCategorias.setAdapter(categoriaAdapter);
+    }
+
+    private void recuperarCategorias() {
+        DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
+                .child("categorias");
+
+        categoriaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                categoriasList.clear();
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Categoria categoria = ds.getValue(Categoria.class);
+                    categoriasList.add(categoria);
+                }
+
+                Collections.reverse(categoriasList);
+
+                categoriaAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
