@@ -1,12 +1,17 @@
 package com.exemplo.ejle_commerce.activity.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
 import com.exemplo.ejle_commerce.adapter.SliderAdapter;
 import com.exemplo.ejle_commerce.databinding.ActivityDetalhesProdutoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
@@ -23,15 +28,20 @@ import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnima
 import com.smarteist.autoimageslider.SliderAnimations;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class DetalhesProdutoActivity extends AppCompatActivity {
+public class DetalhesProdutoActivity extends AppCompatActivity implements LojaProdutoAdapter.OnClickListener, LojaProdutoAdapter.OnClickFavorito {
 
     private ActivityDetalhesProdutoBinding binding;
 
-    private Produto produto;
+    private Produto produtoSelecionado;
 
     private final List<String> idsFavoritos = new ArrayList<>();
+
+    private final List<Produto> produtosList = new ArrayList<>();
+
+    private LojaProdutoAdapter lojaProdutoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,8 @@ public class DetalhesProdutoActivity extends AppCompatActivity {
         getExtra();
 
         recuperarFavoritos();
+
+        configRvProdutos();
     }
 
     private void configClicks() {
@@ -57,7 +69,7 @@ public class DetalhesProdutoActivity extends AppCompatActivity {
             @Override
             public void liked(LikeButton likeButton) {
                 if(FirebaseHelper.getAutenticado()) {
-                    idsFavoritos.add(produto.getId());
+                    idsFavoritos.add(produtoSelecionado.getId());
 
                     Favorito.salvar(idsFavoritos);
                 } else {
@@ -70,12 +82,51 @@ public class DetalhesProdutoActivity extends AppCompatActivity {
 
             @Override
             public void unLiked(LikeButton likeButton) {
-                idsFavoritos.remove(produto.getId());
+                idsFavoritos.remove(produtoSelecionado.getId());
 
                 Favorito.salvar(idsFavoritos);
             }
+        });
+    }
 
+    private void configRvProdutos() {
+        binding.rvProdutos.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
+        binding.rvProdutos.setHasFixedSize(true);
 
+        lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_similar_adapter, produtosList, this, true, idsFavoritos,  this, this);
+
+        binding.rvProdutos.setAdapter(lojaProdutoAdapter);
+    }
+
+    private void recuperarProdutos() {
+        DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
+                .child("produtos");
+
+        produtoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                produtosList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Produto produto = ds.getValue(Produto.class);
+
+                    for(String categoria : produtoSelecionado.getIdsCategorias()) {
+                        if(produto.getIdsCategorias().contains(categoria)) {
+                            if(!produtosList.contains(produto) && !produto.getId().equals(produtoSelecionado.getId())) {
+                                produtosList.add(produto);
+                            }
+                        }
+                    }
+                }
+
+                Collections.reverse(produtosList);
+
+                lojaProdutoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
     }
 
@@ -95,7 +146,7 @@ public class DetalhesProdutoActivity extends AppCompatActivity {
                         idsFavoritos.add(idFavorito);
                     }
 
-                    binding.likeButton.setLiked(idsFavoritos.contains(produto.getId()));
+                    binding.likeButton.setLiked(idsFavoritos.contains(produtoSelecionado.getId()));
                 }
 
                 @Override
@@ -107,21 +158,41 @@ public class DetalhesProdutoActivity extends AppCompatActivity {
     }
 
     private void getExtra() {
-        produto = (Produto) getIntent().getSerializableExtra("produtoSelecionado");
+        produtoSelecionado = (Produto) getIntent().getSerializableExtra("produtoSelecionado");
 
         configDados();
+
+        recuperarProdutos();
     }
 
     private void configDados() {
-        binding.sliderView.setSliderAdapter(new SliderAdapter(produto.getUrlsImagens()));
+        binding.sliderView.setSliderAdapter(new SliderAdapter(produtoSelecionado.getUrlsImagens()));
         binding.sliderView.startAutoCycle();
         binding.sliderView.setScrollTimeInSec(4);
         binding.sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
         binding.sliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
 
-        binding.textProduto.setText(produto.getTitulo());
-        binding.textDescricao.setText(produto.getDescricao());
-        binding.textValor.setText(getString(R.string.valor, GetMask.getValor(produto.getValorAtual())));
+        binding.textProduto.setText(produtoSelecionado.getTitulo());
+        binding.textDescricao.setText(produtoSelecionado.getDescricao());
+        binding.textValor.setText(getString(R.string.valor, GetMask.getValor(produtoSelecionado.getValorAtual())));
     }
 
+    @Override
+    public void onClick(Produto produto) {
+        Intent intent = new Intent(this, DetalhesProdutoActivity.class);
+        intent.putExtra("produtoSelecionado", produto);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickFavorito(Produto produto) {
+        if(!idsFavoritos.contains(produto.getId())) {
+            idsFavoritos.add(produto.getId());
+        } else {
+            idsFavoritos.remove(produto.getId());
+        }
+
+        Favorito.salvar(idsFavoritos);
+    }
 }
