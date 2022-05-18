@@ -62,9 +62,14 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 
         recuperarCategorias();
 
-        recuperarProdutos();
-
         recuperarFavoritos();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        recuperarProdutos();
     }
 
     private void recuperarFavoritos() {
