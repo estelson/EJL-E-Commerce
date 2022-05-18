@@ -1,5 +1,6 @@
 package com.exemplo.ejle_commerce.fragment.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.activity.usuario.DetalhesProdutoActivity;
 import com.exemplo.ejle_commerce.adapter.CategoriaAdapter;
 import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
 import com.exemplo.ejle_commerce.databinding.FragmentUsuarioHomeBinding;
@@ -187,7 +189,10 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 
     @Override
     public void onClick(Produto produto) {
+        Intent intent = new Intent(requireContext(), DetalhesProdutoActivity.class);
+        intent.putExtra("produtoSelecionado", produto);
 
+        startActivity(intent);
     }
 
     @Override
