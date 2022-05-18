@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
-import com.exemplo.ejle_commerce.model.Categoria;
 import com.exemplo.ejle_commerce.model.Produto;
 import com.exemplo.ejle_commerce.util.GetMask;
 import com.like.LikeButton;
