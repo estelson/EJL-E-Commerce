@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
 import com.exemplo.ejle_commerce.adapter.SliderAdapter;
+import com.exemplo.ejle_commerce.dao.ItemDAO;
+import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityDetalhesProdutoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Favorito;
+import com.exemplo.ejle_commerce.model.ItemPedido;
 import com.exemplo.ejle_commerce.model.Produto;
 import com.exemplo.ejle_commerce.util.GetMask;
 import com.google.firebase.database.DataSnapshot;
@@ -43,11 +46,17 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
 
     private LojaProdutoAdapter lojaProdutoAdapter;
 
+    private ItemDAO itemDAO;
+    private ItemPedidoDAO itemPedidoDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDetalhesProdutoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        itemDAO = new ItemDAO(this);
+        itemPedidoDAO = new ItemPedidoDAO(this);
 
         configClicks();
 
@@ -87,6 +96,21 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
                 Favorito.salvar(idsFavoritos);
             }
         });
+
+        binding.btnAddCarrinho.setOnClickListener(v -> {
+            addCarrinho();
+        });
+    }
+
+    private void addCarrinho() {
+        ItemPedido itemPedido = new ItemPedido();
+        itemPedido.setIdProduto(produtoSelecionado.getId());
+        itemPedido.setQuantidade(1);
+        itemPedido.setValor(produtoSelecionado.getValorAtual());
+
+        itemPedidoDAO.salvar(itemPedido);
+
+        itemDAO.salvar(produtoSelecionado);
     }
 
     private void configRvProdutos() {
