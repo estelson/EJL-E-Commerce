@@ -1,7 +1,6 @@
 package com.exemplo.ejle_commerce.dao;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -38,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(tbItemPedido);
 
             Log.i("INFODB", "Sucesso ao criar as tabelas");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Log.i("INFODB", "Erro ao criar as tabelas. Motivo: " + e.getMessage());
         }
     }
