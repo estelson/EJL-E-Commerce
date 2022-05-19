@@ -46,7 +46,7 @@ public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ItemPedido itemPedido = itensPedidoList.get(position);
-        Produto produto = new Produto(); // = itemPedidoDAO.getProduto(itemPedido.getId());
+        Produto produto = itemPedidoDAO.getProduto(itemPedido.getId());
 
         holder.textTitulo.setText(produto.getTitulo());
         holder.textQuantidade.setText(String.valueOf(itemPedido.getQuantidade()));
