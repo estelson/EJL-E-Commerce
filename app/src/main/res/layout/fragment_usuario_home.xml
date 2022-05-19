@@ -13,6 +13,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:inputType="textCapSentences"
+        android:theme="@style/Search_View_Theme"
         app:queryHint="Bermudas, camisas, sapatos etc..."
         app:iconifiedByDefault="false"
         app:queryBackground="@android:color/transparent"
