@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.exemplo.ejle_commerce.model.ItemPedido;
 import com.exemplo.ejle_commerce.model.Produto;
 
 public class ItemDAO {
@@ -35,10 +36,30 @@ public class ItemDAO {
 
         try {
             idRetorno = write.insert(DBHelper.TABELA_ITEM, null, values);
+
+            Log.i("INFODB", "ItemPedido incluído com sucesso!");
         } catch(Exception e) {
             Log.i("INFODB", "Erro ao salvar o Item. Motivo: " + e.getMessage());
         }
 
         return idRetorno;
     }
+
+    public boolean remover(ItemPedido itemPedido) {
+        String where = "id=?";
+        String[] args = { String.valueOf(itemPedido.getId()) };
+
+        try {
+            write.delete(DBHelper.TABELA_ITEM, where, args);
+
+            Log.i("INFODB", "Item removido com sucesso!");
+        } catch(Exception e) {
+            Log.i("INFODB", "Erro ao remover o Item. Motivo: " + e.getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
 }

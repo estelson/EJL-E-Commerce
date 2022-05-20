@@ -64,6 +64,23 @@ public class ItemPedidoDAO {
         return true;
     }
 
+    public boolean remover(ItemPedido itemPedido) {
+        String where = "id=?";
+        String[] args = { String.valueOf(itemPedido.getId()) };
+
+        try {
+            write.delete(DBHelper.TABELA_ITEM_PEDIDO, where, args);
+
+            Log.i("INFODB", "ItemPedido removido com sucesso!");
+        } catch(Exception e) {
+            Log.i("INFODB", "Erro ao remover o ItemPedido. Motivo: " + e.getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
     public Produto getProduto(int idProduto) {
         Produto produto = null;
         List<ImagemUpload> uploadList = new ArrayList<>();
