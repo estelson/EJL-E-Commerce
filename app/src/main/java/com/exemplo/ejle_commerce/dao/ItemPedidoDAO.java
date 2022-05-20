@@ -97,4 +97,13 @@ public class ItemPedidoDAO {
         return itemPedidoList;
     }
 
+    public Double getTotalCarrinho() {
+        double total = 0;
+        for(ItemPedido itemPedido : getList()) {
+            total += itemPedido.getValor();
+        }
+
+        return total;
+    }
+
 }

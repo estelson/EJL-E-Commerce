@@ -10,11 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.CarrinhoAdapter;
 import com.exemplo.ejle_commerce.dao.ItemDAO;
 import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.FragmentUsuarioCarrinhoBinding;
 import com.exemplo.ejle_commerce.model.ItemPedido;
+import com.exemplo.ejle_commerce.util.GetMask;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,6 +58,12 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 
         carrinhoAdapter = new CarrinhoAdapter(itemPedidoList, itemPedidoDAO, requireContext(), this);
         binding.rvProdutos.setAdapter(carrinhoAdapter);
+
+        configSaldoCarrinho();
+    }
+
+    private void configSaldoCarrinho() {
+        binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalCarrinho())));
     }
 
     @Override
