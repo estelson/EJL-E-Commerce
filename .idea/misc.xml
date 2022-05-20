@@ -20,6 +20,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_add_cinza.xml" value="0.237" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_ajuda.xml" value="0.237" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_camera.xml" value="0.2315" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_cancelar.xml" value="0.237" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_carrinho.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_categorias_list.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_close.xml" value="0.2315" />
@@ -56,6 +57,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/dialog_form_categoria.xml" value="0.3572916666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/dialog_form_produto_categoria.xml" value="0.3572916666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/dialog_loja_produto.xml" value="0.3609375" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/dialog_remover_carrinho.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/fragment_loja_categoria.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/fragment_loja_config.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/fragment_loja_pedido.xml" value="0.35833333333333334" />
