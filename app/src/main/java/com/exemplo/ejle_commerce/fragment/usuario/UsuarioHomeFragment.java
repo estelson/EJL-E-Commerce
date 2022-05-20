@@ -59,17 +59,19 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
         configRvCategorias();
 
         configRvProdutos();
-
-        recuperarCategorias();
-
-        recuperarFavoritos();
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
+        recuperarDados();
+    }
+
+    private void recuperarDados() {
+        recuperarCategorias();
         recuperarProdutos();
+        recuperarFavoritos();
     }
 
     private void recuperarFavoritos() {
@@ -87,8 +89,6 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
                         String idFavorito = ds.getValue(String.class);
                         idsFavoritos.add(idFavorito);
                     }
-
-                    categoriaAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -184,7 +184,7 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
     public void onDestroyView() {
         super.onDestroyView();
 
-        binding = null;
+//        binding = null;
     }
 
     @Override
