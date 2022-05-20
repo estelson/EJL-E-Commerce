@@ -33,8 +33,30 @@ public class ItemPedidoDAO {
 
         try {
             write.insert(DBHelper.TABELA_ITEM_PEDIDO, null, values);
+
+            Log.i("INFODB", "ItemPedido incluído com sucesso!");
         } catch(Exception e) {
             Log.i("INFODB", "Erro ao salvar o ItemPedido. Motivo: " + e.getMessage());
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean atualizar(ItemPedido itemPedido) {
+        ContentValues values = new ContentValues();
+        values.put("quantidade", itemPedido.getQuantidade());
+
+        String where = "id=?";
+        String[] args = { String.valueOf(itemPedido.getId()) };
+
+        try {
+            write.update(DBHelper.TABELA_ITEM_PEDIDO, values, where, args);
+
+            Log.i("INFODB", "ItemPedido atualizado com sucesso!");
+        } catch(Exception e) {
+            Log.i("INFODB", "Erro ao atualizar o ItemPedido. Motivo: " + e.getMessage());
 
             return false;
         }
