@@ -41,6 +41,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_pedidos.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_perfil.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_produtos.xml" value="0.2315" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/ic_salvar.xml" value="0.237" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/item_selected.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/drawable/placeholder_form_categorias.xml" value="0.2315" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_cadastro.xml" value="0.3488372093023256" />
@@ -55,6 +56,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_recuperar_conta.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_splash.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_usuario_endereco.xml" value="0.35833333333333334" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_usuario_form_endereco.xml" value="0.3609375" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/bottom_sheet_form_produto.xml" value="0.3572916666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/dialog_add_item_carrinho.xml" value="0.3572916666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/dialog_delete.xml" value="0.3572916666666667" />
@@ -82,6 +84,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/item_slider_imagem.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/toolbar_voltar.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/toolbar_voltar_add.xml" value="0.3528205128205128" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/toolbar_voltar_salvar.xml" value="0.3609375" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/menu/menu_loja.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/menu/menu_usuario.xml" value="0.3572916666666667" />
       </map>

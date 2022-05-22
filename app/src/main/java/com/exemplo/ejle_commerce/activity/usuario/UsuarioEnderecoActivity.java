@@ -1,10 +1,10 @@
 package com.exemplo.ejle_commerce.activity.usuario;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 
-import com.exemplo.ejle_commerce.R;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioEnderecoBinding;
 
 public class UsuarioEnderecoActivity extends AppCompatActivity {
@@ -18,6 +18,8 @@ public class UsuarioEnderecoActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         configToolbar();
+
+        configClicks();
     }
 
     private void configToolbar() {
@@ -26,6 +28,12 @@ public class UsuarioEnderecoActivity extends AppCompatActivity {
         });
 
         binding.include.textTitulo.setText("Meus endereços");
+    }
+
+    private void configClicks() {
+        binding.include.btnAdd.setOnClickListener(v -> {
+            startActivity(new Intent(this, UsuarioFormEnderecoActivity.class));
+        });
     }
 
 }
