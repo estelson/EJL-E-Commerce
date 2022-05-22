@@ -7,7 +7,7 @@
     tools:context=".activity.usuario.UsuarioFormEnderecoActivity">
 
     <include
-        android:id="@+id/include2"
+        android:id="@+id/include"
         layout="@layout/toolbar_voltar_salvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnBuscar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -184,7 +184,6 @@
                         android:background="@drawable/bg_edit_off"
                         android:hint="Brasília"
                         android:inputType="text"
-                        android:maxLength="2"
                         android:padding="16dp" />
 
                 </LinearLayout>

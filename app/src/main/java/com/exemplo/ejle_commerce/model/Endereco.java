@@ -18,7 +18,17 @@ public class Endereco implements Serializable {
 
     public Endereco() {
         DatabaseReference enderecoRef = FirebaseHelper.getDatabaseReference();
+
         this.setId(enderecoRef.push().getKey());
+    }
+
+    public void salvar() {
+        DatabaseReference enderecoRef = FirebaseHelper.getDatabaseReference()
+                .child("enderecos")
+                .child(FirebaseHelper.getIdFirebase())
+                .child(this.id);
+
+        enderecoRef.setValue(this);
     }
 
     public String getId() {

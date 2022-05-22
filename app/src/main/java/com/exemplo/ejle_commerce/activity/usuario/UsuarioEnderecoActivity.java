@@ -17,20 +17,20 @@ public class UsuarioEnderecoActivity extends AppCompatActivity {
         binding = ActivityUsuarioEnderecoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        configToolbar();
+        iniciaComponentes();
 
         configClicks();
     }
 
-    private void configToolbar() {
-        binding.include.include.ibVoltar.setOnClickListener(v -> {
-            finish();
-        });
-
+    private void iniciaComponentes() {
         binding.include.textTitulo.setText("Meus endereços");
     }
 
     private void configClicks() {
+        binding.include.include.ibVoltar.setOnClickListener(v -> {
+            finish();
+        });
+
         binding.include.btnAdd.setOnClickListener(v -> {
             startActivity(new Intent(this, UsuarioFormEnderecoActivity.class));
         });
