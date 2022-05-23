@@ -1,5 +1,6 @@
 package com.exemplo.ejle_commerce.activity.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -7,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.exemplo.ejle_commerce.R;
-import com.exemplo.ejle_commerce.dao.ItemDAO;
 import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioResumoPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
@@ -26,10 +26,7 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 
     private ActivityUsuarioResumoPedidoBinding binding;
 
-    private ItemDAO itemDAO;
-    private ItemPedidoDAO itemPedidoDAO;
-
-    private List<Endereco> enderecoList = new ArrayList<>();
+    private final List<Endereco> enderecoList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +35,18 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         recuperaEnderecos();
+
+        configClicks();
+    }
+
+    private void configClicks() {
+        binding.btnAlterarEndereco.setOnClickListener(v -> {
+            startActivity(new Intent(this, UsuarioSelecionaEnderecoActivity.class));
+        });
     }
 
     private void configDados() {
-        itemDAO = new ItemDAO(this);
-        itemPedidoDAO = new ItemPedidoDAO(this);
+        ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO(this);
 
         binding.include.include.ibVoltar.setOnClickListener(v -> {
             finish();
