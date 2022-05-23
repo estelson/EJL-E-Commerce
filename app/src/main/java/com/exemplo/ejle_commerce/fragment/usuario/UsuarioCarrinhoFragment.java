@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.activity.loja.LojaFormProdutoActivity;
+import com.exemplo.ejle_commerce.activity.usuario.UsuarioResumoPedidoActivity;
 import com.exemplo.ejle_commerce.adapter.CarrinhoAdapter;
+import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.dao.ItemDAO;
 import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.DialogLojaProdutoBinding;
@@ -25,6 +27,7 @@ import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Favorito;
 import com.exemplo.ejle_commerce.model.ItemPedido;
 import com.exemplo.ejle_commerce.model.Produto;
+import com.exemplo.ejle_commerce.model.Usuario;
 import com.exemplo.ejle_commerce.util.GetMask;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,6 +73,31 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
         configRv();
 
         recuperarFavoritos();
+
+        configClicks();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        configInfo();
+    }
+
+    private void configClicks() {
+        binding.btnContinuar.setOnClickListener(v -> {
+            Intent intent;
+
+            if(FirebaseHelper.getAutenticado()) {
+                intent = new Intent(requireContext(), UsuarioResumoPedidoActivity.class);
+
+
+            } else {
+                intent = new Intent(requireContext(), LoginActivity.class);
+            }
+
+            startActivity(intent);
+        });
     }
 
     private void configRv() {
@@ -82,13 +110,6 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
         binding.rvProdutos.setAdapter(carrinhoAdapter);
 
         configTotalCarrinho();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        configInfo();
     }
 
     private void recuperarFavoritos() {
@@ -117,7 +138,7 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     }
 
     private void configTotalCarrinho() {
-        binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalCarrinho())));
+        binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
     }
 
     private void configQtdProduto(int position, String operacao) {
@@ -256,4 +277,5 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
                 break;
         }
     }
+
 }
