@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,8 @@ public class UsuarioFormEnderecoActivity extends AppCompatActivity {
 
     private Endereco endereco;
 
+    private boolean novoEndereco = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +28,37 @@ public class UsuarioFormEnderecoActivity extends AppCompatActivity {
         iniciaComponentes();
 
         configClicks();
+
+        getExtra();
+    }
+
+    private void getExtra() {
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            endereco = (Endereco) bundle.getSerializable("enderecoSelecionado");
+
+            configDados();
+
+            novoEndereco = false;
+        }
+    }
+
+    private void configDados() {
+        binding.edtNomeEndereco.setText(endereco.getNomeEndereco());
+        binding.edtCEP.setText(endereco.getCep());
+        binding.edtUF.setText(endereco.getUf());
+        binding.edtNumEndereco.setText(endereco.getNumero());
+        binding.edtLogradouro.setText(endereco.getLogradouro());
+        binding.edtBairro.setText(endereco.getBairro());
+        binding.edtMunicipio.setText(endereco.getLocalidade());
     }
 
     private void iniciaComponentes() {
-        binding.include.textTitulo.setText("Adicionar endereço");
+        if(novoEndereco) {
+            binding.include.textTitulo.setText("Adicionar endereço");
+        } else {
+            binding.include.textTitulo.setText("Alterar endereço");
+        }
     }
 
     private void configClicks() {
@@ -74,7 +104,15 @@ public class UsuarioFormEnderecoActivity extends AppCompatActivity {
 
                                 endereco.salvar();
 
-                                finish();
+                                binding.progressBar.setVisibility(View.GONE);
+
+                                if(novoEndereco) {
+                                    Toast.makeText(this, "Endereço incluído com sucesso", Toast.LENGTH_SHORT).show();
+
+                                    finish();
+                                } else {
+                                    Toast.makeText(this, "Endereço alterado com sucesso", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 binding.edtMunicipio.requestFocus();
                                 binding.edtMunicipio.setError("Informe o município");
