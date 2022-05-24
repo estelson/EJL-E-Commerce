@@ -49,6 +49,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_detalhes_produto.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_login.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_loja_config.xml" value="0.35833333333333334" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_loja_form_pagamento.xml" value="0.3619791666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_loja_form_produto.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_loja_pagamentos.xml" value="0.3619791666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_loja_recebimentos.xml" value="0.35833333333333334" />
@@ -58,7 +59,7 @@
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_recuperar_conta.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_splash.xml" value="0.35833333333333334" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_usuario_endereco.xml" value="0.35833333333333334" />
-        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_usuario_form_endereco.xml" value="0.3609375" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_usuario_form_endereco.xml" value="0.1" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_usuario_resumo_pedido.xml" value="0.3619791666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/activity_usuario_seleciona_endereco.xml" value="0.3619791666666667" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/EJLECommerce/app/src/main/res/layout/bottom_sheet_form_produto.xml" value="0.3572916666666667" />
