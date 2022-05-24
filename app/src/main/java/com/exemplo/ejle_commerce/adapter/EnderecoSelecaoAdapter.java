@@ -1,6 +1,5 @@
 package com.exemplo.ejle_commerce.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,7 @@ public class EnderecoSelecaoAdapter extends RecyclerView.Adapter<EnderecoSelecao
                 .append(endereco.getLocalidade())
                 .append(" - ")
                 .append(endereco.getUf())
-                .append(", CEP: ")
+                .append("\nCEP: ")
                 .append(endereco.getCep());
 
         holder.textEndereco.setText(enderecoCompleto);

@@ -1,6 +1,7 @@
 package com.exemplo.ejle_commerce.activity.usuario;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -107,9 +108,14 @@ public class UsuarioFormEnderecoActivity extends AppCompatActivity {
                                 binding.progressBar.setVisibility(View.GONE);
 
                                 if(novoEndereco) {
-                                    Toast.makeText(this, "Endereço incluído com sucesso", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent();
+                                    intent.putExtra("enderecoCadastrado", endereco);
+
+                                    setResult(RESULT_OK, intent);
 
                                     finish();
+
+                                    Toast.makeText(this, "Endereço incluído com sucesso", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(this, "Endereço alterado com sucesso", Toast.LENGTH_SHORT).show();
                                 }
