@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EJLECommerce">
         <activity
+            android:name=".activity.loja.LojaPagamentosActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.usuario.UsuarioSelecionaEnderecoActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.usuario.UsuarioResumoPedidoActivity"
             android:exported="false"

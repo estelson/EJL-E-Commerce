@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.exemplo.ejle_commerce.activity.loja.LojaConfigActivity;
+import com.exemplo.ejle_commerce.activity.loja.LojaPagamentosActivity;
 import com.exemplo.ejle_commerce.activity.loja.LojaRecebimentosActivity;
 import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaConfigBinding;
@@ -40,7 +41,7 @@ public class LojaConfigFragment extends Fragment {
         });
 
         binding.btnPagamentos.setOnClickListener(v -> {
-            startActivity(LojaRecebimentosActivity.class);
+            startActivity(LojaPagamentosActivity.class);
         });
 
         binding.btnSair.setOnClickListener(v -> {
