@@ -2,22 +2,30 @@ package com.exemplo.ejle_commerce.activity.loja;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.adapter.LojaPagamentoAdapter;
 import com.exemplo.ejle_commerce.databinding.ActivityLojaPagamentosBinding;
+import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.FormaPagamento;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LojaPagamentosActivity extends AppCompatActivity implements LojaPagamentoAdapter.OnClick {
 
     private ActivityLojaPagamentosBinding binding;
 
-    private List<FormaPagamento> formaPagamentoList = new ArrayList<>();
+    private final List<FormaPagamento> formaPagamentoList = new ArrayList<>();
 
     private LojaPagamentoAdapter lojaPagamentoAdapter;
 
@@ -32,6 +40,42 @@ public class LojaPagamentosActivity extends AppCompatActivity implements LojaPag
         configClicks();
 
         configRv();
+
+        recuperaFormasPagamento();
+    }
+
+    private void recuperaFormasPagamento() {
+        DatabaseReference pagamentoRef = FirebaseHelper.getDatabaseReference()
+                .child("formapagamento");
+
+        pagamentoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    formaPagamentoList.clear();
+
+                    for(DataSnapshot ds : snapshot.getChildren()) {
+                        FormaPagamento formaPagamento = ds.getValue(FormaPagamento.class);
+                        formaPagamentoList.add(formaPagamento);
+                    }
+
+                    binding.textInfo.setText("");
+                } else {
+                    binding.textInfo.setText("Nenhuma forma de pagamento cadastrada");
+                }
+
+                binding.progressBar.setVisibility(View.GONE);
+
+                Collections.reverse(formaPagamentoList);
+
+                lojaPagamentoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void configRv() {
@@ -59,6 +103,9 @@ public class LojaPagamentosActivity extends AppCompatActivity implements LojaPag
 
     @Override
     public void onClickListener(FormaPagamento formaPagamento) {
+        Intent intent = new Intent(this, LojaFormPagamentoActivity.class);
+        intent.putExtra("formaPagamentoSelecionada", formaPagamento);
 
+        startActivity(intent);
     }
 }

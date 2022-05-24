@@ -3,7 +3,9 @@ package com.exemplo.ejle_commerce.model;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
 
-public class FormaPagamento {
+import java.io.Serializable;
+
+public class FormaPagamento implements Serializable {
 
     private String id;
     private String nome;
