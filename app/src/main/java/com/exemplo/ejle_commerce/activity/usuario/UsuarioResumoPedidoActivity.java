@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,7 +43,7 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 
     private void configClicks() {
         binding.btnAlterarEndereco.setOnClickListener(v -> {
-            startActivity(new Intent(this, UsuarioSelecionaEnderecoActivity.class));
+            resultLauncher.launch(new Intent(this, UsuarioSelecionaEnderecoActivity.class));
         });
     }
 
@@ -108,5 +110,17 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
             }
         });
     }
+
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Endereco endereco = (Endereco) result.getData().getSerializableExtra("enderecoSelecionado");
+
+                    enderecoList.add(0, endereco);
+
+                    configDados();
+                }
+            }
+    );
 
 }
