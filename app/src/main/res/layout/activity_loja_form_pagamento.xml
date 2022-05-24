@@ -65,15 +65,13 @@
                 android:layout_marginTop="16dp"
                 android:text="Valor" />
 
-            <EditText
+            <com.blackcat.currencyedittext.CurrencyEditText
                 android:id="@+id/edtValor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_edit_off"
-                android:hint="R$ 0,00"
-                android:inputType="text"
-                android:padding="16dp" />
+                android:padding="16dp"/>
 
             <RadioGroup
                 android:id="@+id/rgValor"

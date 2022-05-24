@@ -13,7 +13,7 @@ public class FormaPagamento {
 
     public FormaPagamento() {
         DatabaseReference pagamentoRef = FirebaseHelper.getDatabaseReference();
-        this.setId(pagamentoRef.getKey());
+        this.setId(pagamentoRef.push().getKey());
     }
 
     public void salvar() {

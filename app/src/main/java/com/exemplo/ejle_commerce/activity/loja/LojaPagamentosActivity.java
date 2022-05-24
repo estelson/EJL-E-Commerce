@@ -1,5 +1,6 @@
 package com.exemplo.ejle_commerce.activity.loja;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,14 @@ public class LojaPagamentosActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         iniciaComponentes();
+
+        configClicks();
+    }
+
+    private void configClicks() {
+        binding.include.btnAdd.setOnClickListener(v -> {
+            startActivity(new Intent(this, LojaFormPagamentoActivity.class));
+        });
     }
 
     private void iniciaComponentes() {
