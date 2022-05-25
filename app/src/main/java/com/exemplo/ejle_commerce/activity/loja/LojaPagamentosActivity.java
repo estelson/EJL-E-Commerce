@@ -2,20 +2,28 @@ package com.exemplo.ejle_commerce.activity.loja;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.LojaPagamentoAdapter;
 import com.exemplo.ejle_commerce.databinding.ActivityLojaPagamentosBinding;
+import com.exemplo.ejle_commerce.databinding.DialogDeleteBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.FormaPagamento;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +36,21 @@ public class LojaPagamentosActivity extends AppCompatActivity implements LojaPag
     private final List<FormaPagamento> formaPagamentoList = new ArrayList<>();
 
     private LojaPagamentoAdapter lojaPagamentoAdapter;
+
+    private AlertDialog dialog;
+
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    FormaPagamento pagamento = (FormaPagamento) result.getData().getSerializableExtra("novoPagamento");
+
+                    formaPagamentoList.add(pagamento);
+                    lojaPagamentoAdapter.notifyItemInserted(formaPagamentoList.size());
+
+                    binding.textInfo.setText("");
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +108,60 @@ public class LojaPagamentosActivity extends AppCompatActivity implements LojaPag
         lojaPagamentoAdapter = new LojaPagamentoAdapter(formaPagamentoList, this, this);
 
         binding.rvPagamentos.setAdapter(lojaPagamentoAdapter);
+
+        binding.rvPagamentos.setListener(new SwipeLeftRightCallback.Listener() {
+            @Override
+            public void onSwipedLeft(int position) {
+
+            }
+
+            @Override
+            public void onSwipedRight(int position) {
+                showDialogDelete(formaPagamentoList.get(position));
+            }
+        });
+    }
+
+    private void showDialogDelete(FormaPagamento formaPagamento ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog2);
+
+        DialogDeleteBinding deleteBinding = DialogDeleteBinding.inflate(LayoutInflater.from(this));
+
+        deleteBinding.btnFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+
+            lojaPagamentoAdapter.notifyDataSetChanged();
+        });
+
+        deleteBinding.textTitulo.setText("Deseja remover esta forma de pagamento?");
+
+        deleteBinding.btnSim.setOnClickListener(v -> {
+            formaPagamentoList.remove(formaPagamento);
+
+            if(formaPagamentoList.isEmpty()) {
+                binding.textInfo.setText("Nenhuma forma de pagamento cadastrada");
+            } else {
+                binding.textInfo.setText("");
+            }
+
+            formaPagamento.remover();
+
+            lojaPagamentoAdapter.notifyDataSetChanged();
+
+            dialog.dismiss();
+
+            Toast.makeText(this, "Forma de pagamento excluída com sucesso", Toast.LENGTH_SHORT).show();
+        });
+
+        builder.setView(deleteBinding.getRoot());
+
+        dialog = builder.create();
+        dialog.show();
     }
 
     private void configClicks() {
         binding.include.btnAdd.setOnClickListener(v -> {
-            startActivity(new Intent(this, LojaFormPagamentoActivity.class));
+            resultLauncher.launch(new Intent(this, LojaFormPagamentoActivity.class));
         });
     }
 
@@ -105,7 +177,5 @@ public class LojaPagamentosActivity extends AppCompatActivity implements LojaPag
     public void onClickListener(FormaPagamento formaPagamento) {
         Intent intent = new Intent(this, LojaFormPagamentoActivity.class);
         intent.putExtra("formaPagamentoSelecionada", formaPagamento);
-
-        startActivity(intent);
     }
 }

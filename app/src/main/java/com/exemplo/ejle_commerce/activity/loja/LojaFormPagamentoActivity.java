@@ -1,10 +1,10 @@
 package com.exemplo.ejle_commerce.activity.loja;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -110,6 +110,11 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
                 }
 
                 if(novoPagamento) {
+                    Intent intent = new Intent();
+                    intent.putExtra("novoPagamento", formaPagamento);
+
+                    setResult(RESULT_OK, intent);
+
                     Toast.makeText(this, "Forma de pagamento incluída com sucesso", Toast.LENGTH_SHORT).show();
 
                     finish();
