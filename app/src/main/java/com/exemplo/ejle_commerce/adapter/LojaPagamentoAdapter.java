@@ -43,15 +43,19 @@ public class LojaPagamentoAdapter extends RecyclerView.Adapter<LojaPagamentoAdap
         holder.textDescricaoPagamento.setText(formaPagamento.getDescricao());
         holder.textValor.setText(context.getString(R.string.valor, GetMask.getValor(formaPagamento.getValor())));
 
-        if(formaPagamento.getTipoValor().equals("ACRES")) {
-            holder.textTipoPagamento.setText("Acréscimo");
-        } else {
+        if(formaPagamento.getTipoValor() == null) {
             holder.textTipoPagamento.setText("Desconto");
-        }
+        } else {
+            if (formaPagamento.getTipoValor().equals("ACRES")) {
+                holder.textTipoPagamento.setText("Acréscimo");
+            } else {
+                holder.textTipoPagamento.setText("Desconto");
+            }
 
-        holder.itemView.setOnClickListener(v -> {
-            onClick.onClickListener(formaPagamento);
-        });
+            holder.itemView.setOnClickListener(v -> {
+                onClick.onClickListener(formaPagamento);
+            });
+        }
     }
 
     @Override

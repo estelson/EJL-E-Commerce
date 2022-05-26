@@ -21,7 +21,7 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
 
     private FormaPagamento formaPagamento;
 
-    private String tipoValor = null;
+    private String tipoValor = "DESC";
 
     private boolean novoPagamento = true;
 
@@ -54,10 +54,14 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
         binding.edtDescricaoPagamento.setText(formaPagamento.getDescricao());
         binding.edtValor.setText(String.valueOf(formaPagamento.getValor() * 10));
 
-        if(formaPagamento.getTipoValor().equals("DESC")) {
+        if(formaPagamento.getTipoValor() == null) {
             binding.rgValor.check(R.id.rbDesconto);
         } else {
-            binding.rgValor.check(R.id.rbAcrescimo);
+            if (formaPagamento.getTipoValor().equals("DESC")) {
+                binding.rgValor.check(R.id.rbDesconto);
+            } else {
+                binding.rgValor.check(R.id.rbAcrescimo);
+            }
         }
     }
 
@@ -75,8 +79,6 @@ public class LojaFormPagamentoActivity extends AppCompatActivity {
                 tipoValor = "DESC";
             } else if(checkedId == R.id.rbAcrescimo) {
                 tipoValor = "ACRES";
-            } else {
-                tipoValor = null;
             }
         });
     }
