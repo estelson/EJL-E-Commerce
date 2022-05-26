@@ -1,5 +1,7 @@
 package com.exemplo.ejle_commerce.adapter;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ public class UsuarioPagamentoAdapter extends RecyclerView.Adapter<UsuarioPagamen
 
     private final List<FormaPagamento> formaPagamentoList;
     private final OnClick onClick;
+
+    private int row_index = -1;
 
     public UsuarioPagamentoAdapter(List<FormaPagamento> formaPagamentoList, OnClick onClick) {
         this.formaPagamentoList = formaPagamentoList;
@@ -41,7 +45,18 @@ public class UsuarioPagamentoAdapter extends RecyclerView.Adapter<UsuarioPagamen
 
         holder.itemView.setOnClickListener(v -> {
             onClick.onClickListener(formaPagamento);
+
+            row_index = holder.getAdapterPosition();
+
+            notifyDataSetChanged();
+
         });
+
+        if(row_index == holder.getAdapterPosition()) {
+            holder.rbCheck.setChecked(true);
+        } else {
+            holder.rbCheck.setChecked(false);
+        }
     }
 
     @Override

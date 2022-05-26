@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.activity.loja.LojaFormProdutoActivity;
 import com.exemplo.ejle_commerce.activity.usuario.UsuarioResumoPedidoActivity;
+import com.exemplo.ejle_commerce.activity.usuario.UsuarioSelecionaPagamentoActivity;
 import com.exemplo.ejle_commerce.adapter.CarrinhoAdapter;
 import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.dao.ItemDAO;
@@ -89,7 +90,7 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
             Intent intent;
 
             if(FirebaseHelper.getAutenticado()) {
-                intent = new Intent(requireContext(), UsuarioResumoPedidoActivity.class);
+                intent = new Intent(requireContext(), UsuarioSelecionaPagamentoActivity.class);
 
 
             } else {
