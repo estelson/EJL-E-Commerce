@@ -14,6 +14,7 @@ import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioResumoPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Endereco;
+import com.exemplo.ejle_commerce.model.FormaPagamento;
 import com.exemplo.ejle_commerce.util.GetMask;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,8 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 
     private final List<Endereco> enderecoList = new ArrayList<>();
 
+    private FormaPagamento formaPagamento;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,14 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         recuperaEnderecos();
 
         configClicks();
+
+        getExtras();
+    }
+
+    private void getExtras() {
+        formaPagamento = (FormaPagamento) getIntent().getExtras().getSerializable("pagamentoSelecionado");
+
+        configDados();
     }
 
     private void configClicks() {
