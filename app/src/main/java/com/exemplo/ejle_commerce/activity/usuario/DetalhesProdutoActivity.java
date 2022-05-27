@@ -118,12 +118,6 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
         itemPedidoDAO.salvar(itemPedido);
 
         itemDAO.salvar(produtoSelecionado);
-
-        Intent intent = new Intent(this, MainActivityUsuario.class);
-        intent.putExtra("id", 2);
-
-        startActivity(intent);
-        finish();
     }
 
     private void configRvProdutos() {
@@ -219,12 +213,19 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
 
         DialogAddItemCarrinhoBinding dialogBinding = DialogAddItemCarrinhoBinding.inflate(LayoutInflater.from(this));
 
+        addCarrinho();
+
         dialogBinding.btnFechar.setOnClickListener(v -> {
             dialog.dismiss();
         });
 
         dialogBinding.btnIrCarrinho.setOnClickListener(v -> {
-            addCarrinho();
+            Intent intent = new Intent(this, MainActivityUsuario.class);
+            intent.putExtra("id", 2);
+
+            startActivity(intent);
+
+            finish();
 
             dialog.dismiss();
         });

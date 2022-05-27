@@ -1,6 +1,7 @@
 package com.exemplo.ejle_commerce.activity.usuario;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -25,9 +26,23 @@ public class MainActivityUsuario extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
         int id = getIntent().getIntExtra("id", 0);
-
-        if(id == 2) {
-            binding.bottomNavigationView.setSelectedItemId(R.id.menu_carrinho);
+        if(id != 0) {
+            direceionaAcesso(id);
         }
     }
+
+    private void direceionaAcesso(int id) {
+        switch (id) {
+            case 1:
+                binding.bottomNavigationView.setSelectedItemId(R.id.menu_pedido);
+                break;
+            case 2:
+                binding.bottomNavigationView.setSelectedItemId(R.id.menu_carrinho);
+                break;
+            default:
+                Toast.makeText(this, "Acesso inválido", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
 }

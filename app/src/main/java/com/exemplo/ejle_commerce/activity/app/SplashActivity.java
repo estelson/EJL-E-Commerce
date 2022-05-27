@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.exemplo.ejle_commerce.activity.loja.MainActivityEmpresa;
 import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,10 +24,14 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-//        new Handler(getMainLooper()).postDelayed(() -> {
-//            verificarAcesso();
-//        }, 3000);
         new Handler(getMainLooper()).postDelayed(this::verificarAcesso, 3000);
+
+        limparCarrinho();
+    }
+
+    private void limparCarrinho() {
+        ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO(this);
+        itemPedidoDAO.limparCarrinho();
     }
 
     private void verificarAcesso() {

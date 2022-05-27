@@ -137,7 +137,12 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     }
 
     private void configTotalCarrinho() {
-        binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
+        if(!itemPedidoList.isEmpty()) {
+            binding.btnFinalizar.setVisibility(View.VISIBLE);
+            binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
+        } else {
+            binding.btnFinalizar.setVisibility(View.GONE);
+        }
     }
 
     private void configQtdProduto(int position, String operacao) {
