@@ -9,4 +9,6 @@
 
     <string name="endereco_logradouro">Logradouro: %1$s</string>
     <string name="endereco_numero">Nº: %1$s</string>
+
+    <string name="status_pedido">Pedido %1$s</string>
 </resources>

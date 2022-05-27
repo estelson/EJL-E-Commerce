@@ -17,6 +17,7 @@ import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Endereco;
 import com.exemplo.ejle_commerce.model.FormaPagamento;
 import com.exemplo.ejle_commerce.model.Pedido;
+import com.exemplo.ejle_commerce.model.StatusPedido;
 import com.exemplo.ejle_commerce.util.GetMask;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -80,7 +81,7 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         pedido.setEndereco(enderecoList.get(0));
         pedido.setTotal(itemPedidoDAO.getTotalPedido());
         pedido.setPagamento(formaPagamento.getNome());
-        pedido.setStatus(1);
+        pedido.setStatusPedido(StatusPedido.PENDENTE);
 
         if(formaPagamento.getTipoValor().equals("DESC")) {
             pedido.setDesconto(formaPagamento.getValor());
