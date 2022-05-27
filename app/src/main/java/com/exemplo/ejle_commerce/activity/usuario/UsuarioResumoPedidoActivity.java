@@ -79,12 +79,18 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         pedido.setIdCliente(FirebaseHelper.getIdFirebase());
         pedido.setEndereco(enderecoList.get(0));
         pedido.setTotal(itemPedidoDAO.getTotalPedido());
+        pedido.setPagamento(formaPagamento.getNome());
+        pedido.setStatus(1);
 
-        FormaPagamento pagamento = new FormaPagamento();
-        pagamento.setNome(formaPagamento.getNome());
-        pagamento.setValor(formaPagamento.getValor());
+        if(formaPagamento.getTipoValor().equals("DESC")) {
+            pedido.setDesconto(formaPagamento.getValor());
+        } else {
+            pedido.setAcrescimo(formaPagamento.getValor());
+        }
 
-        pedido.setPagamento(pagamento);
+        pedido.setItensPedidoList(itemPedidoDAO.getList());
+
+        pedido.salvar(true);
     }
 
     private void configDados() {
@@ -120,7 +126,21 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
             binding.btnAlterarEndereco.setText("Cadastrar endereço de entrega");
         }
 
-        binding.textValorTotal.setText(getString(R.string.valor, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
+        binding.textNomePagamento.setText(formaPagamento.getNome());
+
+        double valorExtra;
+        if(formaPagamento.getTipoValor().equals("DESC")) {
+            binding.textTipoPagamento.setText("Desconto");
+            valorExtra = formaPagamento.getValor() * -1;
+        } else {
+            binding.textTipoPagamento.setText("Acréscimo");
+            valorExtra = formaPagamento.getValor();
+        }
+
+        binding.textValorTipoPagamento.setText(getString(R.string.valor, GetMask.getValor(valorExtra)));
+
+        double valorTotal = itemPedidoDAO.getTotalPedido();
+        binding.textValorTotal.setText(getString(R.string.valor, GetMask.getValor(valorTotal + valorExtra)));
     }
 
     private void recuperaEnderecos() {
