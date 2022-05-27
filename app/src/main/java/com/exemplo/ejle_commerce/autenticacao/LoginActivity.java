@@ -1,8 +1,10 @@
 package com.exemplo.ejle_commerce.autenticacao;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -47,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!email.isEmpty()) {
             if (!senha.isEmpty()) {
+                ocultarTeclado();
+
                 binding.progressBar.setVisibility(View.VISIBLE);
 
                 login(email, senha);
@@ -82,13 +86,11 @@ public class LoginActivity extends AppCompatActivity {
         usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                finish();
-
-                if(snapshot.exists()) { // Se for usuário...
-                    startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
-                } else { // Se for a loja
+                if(!snapshot.exists()) { // Se NÃO for usuário...
                     startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
                 }
+
+                finish();
             }
 
             @Override
@@ -111,6 +113,11 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CadastroActivity.class);
             resultLauncher.launch(intent);
         });
+    }
+
+    private void ocultarTeclado() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(binding.edtEmail.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }

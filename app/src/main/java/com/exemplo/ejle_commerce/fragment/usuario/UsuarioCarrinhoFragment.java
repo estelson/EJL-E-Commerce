@@ -1,5 +1,7 @@
 package com.exemplo.ejle_commerce.fragment.usuario;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -87,17 +91,11 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 
     private void configClicks() {
         binding.btnContinuar.setOnClickListener(v -> {
-            Intent intent;
-
             if(FirebaseHelper.getAutenticado()) {
-                intent = new Intent(requireContext(), UsuarioSelecionaPagamentoActivity.class);
-
-
+                startActivity(new Intent(requireContext(), UsuarioSelecionaPagamentoActivity.class));
             } else {
-                intent = new Intent(requireContext(), LoginActivity.class);
+                resultLauncher.launch(new Intent(requireContext(), LoginActivity.class));
             }
-
-            startActivity(intent);
         });
     }
 
@@ -252,6 +250,14 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
             binding.textInfo.setVisibility(View.GONE);
         }
     }
+
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    startActivity(new Intent(requireContext(), UsuarioSelecionaPagamentoActivity.class));
+                }
+            }
+    );
 
     @Override
     public void onDestroyView() {
