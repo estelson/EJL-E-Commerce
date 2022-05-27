@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingVertical="16dp"
     tools:context=".fragment.usuario.UsuarioPerfilFragment">
 
     <ScrollView
@@ -54,6 +55,7 @@
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divisor"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
@@ -261,6 +263,7 @@
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divisor2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
@@ -313,6 +316,7 @@
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divisor3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
