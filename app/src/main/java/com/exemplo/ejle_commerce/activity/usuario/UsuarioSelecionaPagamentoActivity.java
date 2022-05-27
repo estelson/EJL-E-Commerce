@@ -52,7 +52,7 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
             finish();
         });
 
-        binding.btnContinuar.setOnClickListener(v -> {
+        binding.btnFinalizar.setOnClickListener(v -> {
             if(formaPagamento != null) {
                 Intent intent = new Intent(this, UsuarioResumoPedidoActivity.class);
                 intent.putExtra("pagamentoSelecionado", formaPagamento);

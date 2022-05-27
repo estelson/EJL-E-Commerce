@@ -10,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.exemplo.ejle_commerce.R;
+import com.exemplo.ejle_commerce.dao.ItemDAO;
 import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioResumoPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Endereco;
 import com.exemplo.ejle_commerce.model.FormaPagamento;
+import com.exemplo.ejle_commerce.model.Pedido;
 import com.exemplo.ejle_commerce.util.GetMask;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,11 +35,17 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 
     private FormaPagamento formaPagamento;
 
+    private ItemDAO itemDAO;
+    private ItemPedidoDAO itemPedidoDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityUsuarioResumoPedidoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        itemDAO = new ItemDAO(this);
+        itemPedidoDAO = new ItemPedidoDAO(this);
 
         recuperaEnderecos();
 
@@ -56,6 +64,27 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         binding.btnAlterarEndereco.setOnClickListener(v -> {
             resultLauncher.launch(new Intent(this, UsuarioSelecionaEnderecoActivity.class));
         });
+
+        binding.btnAlterarFormaPagamento.setOnClickListener(v -> {
+            finish();
+        });
+
+        binding.btnFinalizar.setOnClickListener(v -> {
+            finalizarPedido();
+        });
+    }
+
+    private void finalizarPedido() {
+        Pedido pedido = new Pedido();
+        pedido.setIdCliente(FirebaseHelper.getIdFirebase());
+        pedido.setEndereco(enderecoList.get(0));
+        pedido.setTotal(itemPedidoDAO.getTotalPedido());
+
+        FormaPagamento pagamento = new FormaPagamento();
+        pagamento.setNome(formaPagamento.getNome());
+        pagamento.setValor(formaPagamento.getValor());
+
+        pedido.setPagamento(pagamento);
     }
 
     private void configDados() {
@@ -92,7 +121,6 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         }
 
         binding.textValorTotal.setText(getString(R.string.valor, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
-        binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
     }
 
     private void recuperaEnderecos() {

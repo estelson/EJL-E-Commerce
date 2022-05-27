@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/btnContinuar"
+        app:layout_constraintBottom_toTopOf="@+id/btnFinalizar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
@@ -161,9 +161,20 @@
 
                 </LinearLayout>
 
-
-
             </LinearLayout>
+
+            <android.widget.Button
+                android:id="@+id/btnAlterarFormaPagamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_borda_laranja"
+                android:paddingHorizontal="16dp"
+                android:text="Alterar forma de pagamento"
+                android:textAllCaps="false"
+                android:textColor="@color/color_laranja"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout9"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout9" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/materialDivider2"
@@ -173,7 +184,7 @@
                 android:background="?actionBarDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+                app:layout_constraintTop_toBottomOf="@+id/btnAlterarFormaPagamento" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -298,7 +309,7 @@
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btnContinuar"
+        android:id="@+id/btnFinalizar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_btn_normal"
@@ -311,28 +322,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:layout_marginStart="16dp"
-            android:text="Continuar"
+            android:text="Finalizar pedido"
+            android:layout_marginEnd="16dp"
             android:textAlignment="textEnd"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textValor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:elevation="2dp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/btnContinuar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnContinuar"
-            tools:text="R$ 0,00" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

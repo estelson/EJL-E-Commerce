@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.activity.usuario.UsuarioEnderecoActivity;
 import com.exemplo.ejle_commerce.autenticacao.CadastroActivity;
 import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
@@ -50,6 +51,14 @@ public class UsuarioPerfilFragment extends Fragment {
 
         binding.btnEnderecos.setOnClickListener(v -> {
             startActivity(UsuarioEnderecoActivity.class);
+        });
+
+        binding.btnSair.setOnClickListener(v -> {
+            FirebaseHelper.getAuth().signOut();
+
+            requireActivity().finish();
+
+            startActivity(new Intent(requireContext(), MainActivityUsuario.class));
         });
     }
 

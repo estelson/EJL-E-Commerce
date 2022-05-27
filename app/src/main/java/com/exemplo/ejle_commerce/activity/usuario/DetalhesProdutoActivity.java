@@ -104,7 +104,7 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
             }
         });
 
-        binding.btnContinuar.setOnClickListener(v -> {
+        binding.btnFinalizar.setOnClickListener(v -> {
             showDialogCarrinho();
         });
     }

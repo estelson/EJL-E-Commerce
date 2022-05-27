@@ -68,8 +68,6 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseHelper.getAuth().signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 recuperarUsuario(task.getResult().getUser().getUid());
-
-                finish();
             } else {
                 binding.progressBar.setVisibility(View.GONE);
 
@@ -86,7 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()) { // Se NÃO for usuário...
+                if(snapshot.exists()) { // Se for usuário...
+                    setResult(RESULT_OK);
+                } else { // Se for empresa...
                     startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
                 }
 
