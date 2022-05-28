@@ -16,7 +16,7 @@
         tools:src="@drawable/placeholder_form_categorias" />
 
     <TextView
-        android:id="@+id/textNomeProduto"
+        android:id="@+id/textTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -35,11 +35,11 @@
         android:layout_marginBottom="16dp"
         tools:text="Quantidade: 1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textNomeProduto" />
+        app:layout_constraintStart_toStartOf="@+id/textTitulo" />
 
 
     <TextView
-        android:id="@+id/textTotal"
+        android:id="@+id/textValor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
