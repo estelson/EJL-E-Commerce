@@ -212,7 +212,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/bg_btn_normal"
-        android:text="Buscar"
+        android:text="Buscar endereço pelo CEP"
         android:textColor="@color/white"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"

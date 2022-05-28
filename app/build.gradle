@@ -91,6 +91,6 @@ dependencies {
     // https://square.github.io/retrofit/
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     // Converte as informações retornadas no Retrofit para objeto
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 }
