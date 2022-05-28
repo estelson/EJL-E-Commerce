@@ -1,5 +1,6 @@
 package com.exemplo.ejle_commerce.fragment.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.adapter.UsuarioPedidosAdapter;
+import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.databinding.FragmentUsuarioPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Pedido;
@@ -43,9 +45,31 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        configRv();
+        configClicks();
+    }
 
-        recuperarPedidos();
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if(FirebaseHelper.getAutenticado()) {
+            binding.btnLogin.setVisibility(View.GONE);
+
+            configRv();
+
+            recuperarPedidos();
+        } else {
+            binding.btnLogin.setVisibility(View.VISIBLE);
+
+            binding.progressBar.setVisibility(View.GONE);
+            binding.textInfo.setText("Você não está autenticado no app.");
+        }
+    }
+
+    private void configClicks() {
+        binding.btnLogin.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), LoginActivity.class));
+        });
     }
 
     private void configRv() {

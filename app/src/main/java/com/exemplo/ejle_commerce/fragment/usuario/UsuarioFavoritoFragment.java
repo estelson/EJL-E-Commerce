@@ -1,5 +1,6 @@
 package com.exemplo.ejle_commerce.fragment.usuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
+import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.databinding.FragmentUsuarioFavoritoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Favorito;
@@ -48,9 +50,31 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        configRvProdutos();
+        configClicks();
+    }
 
-        recuperarFavoritos();
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if(FirebaseHelper.getAutenticado()) {
+            binding.btnLogin.setVisibility(View.GONE);
+
+            configRvProdutos();
+
+            recuperarFavoritos();
+        } else {
+            binding.btnLogin.setVisibility(View.VISIBLE);
+
+            binding.progressBar.setVisibility(View.GONE);
+            binding.textInfo.setText("Você não está autenticado no app.");
+        }
+    }
+
+    private void configClicks() {
+        binding.btnLogin.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), LoginActivity.class));
+        });
     }
 
     private void configRvProdutos() {
@@ -136,7 +160,9 @@ public class UsuarioFavoritoFragment extends Fragment implements LojaProdutoAdap
     public void onDestroyView() {
         super.onDestroyView();
 
-        favoritoRef.removeEventListener(eventListener);
+        if(eventListener != null) {
+            favoritoRef.removeEventListener(eventListener);
+        }
 
         binding = null;
     }

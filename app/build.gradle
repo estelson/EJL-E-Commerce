@@ -87,4 +87,10 @@ dependencies {
     // https://github.com/smarteist/Android-Image-Slider
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
+    // A type-safe HTTP client for Android and Java
+    // https://square.github.io/retrofit/
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    // Converte as informações retornadas no Retrofit para objeto
+    implementation 'com.google.code.gson:gson:2.8.9'
+
 }
