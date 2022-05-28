@@ -54,13 +54,13 @@ public class UsuarioPedidosAdapter extends RecyclerView.Adapter<UsuarioPedidosAd
 
         switch (pedido.getStatusPedido()) {
             case PENDENTE:
-                holder.textStatusPedido.setTextColor(Color.parseColor(String.valueOf(R.color.color_status_pedido_pendente)));
+                holder.textStatusPedido.setTextColor(Color.parseColor("#FC6E20"));
                 break;
             case APROVADO:
-                holder.textStatusPedido.setTextColor(Color.parseColor(String.valueOf(R.color.color_status_pedido_aprovado)));
+                holder.textStatusPedido.setTextColor(Color.parseColor("#3AA853"));
                 break;
             case CANCELADO:
-                holder.textStatusPedido.setTextColor(Color.parseColor(String.valueOf(R.color.color_status_pedido_cancelado)));
+                holder.textStatusPedido.setTextColor(Color.parseColor("#E94235"));
                 break;
         }
 
