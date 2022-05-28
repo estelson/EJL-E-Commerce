@@ -16,6 +16,8 @@
 
     <color name="color_delete">#F44336</color>
 
-    <color name="color_status_pedido_aprovado">#34A853</color>
+    <color name="color_status_pedido_pendente">#FC6E20</color>
+    <color name="color_status_pedido_aprovado">#3AA853</color>
+    <color name="color_status_pedido_cancelado">#E94235</color>
 
 </resources>

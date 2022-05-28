@@ -43,10 +43,10 @@ public class GetMask {
         String hora = horaSdf.format(netDate);
         String minuto = minutoSdf.format(netDate);
 
-        String time;
+        String time = null;
         if(tipo == 1){
             time = dia + "/" + mes + "/" + ano;
-        }else {
+        } else if(tipo == 2) {
             time = dia + "/" + mes + "/" + ano + " " + hora + ":" + minuto;
         }
 
