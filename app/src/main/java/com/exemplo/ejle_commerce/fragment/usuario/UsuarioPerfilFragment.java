@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.activity.usuario.UsuarioEnderecoActivity;
+import com.exemplo.ejle_commerce.activity.usuario.UsuarioPerfilActivity;
 import com.exemplo.ejle_commerce.autenticacao.CadastroActivity;
 import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
 import com.exemplo.ejle_commerce.databinding.FragmentUsuarioPerfilBinding;
@@ -53,7 +54,7 @@ public class UsuarioPerfilFragment extends Fragment {
         });
 
         binding.btnMeusDados.setOnClickListener(v -> {
-            startActivity(LoginActivity.class);
+            startActivity(UsuarioPerfilActivity.class);
         });
 
         binding.btnEnderecos.setOnClickListener(v -> {
