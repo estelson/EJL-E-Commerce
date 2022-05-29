@@ -1,5 +1,6 @@
 package com.exemplo.ejle_commerce.fragment.loja;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.exemplo.ejle_commerce.activity.app.DetalhesPedidoActivity;
 import com.exemplo.ejle_commerce.adapter.LojaPedidosAdapter;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
@@ -103,7 +105,11 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
     public void onClick(Pedido pedido, String operacao) {
         switch (operacao) {
             case "detalhes":
-                Toast.makeText(requireContext(), "Detalhes do pedido", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(requireContext(), DetalhesPedidoActivity.class);
+                intent.putExtra("pedidoSelecionado", pedido);
+
+                startActivity(intent);
+
                 break;
             case "status":
                 Toast.makeText(requireContext(), "Status do pedido", Toast.LENGTH_SHORT).show();
