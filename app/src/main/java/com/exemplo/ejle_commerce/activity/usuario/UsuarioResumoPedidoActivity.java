@@ -30,12 +30,20 @@ import java.util.List;
 
 public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 
-    private ActivityUsuarioResumoPedidoBinding binding;
-
     private final List<Endereco> enderecoList = new ArrayList<>();
-
+    private ActivityUsuarioResumoPedidoBinding binding;
     private FormaPagamento formaPagamento;
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Endereco endereco = (Endereco) result.getData().getSerializableExtra("enderecoSelecionado");
 
+                    enderecoList.add(0, endereco);
+
+                    configDados();
+                }
+            }
+    );
     private ItemDAO itemDAO;
     private ItemPedidoDAO itemPedidoDAO;
 
@@ -71,7 +79,14 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         });
 
         binding.btnFinalizar.setOnClickListener(v -> {
-            finalizarPedido();
+            if(this.formaPagamento.isCredito()){
+                Intent intent = new Intent(this, UsuarioPagamentoPedidoActivity.class);
+                intent.putExtra("enderecoSelecionado", enderecoList.get(0));
+
+                startActivity(intent);
+            } else{
+                finalizarPedido();
+            }
         });
     }
 
@@ -180,17 +195,5 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
             }
         });
     }
-
-    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    Endereco endereco = (Endereco) result.getData().getSerializableExtra("enderecoSelecionado");
-
-                    enderecoList.add(0, endereco);
-
-                    configDados();
-                }
-            }
-    );
 
 }

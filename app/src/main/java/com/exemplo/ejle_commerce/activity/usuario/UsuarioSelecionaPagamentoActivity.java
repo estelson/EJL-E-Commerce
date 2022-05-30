@@ -114,7 +114,5 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
     @Override
     public void onClickListener(FormaPagamento pagamento) {
         this.formaPagamento = pagamento;
-
-
     }
 }
