@@ -16,9 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EJLECommerce">
         <activity
+            android:name=".activity.usuario.UsuarioPagamentoPedidoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.app.DetalhesPedidoActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.usuario.UsuarioPerfilActivity"
             android:exported="false"
@@ -53,10 +57,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.usuario.DetalhesProdutoActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.loja.LojaRecebimentosActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

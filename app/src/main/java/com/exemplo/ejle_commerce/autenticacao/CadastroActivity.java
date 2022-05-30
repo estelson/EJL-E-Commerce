@@ -28,33 +28,47 @@ public class CadastroActivity extends AppCompatActivity {
     public void validarDados(View view) {
         String nome = binding.edtNome.getText().toString().trim();
         String email = binding.edtEmail.getText().toString().trim();
+        String telefone = binding.edtTelefone.getMasked();
         String senha = binding.edtSenha.getText().toString().trim();
         String confirmarSenha = binding.edtConfirmarSenha.getText().toString().trim();
 
         if(!nome.isEmpty()) {
             if(!email.isEmpty()) {
-                if(!senha.isEmpty()) {
-                    if(!confirmarSenha.isEmpty()) {
-                        if(senha.equals(confirmarSenha)) {
-                            binding.progressBar.setVisibility(View.VISIBLE);
+                if(!telefone.isEmpty()) {
+                    if(telefone.length() == 15) {
 
-                            Usuario usuario = new Usuario();
-                            usuario.setNome(nome);
-                            usuario.setEmail(email);
-                            usuario.setSenha(senha);
+                        if (!senha.isEmpty()) {
+                            if (!confirmarSenha.isEmpty()) {
+                                if (senha.equals(confirmarSenha)) {
+                                    binding.progressBar.setVisibility(View.VISIBLE);
 
-                            criarConta(usuario);
+                                    Usuario usuario = new Usuario();
+                                    usuario.setNome(nome);
+                                    usuario.setEmail(email);
+                                    usuario.setTelefone(telefone);
+                                    usuario.setSenha(senha);
+
+                                    criarConta(usuario);
+                                } else {
+                                    binding.edtConfirmarSenha.requestFocus();
+                                    binding.edtConfirmarSenha.setError("Senhas não conferem");
+                                }
+                            } else {
+                                binding.edtConfirmarSenha.requestFocus();
+                                binding.edtConfirmarSenha.setError("Confirme a senha");
+                            }
                         } else {
-                            binding.edtConfirmarSenha.requestFocus();
-                            binding.edtConfirmarSenha.setError("Senhas não conferem");
+                            binding.edtSenha.requestFocus();
+                            binding.edtSenha.setError("Informe a senha");
                         }
+
                     } else {
-                        binding.edtConfirmarSenha.requestFocus();
-                        binding.edtConfirmarSenha.setError("Confirme a senha");
+                        binding.edtTelefone.requestFocus();
+                        binding.edtTelefone.setError("Formato de telefone inválido");
                     }
                 } else {
-                    binding.edtSenha.requestFocus();
-                    binding.edtSenha.setError("Informe a senha");
+                    binding.edtTelefone.requestFocus();
+                    binding.edtTelefone.setError("Informe o telefone do usuário");
                 }
             } else {
                 binding.edtEmail.requestFocus();

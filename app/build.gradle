@@ -93,4 +93,10 @@ dependencies {
     // Converte as informações retornadas no Retrofit para objeto
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
+    // The MercadoPago Android Payment Experience makes it easy to collect your user's credit card
+    // details inside your android app. By creating tokens, MercadoPago handles the bulk of PCI
+    // compliance by preventing sensitive card data from hitting your server.
+    // https://github.com/mercadopago/px-android
+    implementation 'com.mercadopago.android.px:checkout:4.20.0'
+
 }

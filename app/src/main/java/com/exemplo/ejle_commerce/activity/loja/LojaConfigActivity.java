@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.exemplo.ejle_commerce.databinding.ActivityLojaConfigBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
-import com.exemplo.ejle_commerce.model.ImagemUpload;
 import com.exemplo.ejle_commerce.model.Loja;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,9 +37,18 @@ public class LojaConfigActivity extends AppCompatActivity {
 
     private ActivityLojaConfigBinding binding;
 
-    private String caminhoImagem = null;
-
     private Loja loja;
+
+    private String caminhoImagem = null;
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Uri imagemSelecionada = result.getData().getData();
+                    caminhoImagem = imagemSelecionada.toString();
+                    binding.imgLogo.setImageBitmap(getBitmap(imagemSelecionada));
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +122,18 @@ public class LojaConfigActivity extends AppCompatActivity {
         if(loja.getFreteGratis() != 0) {
             binding.edtFrete.setText(String.valueOf(loja.getFreteGratis() * 10));
         }
+
+        if(loja.getPublicKey() != null) {
+            binding.edtPublicKey.setText(loja.getPublicKey());
+        }
+
+        if(loja.getAccessToken() != null) {
+            binding.edtAccessToken.setText(loja.getAccessToken());
+        }
+
+        if(loja.getParcelas() != 0) {
+            binding.edtQtdeParcelas.setText(String.valueOf(loja.getParcelas()));
+        }
     }
 
     private void validarDados() {
@@ -122,27 +141,55 @@ public class LojaConfigActivity extends AppCompatActivity {
         String cnpj = binding.edtCNPJ.getMasked();
         double pedidoMinimo = (double) binding.edtPedidoMinimo.getRawValue() / 100;
         double freteGratis = (double) binding.edtFrete.getRawValue() / 100;
+        String publicKey = binding.edtPublicKey.getText().toString().trim();
+        String accessToken = binding.edtAccessToken.getText().toString().trim();
+
+        String parcelasStr = binding.edtQtdeParcelas.getText().toString().trim();
+        int parcelas = 0;
+        if(!parcelasStr.isEmpty()) {
+            parcelas = Integer.parseInt(binding.edtQtdeParcelas.getText().toString().trim());
+        }
 
         if(!nomeLoja.isEmpty()) {
             if(!cnpj.isEmpty()) {
                 if(cnpj.length() == 18) {
-                    loja.setNome(nomeLoja);
-                    loja.setCnpj(cnpj);
-                    loja.setPedidoMinimo(pedidoMinimo);
-                    loja.setFreteGratis(freteGratis);
+                    if(!publicKey.isEmpty()) {
+                        if(!accessToken.isEmpty()) {
+                            if(parcelas > 0 && parcelas <= 12) {
+                                ocultarTeclado();
 
-                    if(caminhoImagem != null) {
-                        salvarImagemFirebase();
+                                loja.setNome(nomeLoja);
+                                loja.setCnpj(cnpj);
+                                loja.setPedidoMinimo(pedidoMinimo);
+                                loja.setFreteGratis(freteGratis);
+                                loja.setPublicKey(publicKey);
+                                loja.setAccessToken(accessToken);
+                                loja.setParcelas(parcelas);
 
-                        Toast.makeText(this, "Informações atualizadas com sucesso", Toast.LENGTH_SHORT).show();
-                    } else if(loja.getUrlLogo() != null) {
-                        loja.salvar();
+                                if(caminhoImagem != null) {
+                                    salvarImagemFirebase();
 
-                        Toast.makeText(this, "Informações atualizadas com sucesso", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "Informações atualizadas com sucesso", Toast.LENGTH_SHORT).show();
+                                } else if(loja.getUrlLogo() != null) {
+                                    loja.salvar();
+
+                                    Toast.makeText(this, "Informações atualizadas com sucesso", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    ocultarTeclado();
+
+                                    Toast.makeText(this, "Selecione uma logomarca para a loja", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                binding.edtQtdeParcelas.requestFocus();
+                                binding.edtQtdeParcelas.setError("Informe uma quantidade de parcelas entre 1 e 12");
+                            }
+                        } else {
+                            binding.edtAccessToken.requestFocus();
+                            binding.edtAccessToken.setError("Informe o Access Token");
+                        }
                     } else {
-                        ocultarTeclado();
-
-                        Toast.makeText(this, "Selecione uma logomarca para a loja", Toast.LENGTH_SHORT).show();
+                        binding.edtPublicKey.requestFocus();
+                        binding.edtPublicKey.setError("Informe a Public Key");
                     }
                 } else {
                     binding.edtCNPJ.requestFocus();
@@ -215,16 +262,6 @@ public class LojaConfigActivity extends AppCompatActivity {
                 .setPermissions(permissoes)
                 .check();
     }
-
-    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    Uri imagemSelecionada = result.getData().getData();
-                    caminhoImagem = imagemSelecionada.toString();
-                    binding.imgLogo.setImageBitmap(getBitmap(imagemSelecionada));
-                }
-            }
-    );
 
     private Bitmap getBitmap(Uri caminhoUri) {
         Bitmap bitmap = null;

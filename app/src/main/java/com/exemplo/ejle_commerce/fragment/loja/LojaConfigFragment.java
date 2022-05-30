@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 import com.exemplo.ejle_commerce.activity.loja.LojaConfigActivity;
 import com.exemplo.ejle_commerce.activity.loja.LojaPagamentosActivity;
-import com.exemplo.ejle_commerce.activity.loja.LojaRecebimentosActivity;
 import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaConfigBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
