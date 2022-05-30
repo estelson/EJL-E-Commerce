@@ -1,14 +1,17 @@
 package com.exemplo.ejle_commerce.fragment.usuario;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.OnClick, LojaProdutoAdapter.OnClickListener, LojaProdutoAdapter.OnClickFavorito {
 
@@ -41,9 +45,13 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 
     private final List<String> idsFavoritos = new ArrayList<>();
 
+    private final List<Produto> filtroProdutoCategoriaList = new ArrayList<>();
+
     private CategoriaAdapter categoriaAdapter;
 
     private LojaProdutoAdapter lojaProdutoAdapter;
+
+    private Categoria categoriaSelecionada;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,13 +65,38 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
         super.onViewCreated(view, savedInstanceState);
 
         configRvCategorias();
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        configSearchView();
 
         recuperarDados();
+    }
+
+    private void configSearchView() {
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String pesquisa) {
+                ocultarTeclado();
+
+                filtrarProdutoNome(pesquisa);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        binding.searchView.findViewById(androidx.appcompat.R.id.search_close_btn).setOnClickListener(v -> {
+            EditText edtSearchView = binding.searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+            edtSearchView.setText("");
+            edtSearchView.clearFocus();
+
+            ocultarTeclado();
+
+            filtrarProdutoCategoria();
+        });
     }
 
     private void recuperarDados() {
@@ -97,20 +130,42 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
         }
     }
 
-    private void filtrarProdutoCategoria(Categoria categoria) {
-        if(!categoria.isTodas()) {
-            List<Produto> filtroProdutoCategoriaList = new ArrayList<>();
-
+    private void filtrarProdutoCategoria() {
+        if(!categoriaSelecionada.isTodas()) {
             for (Produto produto : produtosList) {
-                if(produto.getIdsCategorias().contains(categoria.getId())) {
-                    filtroProdutoCategoriaList.add(produto);
+                if(produto.getIdsCategorias().contains(categoriaSelecionada.getId())) {
+                    if(!filtroProdutoCategoriaList.contains(produto)) {
+                        filtroProdutoCategoriaList.add(produto);
+                    }
                 }
             }
 
             configRvProdutos(filtroProdutoCategoriaList);
         } else {
+            filtroProdutoCategoriaList.clear();
+
             configRvProdutos(produtosList);
         }
+    }
+
+    private void filtrarProdutoNome(String pesquisa) {
+        List<Produto> filtroProdutoNomeList = new ArrayList<>();
+
+        if(!filtroProdutoCategoriaList.isEmpty()) {
+            for (Produto produto : filtroProdutoCategoriaList) {
+                if(produto.getTitulo().toUpperCase(Locale.ROOT).contains(pesquisa.toUpperCase(Locale.ROOT))) {
+                    filtroProdutoNomeList.add(produto);
+                }
+            }
+        } else {
+            for (Produto produto : produtosList) {
+                if(produto.getTitulo().toUpperCase(Locale.ROOT).contains(pesquisa.toUpperCase(Locale.ROOT))) {
+                    filtroProdutoNomeList.add(produto);
+                }
+            }
+        }
+
+        configRvProdutos(filtroProdutoNomeList);
     }
 
     private void configRvCategorias() {
@@ -204,7 +259,9 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
 
     @Override
     public void onClickListener(Categoria categoria) {
-        filtrarProdutoCategoria(categoria);
+        this.categoriaSelecionada = categoria;
+
+        filtrarProdutoCategoria();
     }
 
     @Override
@@ -224,6 +281,11 @@ public class UsuarioHomeFragment extends Fragment implements CategoriaAdapter.On
         }
 
         Favorito.salvar(idsFavoritos);
+    }
+
+    private void ocultarTeclado() {
+        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(binding.searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }
