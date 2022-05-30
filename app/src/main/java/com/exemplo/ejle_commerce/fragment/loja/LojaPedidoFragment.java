@@ -143,7 +143,18 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
             dialog.dismiss();
         });
 
+        rgStatus.setOnCheckedChangeListener((group, checkedId) -> {
+            if(checkedId == R.id.rbPendente) {
+                pedido.setStatusPedido(StatusPedido.PENDENTE);
+            } else if(checkedId == R.id.rbAprovado) {
+                pedido.setStatusPedido(StatusPedido.APROVADO);
+            } else {
+                pedido.setStatusPedido(StatusPedido.CANCELADO);
+            }
+        });
+
         statusBinding.btnConfirmar.setOnClickListener(v -> {
+            pedido.salvar(false);
             dialog.dismiss();
         });
 
@@ -154,13 +165,6 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
         if(!requireActivity().isFinishing()) {
             dialog.show();
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        binding = null;
     }
 
     @Override
