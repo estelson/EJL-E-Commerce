@@ -1,11 +1,11 @@
 package com.exemplo.ejle_commerce.activity.usuario;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.exemplo.ejle_commerce.api.MercadoPagoService;
 import com.exemplo.ejle_commerce.dao.ItemDAO;
 import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioPagamentoPedidoBinding;
@@ -21,11 +21,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mercadopago.android.px.configuration.AdvancedConfiguration;
+import com.mercadopago.android.px.core.MercadoPagoCheckout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
+
+    private final int REQUEST_CODE = 100;
 
     private ActivityUsuarioPagamentoPedidoBinding binding;
 
@@ -40,6 +50,8 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 
     private List<ItemPedido> itemPedidoList = new ArrayList<>();
 
+    private Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +60,11 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 
         recuperarDados();
 
-        binding.progressBar.setOnClickListener(v -> {
-            configJSON();
-        });
+//        binding.progressBar.setOnClickListener(v -> {
+//            configJSON();
+//        });
+
+        iniciarRetrofit();
     }
 
     private void configJSON() {
@@ -105,7 +119,47 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         dados.add("payer", payer);
         dados.add("payment_methods", payment_methods);
 
-        Log.i("INFOTESTE", "configJSON: " + dados);
+        efetuarPagamento(dados);
+
+//        Log.i("INFOTESTE", "configJSON: " + dados);
+    }
+
+    private void iniciarRetrofit() {
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.mercadopago.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    private void efetuarPagamento(JsonObject dados) {
+        String url = "checkout/preferences?access_token=" + loja.getAccessToken();
+
+        MercadoPagoService mercadoPagoService = retrofit.create(MercadoPagoService.class);
+
+        Call<JsonObject> call = mercadoPagoService.efetuarPagamento(url, dados);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                String id = response.body().get("id").getAsString();
+
+                continuaPagamento(id);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    private void continuaPagamento(String idPagamento) {
+        final AdvancedConfiguration advancedConfiguration = new AdvancedConfiguration.Builder().setBankDealsEnabled(false).build();
+
+        new MercadoPagoCheckout
+                .Builder(loja.getPublicKey(), idPagamento)
+                .setAdvancedConfiguration(advancedConfiguration)
+                .build()
+                .startPayment(this, REQUEST_CODE);
     }
 
     private void recuperarDados() {
@@ -114,8 +168,6 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         itemPedidoList = itemPedidoDAO.getList();
 
         recuperarUsuario();
-
-        recuperarLoja();
 
         getExtra();
     }
@@ -136,6 +188,10 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usuario = snapshot.getValue(Usuario.class);
+
+                if(usuario != null) {
+                    recuperarLoja();
+                }
             }
 
             @Override
@@ -153,6 +209,10 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 loja = snapshot.getValue(Loja.class);
+
+                if(loja != null) {
+                    configJSON();
+                }
             }
 
             @Override
