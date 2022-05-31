@@ -82,6 +82,7 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
             if(this.formaPagamento.isCredito()){
                 Intent intent = new Intent(this, UsuarioPagamentoPedidoActivity.class);
                 intent.putExtra("enderecoSelecionado", enderecoList.get(0));
+                intent.putExtra("pagamentoSelecionado", formaPagamento);
 
                 startActivity(intent);
             } else{
