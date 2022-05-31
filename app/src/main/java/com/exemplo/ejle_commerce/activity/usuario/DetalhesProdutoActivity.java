@@ -33,7 +33,6 @@ import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -206,7 +205,7 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
     }
 
     private void configDados() {
-        binding.sliderView.setSliderAdapter(new SliderAdapter(produtoSelecionado.getUrlsImagens()));
+        binding.sliderView.setSliderAdapter(new SliderAdapter(produtoSelecionado.getUrlsImagens(), this));
         binding.sliderView.startAutoCycle();
         binding.sliderView.setScrollTimeInSec(4);
         binding.sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);

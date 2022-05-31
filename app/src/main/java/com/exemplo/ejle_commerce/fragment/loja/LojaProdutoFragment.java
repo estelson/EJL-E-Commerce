@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.activity.loja.LojaFormProdutoActivity;
 import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
@@ -24,7 +25,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -126,7 +126,9 @@ public class LojaProdutoFragment extends Fragment implements LojaProdutoAdapter.
 
         for (int i = 0; i < produto.getUrlsImagens().size(); i++) {
             if(produto.getUrlsImagens().get(i).getIndex() == 0) {
-                Picasso.get().load(produto.getUrlsImagens().get(i).getCaminhoImagem()).into(dialogBinding.imagemProduto);
+                Glide.with(requireContext())
+                        .load(produto.getUrlsImagens().get(i).getCaminhoImagem())
+                        .into(dialogBinding.imagemProduto);
             }
         }
 

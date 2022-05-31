@@ -2,6 +2,7 @@ package com.exemplo.ejle_commerce.activity.usuario;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 
-    private final int REQUEST_CODE = 100;
+    private final int REQUEST_MERCADO_PAGO = 100;
 
     private ActivityUsuarioPagamentoPedidoBinding binding;
 
@@ -130,7 +131,7 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
 
         efetuarPagamento(dados);
 
-//        Log.i("INFOTESTE", "configJSON: " + dados);
+        Log.i("INFOTESTE", "configJSON: " + dados);
     }
 
     private void iniciarRetrofit() {
@@ -168,7 +169,7 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
                 .Builder(loja.getPublicKey(), idPagamento)
                 .setAdvancedConfiguration(advancedConfiguration)
                 .build()
-                .startPayment(this, REQUEST_CODE);
+                .startPayment(this, REQUEST_MERCADO_PAGO);
     }
 
     private void recuperarDados() {
@@ -282,12 +283,12 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK) {
-            Payment payment = (Payment) data.getSerializableExtra(MercadoPagoCheckout.EXTRA_PAYMENT_RESULT);
+        if(requestCode == REQUEST_MERCADO_PAGO) {
+            if(resultCode == MercadoPagoCheckout.PAYMENT_RESULT_CODE) {
+                Payment payment = (Payment) data.getSerializableExtra(MercadoPagoCheckout.EXTRA_PAYMENT_RESULT);
 
-            validarRetorno(payment);
-        } else {
-            Toast.makeText(this, "Erro ao efetuar o pagamento", Toast.LENGTH_SHORT).show();
+                validarRetorno(payment);
+            }
         }
     }
 

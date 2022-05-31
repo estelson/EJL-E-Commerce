@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.CategoriaAdapter;
 import com.exemplo.ejle_commerce.databinding.DialogDeleteBinding;
@@ -40,7 +41,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
-import com.squareup.picasso.Picasso;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
         binding.rvCategorias.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvCategorias.setHasFixedSize(true);
 
-        categoriaAdapter = new CategoriaAdapter(R.layout.item_categoria_vertical, false, categoriasList, this);
+        categoriaAdapter = new CategoriaAdapter(R.layout.item_categoria_vertical, false, categoriasList, this, requireContext());
 
         binding.rvCategorias.setAdapter(categoriaAdapter);
 
@@ -192,7 +192,9 @@ public class LojaCategoriaFragment extends Fragment implements CategoriaAdapter.
             categoriaBinding.edtCategoria.setText(categoria.getNome());
             categoriaBinding.cbTodos.setChecked(categoria.isTodas());
 
-            Picasso.get().load(categoria.getUrlImagem()).into(categoriaBinding.imagemCategoria);
+            Glide.with(requireContext())
+                    .load(categoria.getUrlImagem())
+                    .into(categoriaBinding.imagemCategoria);
         }
 
         categoriaBinding.btnFechar.setOnClickListener(v -> {
