@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_usuario"
         app:itemTextColor="@drawable/item_selected"
         app:itemIconTint="@drawable/item_selected"
+        app:menu="@menu/menu_usuario"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -11,9 +11,10 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginTop="16dp"
-        app:elevation="5dp"
+        app:cardElevation="5dp"
         app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,7 +22,6 @@
             android:id="@+id/imagemCategoria"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
             android:padding="8dp"
             android:src="@drawable/placeholder_form_categorias" />
 
@@ -33,8 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/color_laranja"
-        android:hint="Ex.: Calçados"
+        android:hint="Ex Calçados"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -43,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:buttonTint="@color/color_laranja"
-        android:text="Todos produtos"
+        android:text="Todos Produtos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtCategoria" />
 
@@ -59,25 +60,29 @@
 
         <android.widget.Button
             android:id="@+id/btnFechar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:background="@drawable/bg_add"
             android:text="Fechar"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="329dp" />
 
         <android.widget.Button
             android:id="@+id/btnSalvar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:background="@drawable/bg_add"
             android:text="Salvar"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            tools:layout_editor_absoluteX="146dp"
+            tools:layout_editor_absoluteY="341dp" />
 
     </LinearLayout>
 
@@ -85,12 +90,12 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/color_laranja"
         android:visibility="gone"
-        android:paddingTop="16dp"
+        tools:visibility="visible"
+        android:layout_marginTop="16dp"
+        android:indeterminateTint="@color/color_laranja"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

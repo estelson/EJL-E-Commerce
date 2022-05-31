@@ -1,13 +1,13 @@
 package com.exemplo.ejle_commerce.activity.usuario;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.ejle_commerce.adapter.UsuarioPagamentoAdapter;
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioSelecionaPagamentoBinding;
@@ -27,7 +27,6 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
     private ActivityUsuarioSelecionaPagamentoBinding binding;
 
     private UsuarioPagamentoAdapter usuarioPagamentoAdapter;
-
     private final List<FormaPagamento> formaPagamentoList = new ArrayList<>();
 
     private FormaPagamento formaPagamento = null;
@@ -38,57 +37,50 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
         binding = ActivityUsuarioSelecionaPagamentoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        iniciarComponentes();
+        iniciaComponentes();
 
         configClicks();
 
         configRv();
 
-        recuperaFormasPagamento();
+        recuperaFormaPagamento();
     }
 
     private void configClicks() {
-        binding.include.include.ibVoltar.setOnClickListener(v -> {
-            finish();
-        });
+        binding.include.include.ibVoltar.setOnClickListener(v -> finish());
 
-        binding.btnFinalizar.setOnClickListener(v -> {
-            if(formaPagamento != null) {
+        binding.btnContinuar.setOnClickListener(v -> {
+            if(formaPagamento != null){
                 Intent intent = new Intent(this, UsuarioResumoPedidoActivity.class);
                 intent.putExtra("pagamentoSelecionado", formaPagamento);
-
                 startActivity(intent);
-            } else {
-                Toast.makeText(this, "Selecione uma forma de pagamento", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "Selecione a forma de pagamento do seu pedido.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void recuperaFormasPagamento() {
+    private void recuperaFormaPagamento() {
         DatabaseReference pagamentoRef = FirebaseHelper.getDatabaseReference()
                 .child("formapagamento");
-
         pagamentoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     formaPagamentoList.clear();
-
-                    for(DataSnapshot ds : snapshot.getChildren()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
                         FormaPagamento formaPagamento = ds.getValue(FormaPagamento.class);
                         formaPagamentoList.add(formaPagamento);
                     }
-
                     binding.textInfo.setText("");
                 } else {
-                    binding.textInfo.setText("Nenhuma forma de pagamento cadastrada");
+                    binding.textInfo.setText("Nenhuma forma de pagamento cadastrada.");
                 }
 
                 binding.progressBar.setVisibility(View.GONE);
-
                 Collections.reverse(formaPagamentoList);
-
                 usuarioPagamentoAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -101,14 +93,12 @@ public class UsuarioSelecionaPagamentoActivity extends AppCompatActivity impleme
     private void configRv() {
         binding.rvPagamentos.setLayoutManager(new LinearLayoutManager(this));
         binding.rvPagamentos.setHasFixedSize(true);
-
         usuarioPagamentoAdapter = new UsuarioPagamentoAdapter(formaPagamentoList, this);
-
         binding.rvPagamentos.setAdapter(usuarioPagamentoAdapter);
     }
 
-    private void iniciarComponentes() {
-        binding.include.textTitulo.setText("Formas de pagamento");
+    private void iniciaComponentes() {
+        binding.include.textTitulo.setText("Forma de pagamento");
     }
 
     @Override

@@ -21,7 +21,7 @@
             android:id="@+id/imagemProduto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"/>
+            android:padding="8dp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -35,6 +35,7 @@
         android:maxLines="2"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView3"
         tools:text="Óculos Oakley Sutro Prizm" />
@@ -46,6 +47,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNomeProduto">
 
@@ -100,8 +102,8 @@
                     android:id="@+id/likeButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center"
                     app:anim_scale_factor="2"
+                    android:layout_gravity="center"
                     android:padding="8dp"
                     app:like_drawable="@drawable/ic_favorite"
                     app:unlike_drawable="@drawable/ic_favorite_border"
@@ -110,7 +112,7 @@
                     app:is_enabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/imagemProduto"
-                    app:liked="false"/>
+                    app:liked="false" />
 
             </androidx.cardview.widget.CardView>
 
@@ -155,5 +157,5 @@
         </LinearLayout>
 
     </LinearLayout>
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.model.Categoria;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -22,15 +22,15 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
 
     private final int layout;
     private final boolean background;
-    private final List<Categoria> categoriasList;
+    private final List<Categoria> categoriaList;
     private final OnClick onClick;
     private final Context context;
     private int row_index = 0;
 
-    public CategoriaAdapter(int layout, boolean background, List<Categoria> categoriasList, OnClick onClick, Context context) {
+    public CategoriaAdapter(int layout, boolean background, List<Categoria> categoriaList, OnClick onClick, Context context) {
         this.layout = layout;
         this.background = background;
-        this.categoriasList = categoriasList;
+        this.categoriaList = categoriaList;
         this.onClick = onClick;
         this.context = context;
     }
@@ -39,36 +39,34 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Categoria categoria = categoriasList.get(position);
+        Categoria categoria = categoriaList.get(position);
 
-        if(background) {
+        if (background) {
+
             holder.itemView.setOnClickListener(v -> {
                 onClick.onClickListener(categoria);
 
                 row_index = holder.getAdapterPosition();
-
                 notifyDataSetChanged();
             });
 
-            if(row_index == holder.getAdapterPosition()) {
+            if(row_index == holder.getAdapterPosition()){
                 holder.itemView.setBackgroundResource(R.drawable.bg_categoria_home);
                 holder.nomeCategoria.setTextColor(Color.parseColor("#FFFFFF"));
                 holder.imagemCategoria.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
-            } else {
+            }else {
                 holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 holder.nomeCategoria.setTextColor(Color.parseColor("#808080"));
                 holder.imagemCategoria.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_IN);
             }
+
         } else {
-            holder.itemView.setOnClickListener(v -> {
-                onClick.onClickListener(categoria);
-            });
+            holder.itemView.setOnClickListener(v -> onClick.onClickListener(categoria));
         }
 
         holder.nomeCategoria.setText(categoria.getNome());
@@ -80,7 +78,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return categoriasList.size();
+        return categoriaList.size();
     }
 
     public interface OnClick {
@@ -88,12 +86,12 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+
         ImageView imagemCategoria;
         TextView nomeCategoria;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imagemCategoria = itemView.findViewById(R.id.imagemCategoria);
             nomeCategoria = itemView.findViewById(R.id.nomeCategoria);
         }

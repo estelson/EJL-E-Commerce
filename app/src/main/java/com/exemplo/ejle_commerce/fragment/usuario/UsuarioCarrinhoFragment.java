@@ -17,13 +17,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bumptech.glide.Glide;
+import com.exemplo.ejle_commerce.DAO.ItemDAO;
+import com.exemplo.ejle_commerce.DAO.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.activity.usuario.UsuarioSelecionaPagamentoActivity;
 import com.exemplo.ejle_commerce.adapter.CarrinhoAdapter;
 import com.exemplo.ejle_commerce.autenticacao.LoginActivity;
-import com.exemplo.ejle_commerce.dao.ItemDAO;
-import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.DialogRemoverCarrinhoBinding;
 import com.exemplo.ejle_commerce.databinding.FragmentUsuarioCarrinhoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
@@ -31,6 +30,7 @@ import com.exemplo.ejle_commerce.model.Favorito;
 import com.exemplo.ejle_commerce.model.ItemPedido;
 import com.exemplo.ejle_commerce.model.Produto;
 import com.exemplo.ejle_commerce.util.GetMask;
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +47,6 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     private FragmentUsuarioCarrinhoBinding binding;
 
     private final List<ItemPedido> itemPedidoList = new ArrayList<>();
-
     private final List<String> idsFavoritos = new ArrayList<>();
 
     private CarrinhoAdapter carrinhoAdapter;
@@ -58,7 +57,8 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     private AlertDialog dialog;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentUsuarioCarrinhoBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -73,7 +73,7 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 
         configRv();
 
-        recuperarFavoritos();
+        recuperaFavoritos();
 
         configClicks();
     }
@@ -86,10 +86,10 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     }
 
     private void configClicks() {
-        binding.btnFinalizar.setOnClickListener(v -> {
-            if(FirebaseHelper.getAutenticado()) {
+        binding.btnContinuar.setOnClickListener(v -> {
+            if(FirebaseHelper.getAutenticado()){
                 startActivity(new Intent(requireContext(), UsuarioSelecionaPagamentoActivity.class));
-            } else {
+            }else {
                 resultLauncher.launch(new Intent(requireContext(), LoginActivity.class));
             }
         });
@@ -97,27 +97,23 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 
     private void configRv() {
         Collections.reverse(itemPedidoList);
-
         binding.rvProdutos.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvProdutos.setHasFixedSize(true);
-
         carrinhoAdapter = new CarrinhoAdapter(itemPedidoList, itemPedidoDAO, requireContext(), this);
         binding.rvProdutos.setAdapter(carrinhoAdapter);
 
         configTotalCarrinho();
     }
 
-    private void recuperarFavoritos() {
-        if(FirebaseHelper.getAutenticado()) {
+    private void recuperaFavoritos() {
+        if (FirebaseHelper.getAutenticado()) {
             DatabaseReference favoritoRef = FirebaseHelper.getDatabaseReference()
                     .child("favoritos")
                     .child(FirebaseHelper.getIdFirebase());
-
             favoritoRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     idsFavoritos.clear();
-
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         String idFavorito = ds.getValue(String.class);
                         idsFavoritos.add(idFavorito);
@@ -133,55 +129,57 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     }
 
     private void configTotalCarrinho() {
-        if(!itemPedidoList.isEmpty()) {
-            binding.btnFinalizar.setVisibility(View.VISIBLE);
-            binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
-        } else {
-            binding.btnFinalizar.setVisibility(View.GONE);
-        }
+        binding.textValor.setText(getString(R.string.valor_total_carrinho, GetMask.getValor(itemPedidoDAO.getTotalPedido())));
     }
 
     private void configQtdProduto(int position, String operacao) {
+
         ItemPedido itemPedido = itemPedidoList.get(position);
 
-        if(operacao.equals("mais")) { // +
+        if (operacao.equals("mais")) { // +
+
             itemPedido.setQuantidade(itemPedido.getQuantidade() + 1);
 
             itemPedidoDAO.atualizar(itemPedido);
 
             itemPedidoList.set(position, itemPedido);
+
         } else { // -
+
             if (itemPedido.getQuantidade() > 1) {
+
                 itemPedido.setQuantidade(itemPedido.getQuantidade() - 1);
 
                 itemPedidoDAO.atualizar(itemPedido);
 
                 itemPedidoList.set(position, itemPedido);
+
             }
+
         }
 
-        carrinhoAdapter.notifyDataSetChanged();
+        carrinhoAdapter.notifyItemChanged(position);
 
         configTotalCarrinho();
+
     }
 
     private void showDialogRemover(Produto produto, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog);
 
-        DialogRemoverCarrinhoBinding dialogBinding = DialogRemoverCarrinhoBinding.inflate(LayoutInflater.from(requireContext()));
+        DialogRemoverCarrinhoBinding dialogBinding = DialogRemoverCarrinhoBinding
+                .inflate(LayoutInflater.from(requireContext()));
 
         dialogBinding.likeButton.setLiked(idsFavoritos.contains(produto.getId()));
 
         dialogBinding.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-                if(FirebaseHelper.getAutenticado()) {
+                if (FirebaseHelper.getAutenticado()) {
                     salvarFavorito(produto);
                 } else {
                     Toast.makeText(requireContext(), "Você não está autenticado no app.", Toast.LENGTH_SHORT).show();
                     dialogBinding.likeButton.setLiked(false);
-
-                    // TODO: Criar dialog para levar o usuário à tela de login
                 }
             }
 
@@ -197,22 +195,16 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
 
         dialogBinding.txtNomeProduto.setText(produto.getTitulo());
 
-        dialogBinding.btnCancelar.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
+        dialogBinding.btnCancelar.setOnClickListener(v -> dialog.dismiss());
 
         dialogBinding.btnAddFavorito.setOnClickListener(v -> {
-
-
             dialog.dismiss();
         });
 
         dialogBinding.btnRemover.setOnClickListener(v -> {
             removerProdutoCarrinho(position);
-
             dialog.dismiss();
-
-            Toast.makeText(requireContext(), "Produto removido com sucesso", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Produto removido com sucesso!", Toast.LENGTH_SHORT).show();
         });
 
         builder.setView(dialogBinding.getRoot());
@@ -222,12 +214,11 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     }
 
     private void salvarFavorito(Produto produto) {
-        if(!idsFavoritos.contains(produto.getId())) {
+        if (!idsFavoritos.contains(produto.getId())) {
             idsFavoritos.add(produto.getId());
         } else {
             idsFavoritos.remove(produto.getId());
         }
-
         Favorito.salvar(idsFavoritos);
     }
 
@@ -237,9 +228,10 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
         itemPedidoList.remove(itemPedido);
 
         itemPedidoDAO.remover(itemPedido);
+
         itemDAO.remover(itemPedido);
 
-        carrinhoAdapter.notifyDataSetChanged();
+        carrinhoAdapter.notifyItemRemoved(position);
 
         configInfo();
 
@@ -247,7 +239,7 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     }
 
     private void configInfo() {
-        if(itemPedidoList.isEmpty()) {
+        if (itemPedidoList.isEmpty()) {
             binding.textInfo.setVisibility(View.VISIBLE);
         } else {
             binding.textInfo.setVisibility(View.GONE);
@@ -255,7 +247,8 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     }
 
     private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     startActivity(new Intent(requireContext(), UsuarioSelecionaPagamentoActivity.class));
                 }
@@ -265,12 +258,11 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         binding = null;
     }
 
     @Override
-    public void onClickListener(int position, String operacao) {
+    public void onClickLister(int position, String operacao) {
         int idProduto = itemPedidoList.get(position).getId();
         Produto produto = itemPedidoDAO.getProduto(idProduto);
 
@@ -279,7 +271,6 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
                 break;
             case "remover":
                 showDialogRemover(produto, position);
-
                 break;
             case "menos":
             case "mais":
@@ -287,5 +278,4 @@ public class UsuarioCarrinhoFragment extends Fragment implements CarrinhoAdapter
                 break;
         }
     }
-
 }

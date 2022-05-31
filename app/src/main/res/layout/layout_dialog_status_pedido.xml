@@ -16,7 +16,7 @@
             android:id="@+id/rbPendente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/color_status_pedido_pendente"
+            android:buttonTint="@color/black"
             android:minHeight="0dp"
             android:text="Pendente" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/rbAprovado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/color_status_pedido_aprovado"
+            android:buttonTint="@color/black"
             android:minHeight="0dp"
             android:text="Aprovado" />
 
@@ -32,7 +32,7 @@
             android:id="@+id/rbCancelado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/color_status_pedido_cancelado"
+            android:buttonTint="@color/black"
             android:minHeight="0dp"
             android:text="Cancelado" />
 
@@ -42,11 +42,11 @@
         android:id="@+id/btnFechar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:text="Fechar"
         android:textAllCaps="false"
         android:textColor="@color/black"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/btnConfirmar"
         app:layout_constraintEnd_toStartOf="@+id/btnConfirmar"
         app:layout_constraintTop_toTopOf="@+id/btnConfirmar" />

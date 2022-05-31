@@ -2,16 +2,15 @@ package com.exemplo.ejle_commerce.activity.usuario;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.exemplo.ejle_commerce.DAO.ItemDAO;
+import com.exemplo.ejle_commerce.DAO.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.api.MercadoPagoService;
-import com.exemplo.ejle_commerce.dao.ItemDAO;
-import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioPagamentoPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Endereco;
@@ -48,16 +47,11 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
     private ActivityUsuarioPagamentoPedidoBinding binding;
 
     private FormaPagamento formaPagamento;
-
     private Endereco enderecoSelecionado;
-
     private Usuario usuario;
-
     private Loja loja;
 
-    private ItemDAO itemDAO;
     private ItemPedidoDAO itemPedidoDAO;
-
     private List<ItemPedido> itemPedidoList = new ArrayList<>();
 
     private Retrofit retrofit;
@@ -68,13 +62,10 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         binding = ActivityUsuarioPagamentoPedidoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        recuperarDados();
+        recuperaDados();
 
-//        binding.progressBar.setOnClickListener(v -> {
-//            configJSON();
-//        });
+        iniciaRetrofit();
 
-        iniciarRetrofit();
     }
 
     private void configJSON() {
@@ -87,27 +78,38 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         JsonObject address = new JsonObject();
         JsonObject payment_methods = new JsonObject();
 
+        JsonObject removerBoleto = new JsonObject();
+        removerBoleto.addProperty("id", "bolbradesco");
+
+        JsonObject removerLoterica = new JsonObject();
+        removerLoterica.addProperty("id", "pec");
+
+        JsonArray excluded_payment_methods = new JsonArray();
+        excluded_payment_methods.add(removerBoleto);
+        excluded_payment_methods.add(removerLoterica);
+
         String telefone = usuario.getTelefone()
                 .replace("(", "")
                 .replace(")", "")
                 .replace(" ", "");
-
         phone.addProperty("area_code", telefone.substring(0, 2));
         phone.addProperty("number", telefone.substring(2, 12));
 
         address.addProperty("street_name", enderecoSelecionado.getLogradouro());
-        if(enderecoSelecionado.getNumero() != null) {
+        if (enderecoSelecionado.getNumero() != null) {
             address.addProperty("street_number", enderecoSelecionado.getNumero());
         }
         address.addProperty("zip_code", enderecoSelecionado.getCep());
 
         payment_methods.addProperty("installments", loja.getParcelas());
+        payment_methods.add("excluded_payment_methods", excluded_payment_methods);
 
         JsonObject item;
         for (ItemPedido itemPedido : itemPedidoList) {
             Produto produto = itemPedidoDAO.getProduto(itemPedido.getId());
 
             item = new JsonObject();
+
             item.addProperty("title", produto.getTitulo());
             item.addProperty("currency_id", "BRL");
             item.addProperty("picture_url", produto.getUrlsImagens().get(0).getCaminhoImagem());
@@ -117,6 +119,7 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
             itemsList.add(item);
 
             itemPedido.setNomeProduto(produto.getTitulo());
+
         }
 
         dados.add("items", itemsList);
@@ -130,12 +133,11 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         dados.add("payment_methods", payment_methods);
 
         efetuarPagamento(dados);
-
-        Log.i("INFOTESTE", "configJSON: " + dados);
     }
 
-    private void iniciarRetrofit() {
-        retrofit = new Retrofit.Builder()
+    private void iniciaRetrofit() {
+        retrofit = new Retrofit
+                .Builder()
                 .baseUrl("https://api.mercadopago.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -145,13 +147,12 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         String url = "checkout/preferences?access_token=" + loja.getAccessToken();
 
         MercadoPagoService mercadoPagoService = retrofit.create(MercadoPagoService.class);
-
         Call<JsonObject> call = mercadoPagoService.efetuarPagamento(url, dados);
+
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 String id = response.body().get("id").getAsString();
-
                 continuaPagamento(id);
             }
 
@@ -163,46 +164,46 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
     }
 
     private void continuaPagamento(String idPagamento) {
-        final AdvancedConfiguration advancedConfiguration = new AdvancedConfiguration.Builder().setBankDealsEnabled(false).build();
+        final AdvancedConfiguration advancedConfiguration =
+                new AdvancedConfiguration.Builder().setBankDealsEnabled(false).build();
 
         new MercadoPagoCheckout
                 .Builder(loja.getPublicKey(), idPagamento)
-                .setAdvancedConfiguration(advancedConfiguration)
-                .build()
+                .setAdvancedConfiguration(advancedConfiguration).build()
                 .startPayment(this, REQUEST_MERCADO_PAGO);
     }
 
-    private void recuperarDados() {
-        itemDAO = new ItemDAO(this);
+    private void recuperaDados() {
         itemPedidoDAO = new ItemPedidoDAO(this);
+        ItemDAO itemDAO = new ItemDAO(this);
         itemPedidoList = itemPedidoDAO.getList();
 
-        recuperarUsuario();
+        recuperaUsuario();
 
         getExtra();
     }
 
     private void getExtra() {
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
+        if (bundle != null) {
             enderecoSelecionado = (Endereco) bundle.getSerializable("enderecoSelecionado");
             formaPagamento = (FormaPagamento) bundle.getSerializable("pagamentoSelecionado");
         }
     }
 
-    private void recuperarUsuario() {
+    private void recuperaUsuario() {
         DatabaseReference usuarioRef = FirebaseHelper.getDatabaseReference()
                 .child("usuarios")
                 .child(FirebaseHelper.getIdFirebase());
-
         usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usuario = snapshot.getValue(Usuario.class);
 
-                if(usuario != null) {
-                    recuperarLoja();
+                if (usuario != null) {
+                    recuperaLoja();
                 }
+
             }
 
             @Override
@@ -212,16 +213,15 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         });
     }
 
-    private void recuperarLoja() {
+    private void recuperaLoja() {
         DatabaseReference lojaRef = FirebaseHelper.getDatabaseReference()
                 .child("loja");
-
         lojaRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 loja = snapshot.getValue(Loja.class);
 
-                if(loja != null) {
+                if (loja != null) {
                     configJSON();
                 }
             }
@@ -233,21 +233,53 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         });
     }
 
-    private void validarRetorno(Payment payment) {
+    private void validaRetorno(Payment payment) {
         // approved, rejected, in_process
 
         String status = payment.getPaymentStatus();
+        String statusDetail = payment.getPaymentStatusDetail();
+
         switch (status) {
             case "approved":
                 finalizarPedido(StatusPedido.APROVADO);
                 break;
             case "rejected":
                 finalizarPedido(StatusPedido.CANCELADO);
+                switch (statusDetail) {
+                    case "cc_rejected_bad_filled_card_number":
+                        Toast.makeText(this, "Número do cartão inválido!", Toast.LENGTH_LONG).show();
+                        break;
+                    case "cc_rejected_bad_filled_date":
+                        Toast.makeText(this, "Data de vencimento invalida!", Toast.LENGTH_LONG).show();
+                        break;
+                    case "cc_rejected_bad_filled_other":
+                        Toast.makeText(this, "Algum dado do cartão inserido é invalido!", Toast.LENGTH_LONG).show();
+                        break;
+                    case "cc_rejected_bad_filled_security_code":
+                        Toast.makeText(this, "Código de segurança do cartão é invalido!", Toast.LENGTH_LONG).show();
+                        break;
+                    case "cc_rejected_call_for_authorize":
+                        Toast.makeText(this, "Você deve autorizar a operadora do seu cartão a liberar o pagamento do valor ao Mercado Pago.", Toast.LENGTH_LONG).show();
+                        break;
+                    case "cc_rejected_card_disabled":
+                        Toast.makeText(this, "Ligue para a operadora do seu cartão para ativar seu cartão. O telefone está no verso do seu cartão.", Toast.LENGTH_LONG).show();
+                        break;
+                    case "cc_rejected_max_attempts":
+                        Toast.makeText(this, "Você atingiu o limite de tentativas permitido.", Toast.LENGTH_LONG).show();
+                        break;
+                    case "cc_rejected_insufficient_amount":
+                        Toast.makeText(this, "Pagamento negado por falta de saldo.", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(this, "Não pudemos processar seu pagamento, tente novamente mais tarde.", Toast.LENGTH_LONG).show();
+                        break;
+                }
                 break;
             case "in_process":
                 finalizarPedido(StatusPedido.PENDENTE);
                 break;
         }
+
     }
 
     private void finalizarPedido(StatusPedido statusPedido) {
@@ -258,38 +290,36 @@ public class UsuarioPagamentoPedidoActivity extends AppCompatActivity {
         pedido.setPagamento(formaPagamento.getNome());
         pedido.setStatusPedido(statusPedido);
 
-        if(formaPagamento.getTipoValor().equals("DESC")) {
+        if (formaPagamento.getTipoValor().equals("DESC")) {
             pedido.setDesconto(formaPagamento.getValor());
         } else {
             pedido.setAcrescimo(formaPagamento.getValor());
         }
 
-        pedido.setItensPedidoList(itemPedidoDAO.getList());
+        pedido.setItemPedidoList(itemPedidoDAO.getList());
 
         pedido.salvar(true);
 
-        // limpar o carrino de compras
         itemPedidoDAO.limparCarrinho();
 
         Intent intent = new Intent(this, MainActivityUsuario.class);
-        // limpa a pilha de activities abertas
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("id", 1);
-
         startActivity(intent);
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == REQUEST_MERCADO_PAGO) {
-            if(resultCode == MercadoPagoCheckout.PAYMENT_RESULT_CODE) {
+        if (requestCode == REQUEST_MERCADO_PAGO) {
+            if (resultCode == MercadoPagoCheckout.PAYMENT_RESULT_CODE) {
                 Payment payment = (Payment) data.getSerializableExtra(MercadoPagoCheckout.EXTRA_PAYMENT_RESULT);
 
-                validarRetorno(payment);
+                validaRetorno(payment);
+            }else {
+                finish();
             }
         }
     }
-
 }

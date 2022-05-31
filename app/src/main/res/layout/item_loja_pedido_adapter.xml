@@ -6,15 +6,16 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView7"
         android:layout_width="0dp"
-        android:layout_height="170dp"
+        android:layout_height="190dp"
         android:layout_margin="8dp"
-        app:cardElevation="5dp"
         app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Pedido:"
+                android:text="Pedido: "
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,13 +39,13 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView14"
                 app:layout_constraintStart_toEndOf="@+id/textView14"
                 app:layout_constraintTop_toTopOf="@+id/textView14"
-                tools:text="-RMG2mjkflds-ui-Kjklfgsd" />
+                tools:text="2AS5A6S-A12S5AG1AS" />
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginStart="16dp"
                 android:text="Status:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,55 +55,55 @@
                 android:id="@+id/textStatusPedido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@+id/textIdPedido"
-                app:layout_constraintTop_toBottomOf="@+id/textIdPedido"
-                tools:text="Pendente"
-                tools:textColor="@color/color_status_pedido_aprovado"/>
+                android:layout_marginStart="8dp"
+                android:text="Aprovado"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                app:layout_constraintStart_toEndOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                tools:textColor="@color/color_status_pedido_aprovado" />
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Cliente:"
+                android:layout_margin="16dp"
+                android:text="Cliente: "
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                app:layout_constraintTop_toBottomOf="@+id/textStatusPedido" />
 
             <TextView
                 android:id="@+id/textNomeCliente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                app:layout_constraintBottom_toBottomOf="@+id/textView20"
+                app:layout_constraintBottom_toBottomOf="@+id/textView17"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textStatusPedido"
-                app:layout_constraintTop_toTopOf="@+id/textView20"
-                tools:text="Estelson" />
+                app:layout_constraintStart_toEndOf="@+id/textView17"
+                app:layout_constraintTop_toTopOf="@+id/textView17"
+                tools:text="Arley Santana" />
 
             <TextView
                 android:id="@+id/textTotalPedido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
+                android:layout_margin="16dp"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/llButtons"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20"
                 tools:text="R$ 99,99" />
 
             <TextView
                 android:id="@+id/textDataPedido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_margin="16dp"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/textTotalPedido"
+                app:layout_constraintBottom_toTopOf="@+id/llButtons"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textTotalPedido"
-                tools:text="24/12/2022 17:10" />
+                tools:text="26/11/2021 17:30" />
 
             <LinearLayout
                 android:id="@+id/llButtons"
@@ -112,19 +113,24 @@
                 android:background="#F7F7F7"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <android.widget.Button
                     android:id="@+id/btnDetalhesPedido"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     style="?android:attr/borderlessButtonStyle"
+                    android:layout_weight="1"
                     android:background="#F7F7F7"
                     android:text="Detalhes"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                <com.google.android.material.divider.MaterialDivider
+                <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="8dp"
@@ -132,13 +138,17 @@
 
                 <android.widget.Button
                     android:id="@+id/btnStatusPedido"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="#F7F7F7"
+                    style="?android:attr/borderlessButtonStyle"
                     android:text="Status"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </LinearLayout>
 

@@ -13,14 +13,12 @@ public class Usuario {
     private String senha;
 
     public Usuario() {
-
     }
 
-    public void salvar() {
+    public void salvar(){
         DatabaseReference usuarioRef = FirebaseHelper.getDatabaseReference()
                 .child("usuarios")
                 .child(this.getId());
-
         usuarioRef.setValue(this);
     }
 

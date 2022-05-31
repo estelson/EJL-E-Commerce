@@ -21,7 +21,7 @@ public class UsuarioPerfilActivity extends AppCompatActivity {
 
     private ActivityUsuarioPerfilBinding binding;
 
-    Usuario usuario;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,47 +29,46 @@ public class UsuarioPerfilActivity extends AppCompatActivity {
         binding = ActivityUsuarioPerfilBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        iniciarComponentes();
+        iniciaComponentes();
 
         configClicks();
 
-        recuperarUsuario();
+        recuperaUsuario();
     }
 
-    private void validarDados() {
+    private void validaDados() {
         String nome = binding.edtNome.getText().toString().trim();
         String telefone = binding.edtTelefone.getMasked();
 
-        if(!nome.isEmpty()) {
-            if(!telefone.isEmpty()) {
-                if (telefone.length() == 15) {
-                    ocultarTeclado();
+        if(!nome.isEmpty()){
+            if(!telefone.isEmpty()){
+                if(telefone.length() == 15){
+
+                    ocultaTeclado();
 
                     binding.progressBar.setVisibility(View.VISIBLE);
 
-                    if(usuario != null) {
+                    if(usuario != null){
                         usuario.setNome(nome);
                         usuario.setTelefone(telefone);
-
                         usuario.salvar();
-
-                        Toast.makeText(this, "Dados do usuário alterados com sucesso!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Aguarde, as informações ainda estão sendo recuperadas", Toast.LENGTH_LONG).show();
+                    }else {
+                        Toast.makeText(this, "Aguarde, ainda estamos recuperando as informações.", Toast.LENGTH_SHORT).show();
                     }
 
                     binding.progressBar.setVisibility(View.GONE);
-                } else {
+
+                }else {
                     binding.edtTelefone.requestFocus();
-                    binding.edtTelefone.setError("Formato de telefone inválido");
+                    binding.edtTelefone.setError("Fomato do telefone inválido.");
                 }
-            } else {
+            }else {
                 binding.edtTelefone.requestFocus();
-                binding.edtTelefone.setError("Informe o telefone do usuário");
+                binding.edtTelefone.setError("Informação obrigatória.");
             }
-        } else {
+        }else {
             binding.edtNome.requestFocus();
-            binding.edtNome.setError("Informe o nome do usuário");
+            binding.edtNome.setError("Informação obrigatória.");
         }
     }
 
@@ -81,11 +80,10 @@ public class UsuarioPerfilActivity extends AppCompatActivity {
         binding.progressBar.setVisibility(View.GONE);
     }
 
-    private void recuperarUsuario() {
+    private void recuperaUsuario() {
         DatabaseReference usuarioRef = FirebaseHelper.getDatabaseReference()
                 .child("usuarios")
                 .child(FirebaseHelper.getIdFirebase());
-
         usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,22 +100,19 @@ public class UsuarioPerfilActivity extends AppCompatActivity {
     }
 
     private void configClicks() {
-        binding.include.include.ibVoltar.setOnClickListener(v -> {
-            finish();
-        });
-
-        binding.include.btnSalvar.setOnClickListener(v -> {
-            validarDados();
-        });
+        binding.include.include.ibVoltar.setOnClickListener(v -> finish());
+        binding.include.btnSalvar.setOnClickListener(v -> validaDados());
     }
 
-    private void iniciarComponentes() {
-        binding.include.textTitulo.setText("Meus dados");
-    }
-
-    private void ocultarTeclado() {
+    // Oculta o teclado do dispotivo
+    private void ocultaTeclado() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(binding.edtNome.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        inputMethodManager.hideSoftInputFromWindow(binding.edtEmail.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private void iniciaComponentes() {
+        binding.include.textTitulo.setText("Meus dados");
     }
 
 }

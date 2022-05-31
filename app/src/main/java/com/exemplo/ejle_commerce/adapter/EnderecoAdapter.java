@@ -17,12 +17,10 @@ import java.util.List;
 public class EnderecoAdapter extends RecyclerView.Adapter<EnderecoAdapter.MyViewHolder> {
 
     private final List<Endereco> enderecoList;
-
     private final Context context;
+    private final OnClickListener clickListener;
 
-    private final OnCLickListener clickListener;
-
-    public EnderecoAdapter(List<Endereco> enderecoList, Context context, OnCLickListener clickListener) {
+    public EnderecoAdapter(List<Endereco> enderecoList, Context context, OnClickListener clickListener) {
         this.enderecoList = enderecoList;
         this.context = context;
         this.clickListener = clickListener;
@@ -32,7 +30,6 @@ public class EnderecoAdapter extends RecyclerView.Adapter<EnderecoAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_endereco_adapter, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
@@ -43,16 +40,14 @@ public class EnderecoAdapter extends RecyclerView.Adapter<EnderecoAdapter.MyView
         holder.textNomeEndereco.setText(endereco.getNomeEndereco());
         holder.textLogradouro.setText(context.getString(R.string.endereco_logradouro, endereco.getLogradouro()));
 
-        if(!endereco.getNumero().isEmpty()) {
+        if (!endereco.getNumero().isEmpty()) {
             holder.textNumEndereco.setVisibility(View.VISIBLE);
             holder.textNumEndereco.setText(context.getString(R.string.endereco_numero, endereco.getNumero()));
-        } else {
+        }else {
             holder.textNumEndereco.setVisibility(View.GONE);
         }
 
-        holder.itemView.setOnClickListener(v -> {
-            clickListener.onClick(endereco);
-        });
+        holder.itemView.setOnClickListener(v -> clickListener.onClick(endereco));
     }
 
     @Override
@@ -60,18 +55,16 @@ public class EnderecoAdapter extends RecyclerView.Adapter<EnderecoAdapter.MyView
         return enderecoList.size();
     }
 
-    public interface OnCLickListener {
-        public void onClick(Endereco endereco);
+    public interface OnClickListener {
+        void onClick(Endereco endereco);
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView textNomeEndereco;
-        TextView textLogradouro;
-        TextView textNumEndereco;
+
+        TextView textNomeEndereco, textLogradouro, textNumEndereco;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textNomeEndereco = itemView.findViewById(R.id.textNomeEndereco);
             textLogradouro = itemView.findViewById(R.id.textLogradouro);
             textNumEndereco = itemView.findViewById(R.id.textNumEndereco);

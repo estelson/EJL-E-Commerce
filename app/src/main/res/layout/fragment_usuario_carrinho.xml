@@ -10,7 +10,7 @@
         android:id="@+id/rvProdutos"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnFinalizar"
+        app:layout_constraintBottom_toTopOf="@+id/btnContinuar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,17 +20,18 @@
         android:id="@+id/textInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Nenhum produto no carrinho"
+        android:text="Nenhum produto no carrinho."
         android:textAlignment="center"
         android:visibility="gone"
         tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/rvProdutos"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btnFinalizar"
+        android:id="@+id/btnContinuar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_btn_normal"
@@ -46,7 +47,7 @@
             android:paddingHorizontal="16dp"
             android:text="Continuar"
             android:textAlignment="textEnd"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,10 +62,10 @@
             android:elevation="2dp"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/btnFinalizar"
-            app:layout_constraintStart_toStartOf="@+id/btnFinalizar"
-            app:layout_constraintTop_toTopOf="@+id/btnFinalizar"
-            tools:text="Total: R$ 199,99" />
+            app:layout_constraintBottom_toBottomOf="@+id/btnContinuar"
+            app:layout_constraintStart_toStartOf="@+id/btnContinuar"
+            app:layout_constraintTop_toTopOf="@+id/btnContinuar"
+            tools:text="TOTAL: R$ 199,99" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

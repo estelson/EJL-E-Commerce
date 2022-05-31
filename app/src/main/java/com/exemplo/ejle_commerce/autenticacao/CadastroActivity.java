@@ -9,11 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.exemplo.ejle_commerce.databinding.ActivityCadastroBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
-import com.exemplo.ejle_commerce.model.Loja;
 import com.exemplo.ejle_commerce.model.Usuario;
 
 public class CadastroActivity extends AppCompatActivity {
-
     private ActivityCadastroBinding binding;
 
     @Override
@@ -23,23 +21,24 @@ public class CadastroActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         configClicks();
+
     }
 
-    public void validarDados(View view) {
+    public void validaDados(View view){
         String nome = binding.edtNome.getText().toString().trim();
         String email = binding.edtEmail.getText().toString().trim();
         String telefone = binding.edtTelefone.getMasked();
         String senha = binding.edtSenha.getText().toString().trim();
-        String confirmarSenha = binding.edtConfirmarSenha.getText().toString().trim();
+        String confirmaSenha = binding.edtConfirmaSenha.getText().toString().trim();
 
-        if(!nome.isEmpty()) {
-            if(!email.isEmpty()) {
-                if(!telefone.isEmpty()) {
-                    if(telefone.length() == 15) {
+        if(!nome.isEmpty()){
+            if(!email.isEmpty()){
+                if(!telefone.isEmpty()){
+                    if(telefone.length() == 15){
+                        if(!senha.isEmpty()){
+                            if(!confirmaSenha.isEmpty()){
+                                if(senha.equals(confirmaSenha)){
 
-                        if (!senha.isEmpty()) {
-                            if (!confirmarSenha.isEmpty()) {
-                                if (senha.equals(confirmarSenha)) {
                                     binding.progressBar.setVisibility(View.VISIBLE);
 
                                     Usuario usuario = new Usuario();
@@ -49,68 +48,61 @@ public class CadastroActivity extends AppCompatActivity {
                                     usuario.setSenha(senha);
 
                                     criarConta(usuario);
-                                } else {
-                                    binding.edtConfirmarSenha.requestFocus();
-                                    binding.edtConfirmarSenha.setError("Senhas não conferem");
-                                }
-                            } else {
-                                binding.edtConfirmarSenha.requestFocus();
-                                binding.edtConfirmarSenha.setError("Confirme a senha");
-                            }
-                        } else {
-                            binding.edtSenha.requestFocus();
-                            binding.edtSenha.setError("Informe a senha");
-                        }
 
-                    } else {
+                                }else {
+                                    binding.edtConfirmaSenha.requestFocus();
+                                    binding.edtConfirmaSenha.setError("Senha não confere.");
+                                }
+                            }else {
+                                binding.edtConfirmaSenha.requestFocus();
+                                binding.edtConfirmaSenha.setError("Confirme sua senha.");
+                            }
+                        }else {
+                            binding.edtSenha.requestFocus();
+                            binding.edtSenha.setError("Informe uma senha.");
+                        }
+                    }else {
                         binding.edtTelefone.requestFocus();
-                        binding.edtTelefone.setError("Formato de telefone inválido");
+                        binding.edtTelefone.setError("Fomato do telefone inválido.");
                     }
-                } else {
+                }else {
                     binding.edtTelefone.requestFocus();
-                    binding.edtTelefone.setError("Informe o telefone do usuário");
+                    binding.edtTelefone.setError("Informe um número de telefone.");
                 }
-            } else {
+            }else {
                 binding.edtEmail.requestFocus();
-                binding.edtEmail.setError("Informe o e-mail");
+                binding.edtEmail.setError("Informe seu email.");
             }
-        } else {
+        }else {
             binding.edtNome.requestFocus();
-            binding.edtNome.setError("Informe o nome");
+            binding.edtNome.setError("Informe seu nome.");
         }
     }
 
-    private void criarConta(Usuario usuario) {
-        FirebaseHelper.getAuth().createUserWithEmailAndPassword(usuario.getEmail(), usuario.getSenha())
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        String id = task.getResult().getUser().getUid();
+    private void criarConta(Usuario usuario){
+        FirebaseHelper.getAuth().createUserWithEmailAndPassword(
+                usuario.getEmail(), usuario.getSenha()
+        ).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                String id = task.getResult().getUser().getUid();
 
-                        usuario.setId(id);
-                        usuario.salvar();
+                usuario.setId(id);
+                usuario.salvar();
 
-                        Intent intent = new Intent();
-                        intent.putExtra("email", usuario.getEmail());
-                        setResult(RESULT_OK, intent);
-                        finish();
+                Intent intent = new Intent();
+                intent.putExtra("email", usuario.getEmail());
+                setResult(RESULT_OK, intent);
+                finish();
 
-                        Toast.makeText(this, "Usuário incluído com sucesso", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, FirebaseHelper.validaErros(task.getException().getMessage()), Toast.LENGTH_LONG).show();
-                    }
-
-                    binding.progressBar.setVisibility(View.GONE);
-                });
+            }else {
+                Toast.makeText(this, FirebaseHelper.validaErros(task.getException().getMessage()), Toast.LENGTH_SHORT).show();
+            }
+            binding.progressBar.setVisibility(View.GONE);
+        });
     }
 
     private void configClicks() {
-        binding.include.ibVoltar.setOnClickListener(view -> {
-            finish();
-        });
-
-        binding.btnLogin.setOnClickListener(view -> {
-            finish();
-        });
+        binding.include.ibVoltar.setOnClickListener(view -> finish());
+        binding.btnLogin.setOnClickListener(view -> finish());
     }
-
 }

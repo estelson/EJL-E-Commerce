@@ -12,7 +12,7 @@ import java.util.List;
 public class Produto implements Serializable {
 
     private String id; // Id Firebase
-    private int idLocal; // Id Local (SQLite)
+    private int idLocal; // Id Local
     private String titulo;
     private String descricao;
     private double valorAntigo;
@@ -30,7 +30,6 @@ public class Produto implements Serializable {
         DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
                 .child("produtos")
                 .child(this.getId());
-
         produtoRef.setValue(this);
     }
 
@@ -38,7 +37,6 @@ public class Produto implements Serializable {
         DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
                 .child("produtos")
                 .child(this.getId());
-
         produtoRef.removeValue();
 
         for (int i = 0; i < getUrlsImagens().size(); i++) {
@@ -47,7 +45,6 @@ public class Produto implements Serializable {
                     .child("produtos")
                     .child(this.getId())
                     .child("imagem" + i + ".jpeg");
-
             storageReference.delete();
         }
     }

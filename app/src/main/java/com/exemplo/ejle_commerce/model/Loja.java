@@ -9,7 +9,7 @@ public class Loja {
     private String id;
     private String nome;
     private String urlLogo;
-    private String cnpj;
+    private String CNPJ;
     private double pedidoMinimo;
     private double freteGratis;
     private String email;
@@ -21,10 +21,9 @@ public class Loja {
     public Loja() {
     }
 
-    public void salvar() {
+    public void salvar(){
         DatabaseReference lojaRef = FirebaseHelper.getDatabaseReference()
                 .child("loja");
-
         lojaRef.setValue(this);
     }
 
@@ -52,12 +51,12 @@ public class Loja {
         this.urlLogo = urlLogo;
     }
 
-    public String getCnpj() {
-        return cnpj;
+    public String getCNPJ() {
+        return CNPJ;
     }
 
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
+    public void setCNPJ(String CNPJ) {
+        this.CNPJ = CNPJ;
     }
 
     public double getPedidoMinimo() {
@@ -116,5 +115,4 @@ public class Loja {
     public void setParcelas(int parcelas) {
         this.parcelas = parcelas;
     }
-
 }

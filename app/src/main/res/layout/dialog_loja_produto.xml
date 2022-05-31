@@ -43,6 +43,7 @@
         android:maxLines="1"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView3"
         tools:text="Óculos Oakley Sutro Prizm" />
@@ -54,6 +55,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNomeProduto">
 
@@ -154,5 +156,5 @@
         </LinearLayout>
 
     </LinearLayout>
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

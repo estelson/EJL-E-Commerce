@@ -20,7 +20,6 @@ public class Categoria {
         DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
                 .child("categorias")
                 .child(this.getId());
-
         categoriaRef.setValue(this);
     }
 
@@ -28,14 +27,12 @@ public class Categoria {
         DatabaseReference categoriaRef = FirebaseHelper.getDatabaseReference()
                 .child("categorias")
                 .child(this.getId());
-
         categoriaRef.removeValue();
 
         StorageReference storageReference = FirebaseHelper.getStorageReference()
                 .child("imagens")
                 .child("categorias")
                 .child(this.getId() + ".jpeg");
-
         storageReference.delete();
     }
 
@@ -70,5 +67,4 @@ public class Categoria {
     public void setTodas(boolean todas) {
         this.todas = todas;
     }
-
 }

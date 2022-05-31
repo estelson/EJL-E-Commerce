@@ -21,17 +21,16 @@ public class MainActivityUsuario extends AppCompatActivity {
         binding = ActivityMainUsuarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
         int id = getIntent().getIntExtra("id", 0);
-        if(id != 0) {
-            direceionaAcesso(id);
-        }
+        if (id != 0) direcionaAcesso(id);
     }
 
-    private void direceionaAcesso(int id) {
+    private void direcionaAcesso(int id) {
         switch (id) {
             case 1:
                 binding.bottomNavigationView.setSelectedItemId(R.id.menu_pedido);
@@ -40,7 +39,7 @@ public class MainActivityUsuario extends AppCompatActivity {
                 binding.bottomNavigationView.setSelectedItemId(R.id.menu_carrinho);
                 break;
             default:
-                Toast.makeText(this, "Acesso inválido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Acesso inválido, verifique por favor.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

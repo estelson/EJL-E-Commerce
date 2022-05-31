@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="170dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginHorizontal="8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:layout_marginHorizontal="8dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
-        android:elevation="3dp"
+        app:cardElevation="3dp"
         android:layout_margin="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView6"
+                android:id="@+id/cardView5"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 app:cardCornerRadius="10dp"
@@ -55,7 +55,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 app:layout_constraintEnd_toStartOf="@+id/imgRemover"
-                app:layout_constraintStart_toEndOf="@+id/cardView6"
+                app:layout_constraintStart_toEndOf="@+id/cardView5"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Tênis Adidas Run Falcon Feminino - Marinho" />
 
@@ -79,7 +79,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/textValor"
                 app:layout_constraintEnd_toStartOf="@+id/textValor"
-                app:layout_constraintStart_toEndOf="@+id/cardView6"
+                app:layout_constraintStart_toEndOf="@+id/cardView5"
                 app:layout_constraintTop_toTopOf="@+id/textValor">
 
                 <ImageButton
@@ -93,9 +93,9 @@
                     android:id="@+id/textQuantidade"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:layout_marginHorizontal="16dp"
                     android:text="1"
-                    android:gravity="center_vertical"
                     android:textColor="@color/color_laranja"
                     android:textStyle="bold"/>
 

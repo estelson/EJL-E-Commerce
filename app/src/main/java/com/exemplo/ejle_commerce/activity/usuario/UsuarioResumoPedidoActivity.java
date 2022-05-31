@@ -9,9 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.exemplo.ejle_commerce.DAO.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.R;
-import com.exemplo.ejle_commerce.dao.ItemDAO;
-import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityUsuarioResumoPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Endereco;
@@ -30,21 +29,12 @@ import java.util.List;
 
 public class UsuarioResumoPedidoActivity extends AppCompatActivity {
 
-    private final List<Endereco> enderecoList = new ArrayList<>();
     private ActivityUsuarioResumoPedidoBinding binding;
+
+    private final List<Endereco> enderecoList = new ArrayList<>();
+
     private FormaPagamento formaPagamento;
-    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    Endereco endereco = (Endereco) result.getData().getSerializableExtra("enderecoSelecionado");
 
-                    enderecoList.add(0, endereco);
-
-                    configDados();
-                }
-            }
-    );
-    private ItemDAO itemDAO;
     private ItemPedidoDAO itemPedidoDAO;
 
     @Override
@@ -53,19 +43,18 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         binding = ActivityUsuarioResumoPedidoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        itemDAO = new ItemDAO(this);
         itemPedidoDAO = new ItemPedidoDAO(this);
 
-        recuperaEnderecos();
+        recuperaEndereco();
 
         configClicks();
 
-        getExtras();
+        getExtra();
+
     }
 
-    private void getExtras() {
+    private void getExtra() {
         formaPagamento = (FormaPagamento) getIntent().getExtras().getSerializable("pagamentoSelecionado");
-
         configDados();
     }
 
@@ -74,18 +63,15 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
             resultLauncher.launch(new Intent(this, UsuarioSelecionaEnderecoActivity.class));
         });
 
-        binding.btnAlterarFormaPagamento.setOnClickListener(v -> {
-            finish();
-        });
+        binding.btnAlterarPagamento.setOnClickListener(v -> finish());
 
         binding.btnFinalizar.setOnClickListener(v -> {
-            if(this.formaPagamento.isCredito()){
+            if (this.formaPagamento.isCredito()) {
                 Intent intent = new Intent(this, UsuarioPagamentoPedidoActivity.class);
                 intent.putExtra("enderecoSelecionado", enderecoList.get(0));
                 intent.putExtra("pagamentoSelecionado", formaPagamento);
-
                 startActivity(intent);
-            } else{
+            } else {
                 finalizarPedido();
             }
         });
@@ -99,92 +85,91 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
         pedido.setPagamento(formaPagamento.getNome());
         pedido.setStatusPedido(StatusPedido.PENDENTE);
 
-        if(formaPagamento.getTipoValor().equals("DESC")) {
+        if (formaPagamento.getTipoValor().equals("DESC")) {
             pedido.setDesconto(formaPagamento.getValor());
         } else {
             pedido.setAcrescimo(formaPagamento.getValor());
         }
 
-        pedido.setItensPedidoList(itemPedidoDAO.getList());
+        pedido.setItemPedidoList(itemPedidoDAO.getList());
 
         pedido.salvar(true);
 
-        // limpar o carrino de compras
         itemPedidoDAO.limparCarrinho();
 
         Intent intent = new Intent(this, MainActivityUsuario.class);
-        // limpa a pilha de activities abertas
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("id", 1);
-
         startActivity(intent);
     }
 
     private void configDados() {
         ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO(this);
 
-        binding.include.include.ibVoltar.setOnClickListener(v -> {
-            finish();
-        });
+        binding.include.textTitulo.setText("Resumo pedido");
+        binding.include.include.ibVoltar.setOnClickListener(v -> finish());
 
-        binding.include.textTitulo.setText("Resumo do pedido");
-
-        if(!enderecoList.isEmpty()) {
+        if (!enderecoList.isEmpty()) {
             Endereco endereco = enderecoList.get(0);
 
             StringBuilder enderecoCompleto = new StringBuilder();
-            enderecoCompleto
-                    .append(endereco.getLogradouro())
+            enderecoCompleto.append(endereco.getLogradouro())
                     .append(", ")
                     .append(endereco.getNumero())
                     .append("\n")
                     .append(endereco.getBairro())
                     .append(", ")
                     .append(endereco.getLocalidade())
-                    .append(" - ")
+                    .append("/")
                     .append(endereco.getUf())
-                    .append("\nCEP: ")
+                    .append("\n")
+                    .append("CEP: ")
                     .append(endereco.getCep());
 
             binding.textEnderecoEntrega.setText(enderecoCompleto);
+
             binding.btnAlterarEndereco.setText("Alterar endereço de entrega");
         } else {
             binding.textEnderecoEntrega.setText("Nenhum endereço cadastrado");
-            binding.btnAlterarEndereco.setText("Cadastrar endereço de entrega");
+            binding.btnAlterarEndereco.setText("Cadastrar endereço");
         }
 
         binding.textNomePagamento.setText(formaPagamento.getNome());
 
-        double valorExtra;
-        if(formaPagamento.getTipoValor().equals("DESC")) {
+        if (formaPagamento.getTipoValor().equals("DESC")) {
             binding.textTipoPagamento.setText("Desconto");
-            valorExtra = formaPagamento.getValor() * -1;
         } else {
             binding.textTipoPagamento.setText("Acréscimo");
-            valorExtra = formaPagamento.getValor();
         }
 
-        binding.textValorTipoPagamento.setText(getString(R.string.valor, GetMask.getValor(valorExtra)));
+        double valorExtra = formaPagamento.getValor();
 
-        double valorTotal = itemPedidoDAO.getTotalPedido();
-        binding.textValorTotal.setText(getString(R.string.valor, GetMask.getValor(valorTotal + valorExtra)));
+        binding.textValorTipoPagamento.setText(
+                getString(R.string.valor, GetMask.getValor(valorExtra))
+        );
+
+        if (itemPedidoDAO.getTotalPedido() >= valorExtra) {
+            binding.textValorTotal.setText(getString(R.string.valor, GetMask.getValor(itemPedidoDAO.getTotalPedido() - valorExtra)));
+            binding.textValor.setText(getString(R.string.valor, GetMask.getValor(itemPedidoDAO.getTotalPedido() - valorExtra)));
+        } else {
+            binding.textValorTotal.setText(getString(R.string.valor, GetMask.getValor(0)));
+            binding.textValor.setText(getString(R.string.valor, GetMask.getValor(0)));
+        }
     }
 
-    private void recuperaEnderecos() {
+    private void recuperaEndereco() {
         DatabaseReference enderecoRef = FirebaseHelper.getDatabaseReference()
                 .child("enderecos")
                 .child(FirebaseHelper.getIdFirebase());
-
         enderecoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     Endereco endereco = ds.getValue(Endereco.class);
                     enderecoList.add(endereco);
                 }
 
                 binding.progressBar.setVisibility(View.GONE);
-
                 Collections.reverse(enderecoList);
 
                 configDados();
@@ -196,5 +181,16 @@ public class UsuarioResumoPedidoActivity extends AppCompatActivity {
             }
         });
     }
+
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Endereco endereco = (Endereco) result.getData().getSerializableExtra("enderecoSelecionado");
+                    enderecoList.add(0, endereco);
+                    configDados();
+                }
+            }
+    );
 
 }

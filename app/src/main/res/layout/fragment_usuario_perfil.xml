@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingVertical="16dp"
     tools:context=".fragment.usuario.UsuarioPerfilFragment">
 
     <ScrollView
@@ -26,63 +25,61 @@
                 android:id="@+id/llLogado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="16dp">
+                android:orientation="vertical">
 
-                <android.widget.Button
-                    android:id="@+id/btnEntrar"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="Entrar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/color_laranja"
-                    android:background="@drawable/bg_borda_laranja"/>
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="16dp">
 
-                <android.widget.Button
-                    android:id="@+id/btnCadastrar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    android:text="Cadastrar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/color_laranja"
-                    android:background="@drawable/bg_borda_laranja"/>
+                    <android.widget.Button
+                        android:id="@+id/btnEntrar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_borda_laranja"
+                        android:text="Entrar"
+                        android:textColor="@color/color_laranja" />
+
+                    <android.widget.Button
+                        android:id="@+id/btnCadastrar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_borda_laranja"
+                        android:text="Cadastrar"
+                        android:textColor="@color/color_laranja" />
+
+                </LinearLayout>
+
+                <include layout="@layout/divisor" />
 
             </LinearLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/divisor"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
 
             <LinearLayout
                 android:id="@+id/btnMeusDados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_perfil"
-                    app:tint="@color/color_laranja" />
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/ic_user_login_on" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="32dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -90,12 +87,12 @@
                         android:layout_height="wrap_content"
                         android:text="Perfil"
                         android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Meus dados"/>
+                        android:text="Meus dados" />
 
                 </LinearLayout>
 
@@ -104,37 +101,32 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="24dp"
-                    android:src="@drawable/ic_seta_direita"/>
+                    android:src="@drawable/ic_seta_direita" />
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor" />
 
             <LinearLayout
                 android:id="@+id/btnEnderecos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_endereco"/>
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/ic_endereco" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="32dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -142,12 +134,12 @@
                         android:layout_height="wrap_content"
                         android:text="Endereços"
                         android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Meus endereços de entrega"/>
+                        android:text="Meus endereços de entrega" />
 
                 </LinearLayout>
 
@@ -156,36 +148,31 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="24dp"
-                    android:src="@drawable/ic_seta_direita"/>
+                    android:src="@drawable/ic_seta_direita" />
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_cupom"/>
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/ic_cupom" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="32dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -193,12 +180,12 @@
                         android:layout_height="wrap_content"
                         android:text="Cupons"
                         android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Meus cupons de desconto"/>
+                        android:text="Cupons e promoções" />
 
                 </LinearLayout>
 
@@ -207,36 +194,31 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="24dp"
-                    android:src="@drawable/ic_seta_direita"/>
+                    android:src="@drawable/ic_seta_direita" />
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_ajuda"/>
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/ic_ajuda" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="32dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -244,12 +226,12 @@
                         android:layout_height="wrap_content"
                         android:text="Ajuda"
                         android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tire todas as suas dúvidas"/>
+                        android:text="Tire todas suas dúvidas" />
 
                 </LinearLayout>
 
@@ -258,70 +240,65 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="24dp"
-                    android:src="@drawable/ic_seta_direita"/>
+                    android:src="@drawable/ic_seta_direita" />
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/divisor2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor" />
 
             <LinearLayout
-                android:id="@+id/btnSair"
+                android:id="@+id/btnDeslogar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="16dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_sair"/>
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="32dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:paddingVertical="16dp">
 
-                    <TextView
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="24dp"
+                        android:src="@drawable/ic_sair" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Sair"
-                        android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Sair da minha conta"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Sair"
+                            android:textColor="@color/color_laranja"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Deslogar da minha conta" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="24dp"
+                        android:src="@drawable/ic_seta_direita" />
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="24dp"
-                    android:src="@drawable/ic_seta_direita"/>
+                <include layout="@layout/divisor" />
 
             </LinearLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/divisor3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
 
         </LinearLayout>
 

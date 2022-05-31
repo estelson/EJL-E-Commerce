@@ -21,16 +21,15 @@ public class LojaConfigFragment extends Fragment {
     private FragmentLojaConfigBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentLojaConfigBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         configClicks();
     }
 
@@ -43,11 +42,9 @@ public class LojaConfigFragment extends Fragment {
             startActivity(LojaPagamentosActivity.class);
         });
 
-        binding.btnSair.setOnClickListener(v -> {
+        binding.btnDeslogar.setOnClickListener(v -> {
             FirebaseHelper.getAuth().signOut();
-
             requireActivity().finish();
-
             startActivity(MainActivityUsuario.class);
         });
     }

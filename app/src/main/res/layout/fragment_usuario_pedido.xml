@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingVertical="16dp"
     tools:context=".fragment.usuario.UsuarioPedidoFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,12 +17,12 @@
         tools:listitem="@layout/item_usuario_pedido_adapter" />
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rvPedidos">
 
@@ -36,27 +35,23 @@
 
         <TextView
             android:id="@+id/textInfo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="Carregando..."
-            android:textAlignment="center" />
+            android:text="Carregando..." />
 
-        <android.widget.Button
+        <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center_horizontal"
             android:visibility="gone"
             tools:visibility="visible"
-            android:text="Fazer login"
-            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
             android:textColor="@color/black"
-            android:textAllCaps="false"
-            android:background="@android:color/transparent"/>
+            android:text="Fazer login"/>
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

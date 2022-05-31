@@ -12,7 +12,6 @@
         android:paddingStart="16dp"
         android:paddingEnd="40dp"
         android:text="Câmera"
-        android:textAllCaps="false"
         android:drawableStart="@drawable/ic_camera"
         android:background="@android:color/transparent"/>
 
@@ -23,16 +22,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="40dp"
         android:text="Galeria"
-        android:textAllCaps="false"
         android:drawableStart="@drawable/ic_galeria"
         android:background="@android:color/transparent"/>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="?actionBarDivider"/>
 
     <android.widget.Button
         android:id="@+id/btnCancelar"
@@ -41,7 +32,6 @@
         android:paddingStart="16dp"
         android:paddingEnd="40dp"
         android:text="Cancelar"
-        android:textAllCaps="false"
         android:drawableStart="@drawable/ic_close"
         android:background="@android:color/transparent"/>
 

@@ -1,7 +1,5 @@
 package com.exemplo.ejle_commerce.adapter;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ public class UsuarioPagamentoAdapter extends RecyclerView.Adapter<UsuarioPagamen
 
     private final List<FormaPagamento> formaPagamentoList;
     private final OnClick onClick;
-
     private int row_index = -1;
 
     public UsuarioPagamentoAdapter(List<FormaPagamento> formaPagamentoList, OnClick onClick) {
@@ -32,7 +29,6 @@ public class UsuarioPagamentoAdapter extends RecyclerView.Adapter<UsuarioPagamen
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pagamento_pedido_adapter, parent, false);
-
         return new MyViewHolder(view);
     }
 
@@ -47,16 +43,11 @@ public class UsuarioPagamentoAdapter extends RecyclerView.Adapter<UsuarioPagamen
             onClick.onClickListener(formaPagamento);
 
             row_index = holder.getAdapterPosition();
-
             notifyDataSetChanged();
-
         });
 
-        if(row_index == holder.getAdapterPosition()) {
-            holder.rbCheck.setChecked(true);
-        } else {
-            holder.rbCheck.setChecked(false);
-        }
+        holder.rbCheck.setChecked(row_index == holder.getAdapterPosition());
+
     }
 
     @Override
@@ -69,14 +60,12 @@ public class UsuarioPagamentoAdapter extends RecyclerView.Adapter<UsuarioPagamen
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        RadioButton rbCheck;
 
-        TextView textNomePagamento;
-        TextView textDescricaoPagamento;
+        RadioButton rbCheck;
+        TextView textNomePagamento, textDescricaoPagamento;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             rbCheck = itemView.findViewById(R.id.rbCheck);
             textNomePagamento = itemView.findViewById(R.id.textNomePagamento);
             textDescricaoPagamento = itemView.findViewById(R.id.textDescricaoPagamento);

@@ -25,19 +25,18 @@
                 android:id="@+id/btnConfigLoja"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:paddingVertical="16dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="24dp"
                     android:src="@drawable/ic_empresa"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -48,13 +47,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Configurações"
-                        android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/color_laranja"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Informações do meu negócio"/>
+                        android:text="Informações do meu negócio" />
 
                 </LinearLayout>
 
@@ -67,12 +66,7 @@
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor"/>
 
             <LinearLayout
                 android:id="@+id/btnPagamentos"
@@ -84,12 +78,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="24dp"
                     android:src="@drawable/ic_pagamentos"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -100,13 +94,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Pagamentos"
-                        android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/color_laranja"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Formas de pagamentos"/>
+                        android:text="Formas de recebimentos" />
 
                 </LinearLayout>
 
@@ -119,12 +113,7 @@
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,12 +124,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="24dp"
                     android:src="@drawable/ic_cupom"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -151,13 +140,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Cupons"
-                        android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/color_laranja"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Cupons e promoções"/>
+                        android:text="Cupons e promoções" />
 
                 </LinearLayout>
 
@@ -170,12 +159,7 @@
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -191,7 +175,7 @@
                     android:src="@drawable/ic_ajuda"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -202,13 +186,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Ajuda"
-                        android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/color_laranja"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tire todas as suas dúvidas"/>
+                        android:text="Tire todas suas dúvidas" />
 
                 </LinearLayout>
 
@@ -221,15 +205,10 @@
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor"/>
 
             <LinearLayout
-                android:id="@+id/btnSair"
+                android:id="@+id/btnDeslogar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="16dp"
@@ -243,7 +222,7 @@
                     android:src="@drawable/ic_sair"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="24dp"
@@ -254,13 +233,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Sair"
-                        android:textColor="@color/color_laranja"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/color_laranja"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Sair da minha conta"/>
+                        android:text="Deslogar da minha conta" />
 
                 </LinearLayout>
 
@@ -273,12 +252,7 @@
 
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/browser_actions_divider_color"/>
+            <include layout="@layout/divisor"/>
 
         </LinearLayout>
 

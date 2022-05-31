@@ -7,21 +7,20 @@
     tools:context=".activity.loja.LojaFormProdutoActivity">
 
     <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_voltar"
+        android:id="@+id/include"
+        layout="@layout/toolbar_volta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,12 +54,13 @@
                             android:id="@+id/imagemProduto0"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="8dp"
                             android:scaleType="centerCrop"/>
 
                         <ImageView
-                            android:id="@+id/imagemProduto0Fake"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:id="@+id/imageFake0"
+                            android:layout_width="62dp"
+                            android:layout_height="62dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_photo"
                             app:tint="@color/color_laranja" />
@@ -78,12 +78,13 @@
                             android:id="@+id/imagemProduto1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="8dp"
                             android:scaleType="centerCrop"/>
 
                         <ImageView
-                            android:id="@+id/imagemProduto1Fake"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:id="@+id/imageFake1"
+                            android:layout_width="62dp"
+                            android:layout_height="62dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_photo"
                             app:tint="@color/color_laranja" />
@@ -101,12 +102,13 @@
                             android:id="@+id/imagemProduto2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="centerCrop" />
+                            android:padding="8dp"
+                            android:scaleType="centerCrop"/>
 
                         <ImageView
-                            android:id="@+id/imagemProduto2Fake"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:id="@+id/imageFake2"
+                            android:layout_width="62dp"
+                            android:layout_height="62dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_photo"
                             app:tint="@color/color_laranja" />
@@ -122,7 +124,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
-                android:layout_marginTop="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -131,86 +132,81 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Título"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_marginTop="16dp"
+                    android:text="Tìtulo"/>
 
                 <EditText
                     android:id="@+id/edtTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ex.: Mochila Adidas"
-                    android:inputType="text"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/bg_edit_off"
+                    android:inputType="text"
                     android:padding="16dp"
-                    android:layout_marginTop="8dp"/>
+                    android:hint="Mochila Adidas" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Descrição"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_marginTop="16dp"
+                    android:text="Descrição"/>
 
                 <EditText
                     android:id="@+id/edtDescricao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ex.: Mochila grande e muito confortável"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/bg_edit_off"
                     android:padding="16dp"
-                    android:layout_marginTop="8dp"/>
+                    android:hint="Mochila grande e muito confortável." />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="8dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Valor antigo"
-                            android:layout_marginTop="16dp"/>
+                            android:text="Valor antigo"/>
 
                         <com.blackcat.currencyedittext.CurrencyEditText
                             android:id="@+id/edtValorAntigo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:layout_weight="1"
                             android:background="@drawable/bg_edit_off"
-                            android:padding="16dp"
-                            android:hint="R$ 0,00"/>
+                            android:padding="16dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="8dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Valor atual"
-                            android:layout_marginTop="16dp"/>
+                            android:text="Valor atual"/>
 
                         <com.blackcat.currencyedittext.CurrencyEditText
                             android:id="@+id/edtValorAtual"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_edit_off"
                             android:padding="16dp"
-                            android:hint="R$ 0,00"/>
+                            android:background="@drawable/bg_edit_off"/>
 
                     </LinearLayout>
 
@@ -221,31 +217,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Nenhuma categoria selecionada"
-                    android:textColor="@android:color/darker_gray"
+                    android:onClick="showDialogCategorias"
                     android:background="@drawable/bg_borda_laranja"
                     android:textAllCaps="false"
-                    android:onClick="showDialogCategorias"/>
+                    android:textColor="@android:color/darker_gray"
+                    android:text="Nenhuma categoria selecionada" />
 
                 <android.widget.Button
+                    android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Salvar"
-                    android:textColor="@color/white"
                     android:background="@drawable/bg_btn"
+                    android:text="Salvar"
+                    android:onClick="validaDados"
+                    android:layout_marginBottom="24dp"
                     android:textAllCaps="false"
-                    android:onClick="validarDadosLojaFormProduto"/>
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
-                    android:layout_gravity="center_horizontal"
-                    android:indeterminateTint="@color/color_laranja"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/progressBar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edtSenha" />
 
             </LinearLayout>
 

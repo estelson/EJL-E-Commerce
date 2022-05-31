@@ -14,6 +14,7 @@ import static java.text.DateFormat.getDateTimeInstance;
 public class GetMask {
 
     public static String getDate(long dataPedido, int tipo) {
+
         Locale locale = new Locale("pt", "BR");
         String fuso = "America/Sao_Paulo";
 
@@ -43,19 +44,18 @@ public class GetMask {
         String hora = horaSdf.format(netDate);
         String minuto = minutoSdf.format(netDate);
 
-        String time = null;
+        String time = "";
         if(tipo == 1){
             time = dia + "/" + mes + "/" + ano;
-        } else if(tipo == 2) {
+        }else if(tipo == 2) {
             time = dia + "/" + mes + "/" + ano + " " + hora + ":" + minuto;
         }
-
         return time;
     }
 
     public static String getValor(double valor) {
-        NumberFormat nf = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(new Locale("pt", "BR")));
-
+        NumberFormat nf = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(
+                new Locale("pt", "BR")));
         return nf.format(valor);
     }
 

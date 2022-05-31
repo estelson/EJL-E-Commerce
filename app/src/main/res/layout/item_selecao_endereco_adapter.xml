@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
 
     <RadioButton
         android:id="@+id/rbCheck"
@@ -24,11 +24,11 @@
             android:id="@+id/textNomeEndereco"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
             android:maxLines="1"
             android:ellipsize="end"
-            tools:text="Minha casa"
+            tools:text="Minha Casa"
             android:textColor="@color/black"
             android:textSize="16sp"/>
 
@@ -39,14 +39,13 @@
             android:layout_marginHorizontal="16dp"
             android:maxLines="2"
             android:ellipsize="end"
-            tools:text="Avenida Paulista"/>
+            tools:text="Avenida Paulista, 800 - CEP 29100-000 - São Paulo - SP"/>
 
-        <com.google.android.material.divider.MaterialDivider
+        <include
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="?actionBarDivider"/>
+            layout="@layout/divisor"/>
 
     </LinearLayout>
 

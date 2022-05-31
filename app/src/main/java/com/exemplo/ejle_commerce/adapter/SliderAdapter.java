@@ -6,17 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.model.ImagemUpload;
+import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.List;
 
-public class SliderAdapter extends SliderViewAdapter<SliderAdapter.MyViewHolder> {
+public class SliderAdapter extends SliderViewAdapter<SliderAdapter.MyViewHolder>{
 
     private final List<ImagemUpload> urlsImagens;
-    public final Context context;
+    private final Context context;
 
     public SliderAdapter(List<ImagemUpload> urlsImagens, Context context) {
         this.urlsImagens = urlsImagens;
@@ -25,8 +25,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.MyViewHolder>
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_slider_imagem, parent, false);
-
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_slide_imagem, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -36,7 +35,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.MyViewHolder>
 
         Glide.with(context)
                 .load(imagemUpload.getCaminhoImagem())
-                .into(viewHolder.imgSlider);
+                .into(viewHolder.imgSlide);
     }
 
     @Override
@@ -44,14 +43,13 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.MyViewHolder>
         return urlsImagens.size();
     }
 
-    static class MyViewHolder extends SliderViewAdapter.ViewHolder {
-        ImageView imgSlider;
+    static class MyViewHolder extends SliderViewAdapter.ViewHolder{
+
+        ImageView imgSlide;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
-            imgSlider = itemView.findViewById(R.id.imgSlider);
+            imgSlide = itemView.findViewById(R.id.imgSlide);
         }
     }
-
 }

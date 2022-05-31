@@ -20,9 +20,11 @@ public class MainActivityEmpresa extends AppCompatActivity {
         binding = ActivityMainEmpresaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
-        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
-    }
 
+        NavigationUI.setupWithNavController(binding.bottomNavigationView ,navController);
+
+    }
 }

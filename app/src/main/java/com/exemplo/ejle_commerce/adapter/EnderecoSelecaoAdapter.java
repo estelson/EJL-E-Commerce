@@ -3,7 +3,6 @@ package com.exemplo.ejle_commerce.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,10 +16,9 @@ import java.util.List;
 public class EnderecoSelecaoAdapter extends RecyclerView.Adapter<EnderecoSelecaoAdapter.MyViewHolder> {
 
     private final List<Endereco> enderecoList;
+    private final OnClickListener clickListener;
 
-    private final OnCLickListener clickListener;
-
-    public EnderecoSelecaoAdapter(List<Endereco> enderecoList, OnCLickListener clickListener) {
+    public EnderecoSelecaoAdapter(List<Endereco> enderecoList, OnClickListener clickListener) {
         this.enderecoList = enderecoList;
         this.clickListener = clickListener;
     }
@@ -29,7 +27,6 @@ public class EnderecoSelecaoAdapter extends RecyclerView.Adapter<EnderecoSelecao
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_selecao_endereco_adapter, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
@@ -40,24 +37,22 @@ public class EnderecoSelecaoAdapter extends RecyclerView.Adapter<EnderecoSelecao
         holder.textNomeEndereco.setText(endereco.getNomeEndereco());
 
         StringBuilder enderecoCompleto = new StringBuilder();
-        enderecoCompleto
-                .append(endereco.getLogradouro())
+        enderecoCompleto.append(endereco.getLogradouro())
                 .append(", ")
                 .append(endereco.getNumero())
                 .append(", ")
                 .append(endereco.getBairro())
                 .append(", ")
                 .append(endereco.getLocalidade())
-                .append(" - ")
+                .append("-")
                 .append(endereco.getUf())
-                .append("\nCEP: ")
+                .append("\n")
+                .append("CEP: ")
                 .append(endereco.getCep());
 
         holder.textEndereco.setText(enderecoCompleto);
 
-        holder.itemView.setOnClickListener(v -> {
-            clickListener.onClick(endereco);
-        });
+        holder.itemView.setOnClickListener(v -> clickListener.onClick(endereco));
     }
 
     @Override
@@ -65,19 +60,16 @@ public class EnderecoSelecaoAdapter extends RecyclerView.Adapter<EnderecoSelecao
         return enderecoList.size();
     }
 
-    public interface OnCLickListener {
-        public void onClick(Endereco endereco);
+    public interface OnClickListener {
+        void onClick(Endereco endereco);
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        RadioButton rbCheck;
 
-        TextView textNomeEndereco;
-        TextView textEndereco;
+        TextView textNomeEndereco, textEndereco;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textNomeEndereco = itemView.findViewById(R.id.textNomeEndereco);
             textEndereco = itemView.findViewById(R.id.textEndereco);
         }

@@ -23,11 +23,10 @@ public class UsuarioPerfilFragment extends Fragment {
     private FragmentUsuarioPerfilBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentUsuarioPerfilBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -40,45 +39,25 @@ public class UsuarioPerfilFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         configMenu();
     }
 
     private void configClicks() {
-        binding.btnEntrar.setOnClickListener(v -> {
-            startActivity(LoginActivity.class);
-        });
-
+        binding.btnEntrar.setOnClickListener(v -> startActivity(LoginActivity.class));
         binding.btnCadastrar.setOnClickListener(v -> {
-            startActivity(CadastroActivity.class);
+            startActivity(new Intent(requireContext(), CadastroActivity.class));
         });
-
-        binding.btnMeusDados.setOnClickListener(v -> {
-            startActivity(UsuarioPerfilActivity.class);
-        });
-
-        binding.btnEnderecos.setOnClickListener(v -> {
-            startActivity(UsuarioEnderecoActivity.class);
-        });
-
-        binding.btnSair.setOnClickListener(v -> {
+        binding.btnMeusDados.setOnClickListener(v -> startActivity(UsuarioPerfilActivity.class));
+        binding.btnEnderecos.setOnClickListener(v -> startActivity(UsuarioEnderecoActivity.class));
+        binding.btnDeslogar.setOnClickListener(v -> {
             FirebaseHelper.getAuth().signOut();
-
             requireActivity().finish();
-
             startActivity(new Intent(requireContext(), MainActivityUsuario.class));
         });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        //binding = null;
-    }
-
     private void startActivity(Class<?> clazz) {
-        if(FirebaseHelper.getAutenticado()) {
+        if (FirebaseHelper.getAutenticado()) {
             startActivity(new Intent(requireContext(), clazz));
         } else {
             startActivity(new Intent(requireContext(), LoginActivity.class));
@@ -86,19 +65,12 @@ public class UsuarioPerfilFragment extends Fragment {
     }
 
     private void configMenu() {
-        if(FirebaseHelper.getAutenticado()) {
+        if(FirebaseHelper.getAutenticado()){
             binding.llLogado.setVisibility(View.GONE);
-            binding.divisor.setVisibility(View.GONE);
-
-            binding.btnSair.setVisibility(View.VISIBLE);
-            binding.divisor3.setVisibility(View.VISIBLE);
-        } else {
+            binding.btnDeslogar.setVisibility(View.VISIBLE);
+        }else {
             binding.llLogado.setVisibility(View.VISIBLE);
-            binding.divisor.setVisibility(View.VISIBLE);
-
-            binding.btnSair.setVisibility(View.GONE);
-            binding.divisor3.setVisibility(View.GONE);
-
+            binding.btnDeslogar.setVisibility(View.GONE);
         }
     }
 

@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.exemplo.ejle_commerce.R;
@@ -22,9 +21,7 @@ import java.util.List;
 public class UsuarioPedidosAdapter extends RecyclerView.Adapter<UsuarioPedidosAdapter.MyViewHolder> {
 
     private final List<Pedido> pedidoList;
-
     private final Context context;
-
     private final OnClickListener clickListener;
 
     public UsuarioPedidosAdapter(List<Pedido> pedidoList, Context context, OnClickListener clickListener) {
@@ -37,7 +34,6 @@ public class UsuarioPedidosAdapter extends RecyclerView.Adapter<UsuarioPedidosAd
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_usuario_pedido_adapter, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
@@ -46,26 +42,26 @@ public class UsuarioPedidosAdapter extends RecyclerView.Adapter<UsuarioPedidosAd
         Pedido pedido = pedidoList.get(position);
 
         holder.textIdPedido.setText(pedido.getId());
+
         holder.textTotalPedido.setText(context.getString(R.string.valor, GetMask.getValor(pedido.getTotal())));
         holder.textDataPedido.setText(GetMask.getDate(pedido.getDataPedido(), 2));
 
-        holder.btnDetalhesPedido.setOnClickListener(v -> {
-            clickListener.onClick(pedido);
-        });
+        holder.btnDetalhesPedido.setOnClickListener(v -> clickListener.onClick(pedido));
 
         switch (pedido.getStatusPedido()) {
             case PENDENTE:
-                holder.textStatusPedido.setTextColor(ContextCompat.getColor(context, R.color.color_status_pedido_pendente));
+                holder.textStatusPedido.setTextColor(Color.parseColor("#FC6E20"));
                 break;
             case APROVADO:
-                holder.textStatusPedido.setTextColor(ContextCompat.getColor(context, R.color.color_status_pedido_aprovado));
+                holder.textStatusPedido.setTextColor(Color.parseColor("#34A853"));
                 break;
-            case CANCELADO:
-                holder.textStatusPedido.setTextColor(ContextCompat.getColor(context, R.color.color_status_pedido_cancelado));
+            default:
+                holder.textStatusPedido.setTextColor(Color.parseColor("#E94235"));
                 break;
         }
 
         holder.textStatusPedido.setText(StatusPedido.getStatus(pedido.getStatusPedido()));
+
     }
 
     @Override
@@ -78,21 +74,16 @@ public class UsuarioPedidosAdapter extends RecyclerView.Adapter<UsuarioPedidosAd
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView textIdPedido;
-        TextView textStatusPedido;
-        TextView textTotalPedido;
-        TextView textDataPedido;
 
+        TextView textIdPedido, textStatusPedido, textTotalPedido, textDataPedido;
         Button btnDetalhesPedido;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textIdPedido = itemView.findViewById(R.id.textIdPedido);
             textStatusPedido = itemView.findViewById(R.id.textStatusPedido);
             textTotalPedido = itemView.findViewById(R.id.textTotalPedido);
             textDataPedido = itemView.findViewById(R.id.textDataPedido);
-
             btnDetalhesPedido = itemView.findViewById(R.id.btnDetalhesPedido);
         }
     }

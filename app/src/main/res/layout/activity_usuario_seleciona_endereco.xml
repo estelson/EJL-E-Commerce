@@ -8,8 +8,9 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar_voltar"
+        layout="@layout/toolbar_volta"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,8 +23,6 @@
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
@@ -31,17 +30,19 @@
     <ImageView
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:src="@drawable/ic_seta_direita"
         android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_seta_direita"
         app:layout_constraintBottom_toBottomOf="@+id/btnCadastrarEndereco"
-        app:layout_constraintEnd_toEndOf="@+id/btnCadastrarEndereco"
-        app:layout_constraintTop_toTopOf="@+id/btnCadastrarEndereco" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider"
+    <ImageView
+        android:id="@+id/imageView6"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:background="@color/color_cinza"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCadastrarEndereco" />
 
@@ -51,8 +52,9 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider">
+        app:layout_constraintTop_toBottomOf="@+id/imageView6">
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -71,32 +73,15 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView9"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvEnderecos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_selecao_endereco_adapter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvEnderecos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/item_selecao_endereco_adapter"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

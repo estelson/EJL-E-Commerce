@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -19,11 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.activity.app.DetalhesPedidoActivity;
 import com.exemplo.ejle_commerce.adapter.LojaPedidosAdapter;
-import com.exemplo.ejle_commerce.databinding.DialogDeleteBinding;
 import com.exemplo.ejle_commerce.databinding.FragmentLojaPedidoBinding;
 import com.exemplo.ejle_commerce.databinding.LayoutDialogStatusPedidoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
-import com.exemplo.ejle_commerce.model.Categoria;
 import com.exemplo.ejle_commerce.model.Pedido;
 import com.exemplo.ejle_commerce.model.StatusPedido;
 import com.google.firebase.database.DataSnapshot;
@@ -40,15 +37,14 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
     private FragmentLojaPedidoBinding binding;
 
     private LojaPedidosAdapter lojaPedidosAdapter;
-
     private final List<Pedido> pedidoList = new ArrayList<>();
 
     private AlertDialog dialog;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentLojaPedidoBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -58,44 +54,37 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
 
         configRv();
 
-        recuperarPedidos();
+        recuperaPedidos();
     }
 
     private void configRv() {
         binding.rvPedidos.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvPedidos.setHasFixedSize(true);
-
         lojaPedidosAdapter = new LojaPedidosAdapter(pedidoList, requireContext(), this);
-
         binding.rvPedidos.setAdapter(lojaPedidosAdapter);
     }
 
-    private void recuperarPedidos() {
-        DatabaseReference pedidoRef = FirebaseHelper.getDatabaseReference()
+    private void recuperaPedidos() {
+        DatabaseReference pedidosRef = FirebaseHelper.getDatabaseReference()
                 .child("lojaPedidos");
-
-        pedidoRef.addValueEventListener(new ValueEventListener() {
+        pedidosRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     pedidoList.clear();
-
-                    for(DataSnapshot ds : snapshot.getChildren()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
                         Pedido pedido = ds.getValue(Pedido.class);
-
                         pedidoList.add(pedido);
                     }
-
-                    binding.textInfo.setVisibility(View.GONE);
+                    binding.textInfo.setText("");
                 } else {
-                    binding.textInfo.setText("Nenhum pedido recebido");
+                    binding.textInfo.setText("Nenhum pedido recebido.");
                 }
 
                 binding.progressBar.setVisibility(View.GONE);
-
                 Collections.reverse(pedidoList);
-
                 lojaPedidosAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -106,9 +95,11 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
     }
 
     private void showDialogStatus(Pedido pedido) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog2);
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                getContext(), R.style.CustomAlertDialog2);
 
-        LayoutDialogStatusPedidoBinding statusBinding = LayoutDialogStatusPedidoBinding.inflate(LayoutInflater.from(getContext()));
+        LayoutDialogStatusPedidoBinding statusBinding = LayoutDialogStatusPedidoBinding
+                .inflate(LayoutInflater.from(getContext()));
 
         RadioGroup rgStatus = statusBinding.rgStatus;
         RadioButton rbPendente = statusBinding.rbPendente;
@@ -118,24 +109,18 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
         switch (pedido.getStatusPedido()) {
             case PENDENTE:
                 rgStatus.check(R.id.rbPendente);
-
                 rbAprovado.setEnabled(true);
                 rbCancelado.setEnabled(true);
-
                 break;
             case APROVADO:
                 rgStatus.check(R.id.rbAprovado);
-
                 rbCancelado.setEnabled(false);
                 rbPendente.setEnabled(false);
-
                 break;
-            case CANCELADO:
+            default:
                 rgStatus.check(R.id.rbCancelado);
-
                 rbPendente.setEnabled(false);
                 rbAprovado.setEnabled(false);
-
                 break;
         }
 
@@ -144,9 +129,9 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
         });
 
         rgStatus.setOnCheckedChangeListener((group, checkedId) -> {
-            if(checkedId == R.id.rbPendente) {
+            if (checkedId == R.id.rbPendente) {
                 pedido.setStatusPedido(StatusPedido.PENDENTE);
-            } else if(checkedId == R.id.rbAprovado) {
+            } else if (checkedId == R.id.rbAprovado) {
                 pedido.setStatusPedido(StatusPedido.APROVADO);
             } else {
                 pedido.setStatusPedido(StatusPedido.CANCELADO);
@@ -162,9 +147,10 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
 
         dialog = builder.create();
 
-        if(!requireActivity().isFinishing()) {
+        if (!requireActivity().isFinishing()) {
             dialog.show();
         }
+
     }
 
     @Override
@@ -173,17 +159,14 @@ public class LojaPedidoFragment extends Fragment implements LojaPedidosAdapter.O
             case "detalhes":
                 Intent intent = new Intent(requireContext(), DetalhesPedidoActivity.class);
                 intent.putExtra("pedidoSelecionado", pedido);
-
                 startActivity(intent);
-
                 break;
             case "status":
                 showDialogStatus(pedido);
                 break;
             default:
-                Toast.makeText(requireContext(), "Operação inválida. Favor verificar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Operação inválida, favor verifique.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
-
 }

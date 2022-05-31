@@ -11,16 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:inputType="textCapSentences"
-        android:theme="@style/Search_View_Theme"
-        app:queryHint="Bermudas, camisas, sapatos etc..."
-        app:iconifiedByDefault="false"
-        app:queryBackground="@android:color/transparent"
         android:background="@drawable/bg_pesquisa"
+        android:inputType="textCapSentences"
+        app:iconifiedByDefault="false"
+        android:theme="@style/Search_View_Theme"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryBackground="@android:color/transparent"
+        app:queryHint="Bermudas, camisas, sapatos e etc..." />
 
     <TextView
         android:id="@+id/textView9"
@@ -42,6 +42,7 @@
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
 
@@ -65,12 +66,12 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rvProdutos">
 

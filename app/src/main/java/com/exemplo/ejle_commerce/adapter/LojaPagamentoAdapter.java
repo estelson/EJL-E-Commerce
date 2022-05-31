@@ -5,14 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.model.FormaPagamento;
 import com.exemplo.ejle_commerce.util.GetMask;
-
 import java.util.List;
 
 public class LojaPagamentoAdapter extends RecyclerView.Adapter<LojaPagamentoAdapter.MyViewHolder> {
@@ -31,7 +28,6 @@ public class LojaPagamentoAdapter extends RecyclerView.Adapter<LojaPagamentoAdap
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forma_pagamento_adapter, parent, false);
-
         return new MyViewHolder(view);
     }
 
@@ -43,19 +39,14 @@ public class LojaPagamentoAdapter extends RecyclerView.Adapter<LojaPagamentoAdap
         holder.textDescricaoPagamento.setText(formaPagamento.getDescricao());
         holder.textValor.setText(context.getString(R.string.valor, GetMask.getValor(formaPagamento.getValor())));
 
-        if(formaPagamento.getTipoValor() == null) {
+        if(formaPagamento.getTipoValor().equals("DESC")){
             holder.textTipoPagamento.setText("Desconto");
-        } else {
-            if (formaPagamento.getTipoValor().equals("ACRES")) {
-                holder.textTipoPagamento.setText("Acréscimo");
-            } else {
-                holder.textTipoPagamento.setText("Desconto");
-            }
-
-            holder.itemView.setOnClickListener(v -> {
-                onClick.onClickListener(formaPagamento);
-            });
+        }else {
+            holder.textTipoPagamento.setText("Acréscimo");
         }
+
+        holder.itemView.setOnClickListener(v -> onClick.onClickListener(formaPagamento));
+
     }
 
     @Override
@@ -68,14 +59,11 @@ public class LojaPagamentoAdapter extends RecyclerView.Adapter<LojaPagamentoAdap
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView textNomePagamento;
-        TextView textDescricaoPagamento;
-        TextView textValor;
-        TextView textTipoPagamento;
+
+        TextView textNomePagamento, textDescricaoPagamento, textValor, textTipoPagamento;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textNomePagamento = itemView.findViewById(R.id.textNomePagamento);
             textDescricaoPagamento = itemView.findViewById(R.id.textDescricaoPagamento);
             textValor = itemView.findViewById(R.id.textValor);

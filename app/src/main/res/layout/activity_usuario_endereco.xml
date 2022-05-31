@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar_voltar_add"
+        layout="@layout/toolbar_volta_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +19,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
 
@@ -41,14 +41,14 @@
     </LinearLayout>
 
     <com.tsuryo.swipeablerv.SwipeableRecyclerView
-        android:id="@+id/rvEndereco"
+        android:id="@+id/rvEnderecos"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:leftBgColor="@color/color_delete"
-        app:leftImage="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:leftBgColor="@color/color_delete"
+        app:leftImage="@drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

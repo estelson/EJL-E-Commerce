@@ -13,7 +13,6 @@ public class Favorito {
         DatabaseReference favoritoRef = FirebaseHelper.getDatabaseReference()
                 .child("favoritos")
                 .child(FirebaseHelper.getIdFirebase());
-
         favoritoRef.setValue(idsProdutos);
     }
 
@@ -24,5 +23,4 @@ public class Favorito {
     public void setIdsProdutos(List<String> idsProdutos) {
         this.idsProdutos = idsProdutos;
     }
-
 }

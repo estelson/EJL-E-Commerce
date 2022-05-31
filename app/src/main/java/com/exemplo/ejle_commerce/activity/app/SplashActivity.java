@@ -1,16 +1,16 @@
 package com.exemplo.ejle_commerce.activity.app;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.exemplo.ejle_commerce.DAO.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.activity.loja.MainActivityEmpresa;
 import com.exemplo.ejle_commerce.activity.usuario.MainActivityUsuario;
 import com.exemplo.ejle_commerce.R;
-import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +23,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        new Handler(getMainLooper()).postDelayed(this::verificarAcesso, 3000);
+        new Handler(getMainLooper()).postDelayed(this::verificaAcesso, 3000);
 
         limparCarrinho();
     }
@@ -34,30 +33,28 @@ public class SplashActivity extends AppCompatActivity {
         itemPedidoDAO.limparCarrinho();
     }
 
-    private void verificarAcesso() {
-        if(FirebaseHelper.getAutenticado()) {
-            recuperarAcesso();
+    private void verificaAcesso() {
+        if (FirebaseHelper.getAutenticado()) {
+            recuperaAcesso();
         } else {
             finish();
             startActivity(new Intent(this, MainActivityUsuario.class));
         }
     }
 
-    private void recuperarAcesso() {
+    private void recuperaAcesso() {
         DatabaseReference usuarioRef = FirebaseHelper.getDatabaseReference()
                 .child("usuarios")
                 .child(FirebaseHelper.getIdFirebase());
-
         usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                finish();
-
-                if(snapshot.exists()) { // Se for usuário...
+                if (snapshot.exists()) { // Usuário
                     startActivity(new Intent(getBaseContext(), MainActivityUsuario.class));
-                } else { // Se for a loja
+                } else { // Loja
                     startActivity(new Intent(getBaseContext(), MainActivityEmpresa.class));
                 }
+                finish();
             }
 
             @Override

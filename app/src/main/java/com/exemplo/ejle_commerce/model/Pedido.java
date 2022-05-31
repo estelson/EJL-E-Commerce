@@ -14,7 +14,7 @@ public class Pedido implements Serializable {
     private StatusPedido statusPedido;
     private String idCliente;
     private Endereco endereco;
-    private List<ItemPedido> itensPedidoList = new ArrayList<>();
+    private List<ItemPedido> itemPedidoList = new ArrayList<>();
     private long dataPedido;
     private long dataStatusPedido;
     private double total;
@@ -39,7 +39,7 @@ public class Pedido implements Serializable {
                 .child(this.getId());
         lojaPedidoRef.setValue(this);
 
-        if(novoPedido) {
+        if(novoPedido){
             DatabaseReference dataPedidoUsuarioRef = usuarioPedidoRef
                     .child("dataPedido");
             dataPedidoUsuarioRef.setValue(ServerValue.TIMESTAMP);
@@ -48,6 +48,8 @@ public class Pedido implements Serializable {
                     .child("dataPedido");
             dataPedidoLojaRef.setValue(ServerValue.TIMESTAMP);
 
+
+
             DatabaseReference dataStatusPedidoUsuarioRef = usuarioPedidoRef
                     .child("dataStatusPedido");
             dataStatusPedidoUsuarioRef.setValue(ServerValue.TIMESTAMP);
@@ -55,7 +57,7 @@ public class Pedido implements Serializable {
             DatabaseReference dataStatusPedidoLojaRef = lojaPedidoRef
                     .child("dataStatusPedido");
             dataStatusPedidoLojaRef.setValue(ServerValue.TIMESTAMP);
-        } else {
+        }else {
             DatabaseReference dataStatusPedidoUsuarioRef = usuarioPedidoRef
                     .child("dataStatusPedido");
             dataStatusPedidoUsuarioRef.setValue(ServerValue.TIMESTAMP);
@@ -98,12 +100,12 @@ public class Pedido implements Serializable {
         this.endereco = endereco;
     }
 
-    public List<ItemPedido> getItensPedidoList() {
-        return itensPedidoList;
+    public List<ItemPedido> getItemPedidoList() {
+        return itemPedidoList;
     }
 
-    public void setItensPedidoList(List<ItemPedido> itensPedidoList) {
-        this.itensPedidoList = itensPedidoList;
+    public void setItemPedidoList(List<ItemPedido> itemPedidoList) {
+        this.itemPedidoList = itemPedidoList;
     }
 
     public long getDataPedido() {
@@ -153,5 +155,4 @@ public class Pedido implements Serializable {
     public void setAcrescimo(double acrescimo) {
         this.acrescimo = acrescimo;
     }
-
 }

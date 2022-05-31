@@ -3,7 +3,6 @@ package com.exemplo.ejle_commerce.activity.usuario;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,14 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.exemplo.ejle_commerce.DAO.ItemDAO;
+import com.exemplo.ejle_commerce.DAO.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.R;
 import com.exemplo.ejle_commerce.adapter.LojaProdutoAdapter;
 import com.exemplo.ejle_commerce.adapter.SliderAdapter;
-import com.exemplo.ejle_commerce.dao.ItemDAO;
-import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.databinding.ActivityDetalhesProdutoBinding;
 import com.exemplo.ejle_commerce.databinding.DialogAddItemCarrinhoBinding;
-import com.exemplo.ejle_commerce.databinding.DialogRemoverCarrinhoBinding;
 import com.exemplo.ejle_commerce.helper.FirebaseHelper;
 import com.exemplo.ejle_commerce.model.Favorito;
 import com.exemplo.ejle_commerce.model.ItemPedido;
@@ -38,19 +36,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DetalhesProdutoActivity extends AppCompatActivity implements LojaProdutoAdapter.OnClickListener, LojaProdutoAdapter.OnClickFavorito {
+public class DetalhesProdutoActivity extends AppCompatActivity implements LojaProdutoAdapter.OnClickLister, LojaProdutoAdapter.OnClickFavorito {
 
     private ActivityDetalhesProdutoBinding binding;
 
-    private Produto produtoSelecionado;
-
     private final List<String> idsFavoritos = new ArrayList<>();
-
-    private final List<Produto> produtosList = new ArrayList<>();
+    private final List<Produto> produtoList = new ArrayList<>();
 
     private LojaProdutoAdapter lojaProdutoAdapter;
 
-    private ItemDAO itemDAO;
+    private Produto produtoSelecionado;
+
+    private ItemDAO itemDao;
     private ItemPedidoDAO itemPedidoDAO;
 
     private AlertDialog dialog;
@@ -61,14 +58,14 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
         binding = ActivityDetalhesProdutoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        itemDAO = new ItemDAO(this);
+        itemDao = new ItemDAO(this);
         itemPedidoDAO = new ItemPedidoDAO(this);
 
         configClicks();
 
         getExtra();
 
-        recuperarFavoritos();
+        recuperaFavoritos();
 
         configRvProdutos();
     }
@@ -76,45 +73,33 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
     @Override
     protected void onStop() {
         super.onStop();
-
-        if(dialog != null) {
-            dialog.dismiss();
-        }
+        if(dialog != null) dialog.dismiss();
     }
 
     private void configClicks() {
-        binding.include.include.ibVoltar.setOnClickListener(v -> {
-            finish();
-        });
-
         binding.include.textTitulo.setText("Detalhes do produto");
+        binding.include.include.ibVoltar.setOnClickListener(v -> finish());
 
         binding.likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-                if(FirebaseHelper.getAutenticado()) {
+                if (FirebaseHelper.getAutenticado()) {
                     idsFavoritos.add(produtoSelecionado.getId());
-
                     Favorito.salvar(idsFavoritos);
                 } else {
                     Toast.makeText(getBaseContext(), "Você não está autenticado no app.", Toast.LENGTH_SHORT).show();
                     binding.likeButton.setLiked(false);
-
-                    // TODO: Criar dialog para levar o usuário à tela de login
                 }
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 idsFavoritos.remove(produtoSelecionado.getId());
-
                 Favorito.salvar(idsFavoritos);
             }
         });
 
-        binding.btnFinalizar.setOnClickListener(v -> {
-            showDialogCarrinho();
-        });
+        binding.btnAddCarrinho.setOnClickListener(v -> showDialogCarrinho());
     }
 
     private void addCarrinho() {
@@ -125,41 +110,39 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
 
         itemPedidoDAO.salvar(itemPedido);
 
-        itemDAO.salvar(produtoSelecionado);
+        itemDao.salvar(produtoSelecionado);
     }
 
     private void configRvProdutos() {
         binding.rvProdutos.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
         binding.rvProdutos.setHasFixedSize(true);
-
-        lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_similar_adapter, produtosList, this, true, idsFavoritos,  this, this);
-
+        lojaProdutoAdapter = new LojaProdutoAdapter(R.layout.item_produto_similiar_adapter, produtoList, this, true, idsFavoritos, this, this);
         binding.rvProdutos.setAdapter(lojaProdutoAdapter);
     }
 
-    private void recuperarProdutos() {
+    private void recuperaProdutos() {
         DatabaseReference produtoRef = FirebaseHelper.getDatabaseReference()
                 .child("produtos");
-
         produtoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                produtosList.clear();
+                produtoList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Produto produto = ds.getValue(Produto.class);
 
-                    for(String categoria : produtoSelecionado.getIdsCategorias()) {
-                        if(produto.getIdsCategorias().contains(categoria)) {
-                            if(!produtosList.contains(produto) && !produto.getId().equals(produtoSelecionado.getId())) {
-                                produtosList.add(produto);
+                    for (String categoria : produtoSelecionado.getIdsCategorias()) {
+                        if (produto.getIdsCategorias().contains(categoria)) {
+                            if (!produtoList.contains(produto) && !produto.getId().equals(produtoSelecionado.getId())) {
+                                produtoList.add(produto);
                             }
                         }
                     }
+
                 }
 
-                Collections.reverse(produtosList);
-
+                Collections.reverse(produtoList);
                 lojaProdutoAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -169,15 +152,15 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
         });
     }
 
-    private void recuperarFavoritos() {
-        if(FirebaseHelper.getAutenticado()) {
+    private void recuperaFavoritos() {
+        if (FirebaseHelper.getAutenticado()) {
             DatabaseReference favoritoRef = FirebaseHelper.getDatabaseReference()
                     .child("favoritos")
                     .child(FirebaseHelper.getIdFirebase());
-
             favoritoRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                     idsFavoritos.clear();
 
                     for (DataSnapshot ds : snapshot.getChildren()) {
@@ -186,6 +169,7 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
                     }
 
                     binding.likeButton.setLiked(idsFavoritos.contains(produtoSelecionado.getId()));
+
                 }
 
                 @Override
@@ -201,7 +185,7 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
 
         configDados();
 
-        recuperarProdutos();
+        recuperaProdutos();
     }
 
     private void configDados() {
@@ -217,22 +201,19 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
     }
 
     private void showDialogCarrinho() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        DialogAddItemCarrinhoBinding dialogBinding = DialogAddItemCarrinhoBinding.inflate(LayoutInflater.from(this));
+        DialogAddItemCarrinhoBinding dialogBinding = DialogAddItemCarrinhoBinding
+                .inflate(LayoutInflater.from(this));
 
         addCarrinho();
 
-        dialogBinding.btnFechar.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
+        dialogBinding.btnFechar.setOnClickListener(v -> dialog.dismiss());
 
         dialogBinding.btnIrCarrinho.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivityUsuario.class);
             intent.putExtra("id", 2);
-
             startActivity(intent);
-
             finish();
         });
 
@@ -246,18 +227,16 @@ public class DetalhesProdutoActivity extends AppCompatActivity implements LojaPr
     public void onClick(Produto produto) {
         Intent intent = new Intent(this, DetalhesProdutoActivity.class);
         intent.putExtra("produtoSelecionado", produto);
-
         startActivity(intent);
     }
 
     @Override
     public void onClickFavorito(Produto produto) {
-        if(!idsFavoritos.contains(produto.getId())) {
+        if (!idsFavoritos.contains(produto.getId())) {
             idsFavoritos.add(produto.getId());
         } else {
             idsFavoritos.remove(produto.getId());
         }
-
         Favorito.salvar(idsFavoritos);
     }
 }

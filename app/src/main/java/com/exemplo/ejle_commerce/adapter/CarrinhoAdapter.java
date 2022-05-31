@@ -11,24 +11,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.exemplo.ejle_commerce.DAO.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.R;
-import com.exemplo.ejle_commerce.dao.ItemPedidoDAO;
 import com.exemplo.ejle_commerce.model.ItemPedido;
 import com.exemplo.ejle_commerce.model.Produto;
 import com.exemplo.ejle_commerce.util.GetMask;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.MyViewHolder> {
 
-    private final List<ItemPedido> itensPedidoList;
+    private final List<ItemPedido> itemPedidoList;
     private final ItemPedidoDAO itemPedidoDAO;
     private final Context context;
     private final OnClick onClick;
 
-    public CarrinhoAdapter(List<ItemPedido> itensPedidoList, ItemPedidoDAO itemPedidoDAO, Context context, OnClick onClick) {
-        this.itensPedidoList = itensPedidoList;
+    public CarrinhoAdapter(List<ItemPedido> itemPedidoList, ItemPedidoDAO itemPedidoDAO, Context context, OnClick onClick) {
+        this.itemPedidoList = itemPedidoList;
         this.itemPedidoDAO = itemPedidoDAO;
         this.context = context;
         this.onClick = onClick;
@@ -38,13 +38,13 @@ public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_adapter_carrinho, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        ItemPedido itemPedido = itensPedidoList.get(position);
+
+        ItemPedido itemPedido = itemPedidoList.get(position);
         Produto produto = itemPedidoDAO.getProduto(itemPedido.getId());
 
         holder.textTitulo.setText(produto.getTitulo());
@@ -55,54 +55,40 @@ public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.MyView
                 .load(produto.getUrlsImagens().get(0).getCaminhoImagem())
                 .into(holder.imgProduto);
 
-        holder.itemView.setOnClickListener(v -> {
-            onClick.onClickListener(position, "detalhe");
-        });
+        holder.itemView.setOnClickListener(v -> onClick.onClickLister(position, "detalhe"));
+        holder.imgRemover.setOnClickListener(v -> onClick.onClickLister(position, "remover"));
+        holder.ibMenos.setOnClickListener(v -> onClick.onClickLister(position, "menos"));
+        holder.ibMais.setOnClickListener(v -> onClick.onClickLister(position, "mais"));
 
-        holder.imgRemover.setOnClickListener(v -> {
-            onClick.onClickListener(position, "remover");
-        });
-
-        holder.ibMenos.setOnClickListener(v -> {
-            onClick.onClickListener(position, "menos");
-        });
-
-        holder.ibMais.setOnClickListener(v -> {
-            onClick.onClickListener(position, "mais");
-        });
     }
 
     @Override
     public int getItemCount() {
-        return itensPedidoList.size();
+        return itemPedidoList.size();
     }
 
     public interface OnClick {
-        public void onClickListener(int position, String operacao);
+        void onClickLister(int position, String operacao);
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgProduto;
-        ImageView imgRemover;
 
-        TextView textTitulo;
-        TextView textValor;
-
-        ImageButton ibMenos;
-        TextView textQuantidade;
-        ImageButton ibMais;
+        ImageView imgProduto, imgRemover;
+        ImageButton ibMenos, ibMais;
+        TextView textTitulo, textValor, textQuantidade;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgProduto = itemView.findViewById(R.id.imgProduto);
             imgRemover = itemView.findViewById(R.id.imgRemover);
+
+            ibMenos = itemView.findViewById(R.id.ibMenos);
+            ibMais = itemView.findViewById(R.id.ibMais);
+
             textTitulo = itemView.findViewById(R.id.textTitulo);
             textValor = itemView.findViewById(R.id.textValor);
-            ibMenos = itemView.findViewById(R.id.ibMenos);
             textQuantidade = itemView.findViewById(R.id.textQuantidade);
-            ibMais = itemView.findViewById(R.id.ibMais);
         }
     }
-
 }

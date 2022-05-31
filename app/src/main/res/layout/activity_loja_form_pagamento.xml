@@ -8,119 +8,114 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar_voltar_salvar"
+        layout="@layout/toolbar_volta_salvar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
+        android:orientation="vertical"
+        android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forma de pagamento" />
+
+        <EditText
+            android:id="@+id/edtFormaPagamento"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edit_off"
+            android:hint="Cartão de crédito"
+            android:inputType="text"
+            android:padding="16dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Forma de pagamento" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Descrição" />
 
-            <EditText
-                android:id="@+id/edtFormaPagamento"
+        <EditText
+            android:id="@+id/edtDescricaoPagamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edit_off"
+            android:hint="Pague suas compras em até 12x"
+            android:inputType="text"
+            android:padding="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Valor" />
+
+        <com.blackcat.currencyedittext.CurrencyEditText
+            android:id="@+id/edtValor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edit_off"
+            android:padding="16dp" />
+
+        <RadioGroup
+            android:id="@+id/rgValor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+
+            <RadioButton
+                android:id="@+id/rbDesconto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_off"
-                android:hint="Cartão de crédito"
-                android:inputType="text"
-                android:padding="16dp" />
+                android:layout_weight="1"
+                android:minHeight="0dp"
+                android:buttonTint="@color/black"
+                android:text="Desconto"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Descrição" />
-
-            <EditText
-                android:id="@+id/edtDescricaoPagamento"
+            <RadioButton
+                android:id="@+id/rbAcrescimo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_off"
-                android:hint="Pague suas compras em até 12x"
-                android:inputType="text"
-                android:padding="16dp" />
+                android:layout_weight="1"
+                android:minHeight="0dp"
+                android:buttonTint="@color/black"
+                android:text="Acréscimo"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Valor" />
+        </RadioGroup>
 
-            <com.blackcat.currencyedittext.CurrencyEditText
-                android:id="@+id/edtValor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_off"
-                android:padding="16dp"/>
+        <CheckBox
+            android:id="@+id/cbCredito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:buttonTint="@color/black"
+            android:minHeight="0dp"
+            android:text="Crédito"/>
 
-            <RadioGroup
-                android:id="@+id/rgValor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:orientation="horizontal">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:indeterminateTint="@color/color_laranja"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
-                <RadioButton
-                    android:id="@+id/rbDesconto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minHeight="0dp"
-                    android:checked="true"
-                    android:buttonTint="@color/color_laranja"
-                    android:text="Desconto" />
-
-                <RadioButton
-                    android:id="@+id/rbAcrescimo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:minHeight="0dp"
-                    android:buttonTint="@color/color_laranja"
-                    android:text="Acréscimo" />
-
-            </RadioGroup>
-
-            <CheckBox
-                android:id="@+id/cbCredito"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:buttonTint="@color/color_laranja"
-                android:text="Crédito?"/>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:indeterminateTint="@color/color_laranja"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

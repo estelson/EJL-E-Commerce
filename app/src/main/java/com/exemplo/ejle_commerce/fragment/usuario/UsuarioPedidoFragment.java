@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,13 +31,12 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
     private FragmentUsuarioPedidoBinding binding;
 
     private UsuarioPedidosAdapter usuarioPedidosAdapter;
-
     private final List<Pedido> pedidoList = new ArrayList<>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentUsuarioPedidoBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -52,16 +50,13 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
     @Override
     public void onStart() {
         super.onStart();
-
-        if(FirebaseHelper.getAutenticado()) {
+        if (FirebaseHelper.getAutenticado()) {
             binding.btnLogin.setVisibility(View.GONE);
-
             configRv();
 
-            recuperarPedidos();
+            recuperaPedidos();
         } else {
             binding.btnLogin.setVisibility(View.VISIBLE);
-
             binding.progressBar.setVisibility(View.GONE);
             binding.textInfo.setText("Você não está autenticado no app.");
         }
@@ -76,39 +71,32 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
     private void configRv() {
         binding.rvPedidos.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvPedidos.setHasFixedSize(true);
-
         usuarioPedidosAdapter = new UsuarioPedidosAdapter(pedidoList, requireContext(), this);
-
         binding.rvPedidos.setAdapter(usuarioPedidosAdapter);
     }
 
-    private void recuperarPedidos() {
-        DatabaseReference pedidoRef = FirebaseHelper.getDatabaseReference()
+    private void recuperaPedidos() {
+        DatabaseReference pedidosRef = FirebaseHelper.getDatabaseReference()
                 .child("usuarioPedidos")
                 .child(FirebaseHelper.getIdFirebase());
-
-        pedidoRef.addValueEventListener(new ValueEventListener() {
+        pedidosRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     pedidoList.clear();
-
-                    for(DataSnapshot ds : snapshot.getChildren()) {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
                         Pedido pedido = ds.getValue(Pedido.class);
-
                         pedidoList.add(pedido);
                     }
-
-                    binding.textInfo.setVisibility(View.GONE);
+                    binding.textInfo.setText("");
                 } else {
-                    binding.textInfo.setText("Nenhum pedido encontrado");
+                    binding.textInfo.setText("Nenhum pedido encontrado.");
                 }
 
                 binding.progressBar.setVisibility(View.GONE);
-
                 Collections.reverse(pedidoList);
-
                 usuarioPedidosAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -122,8 +110,6 @@ public class UsuarioPedidoFragment extends Fragment implements UsuarioPedidosAda
     public void onClick(Pedido pedido) {
         Intent intent = new Intent(requireContext(), DetalhesPedidoActivity.class);
         intent.putExtra("pedidoSelecionado", pedido);
-
         startActivity(intent);
     }
-
 }

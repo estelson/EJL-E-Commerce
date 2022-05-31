@@ -8,8 +8,9 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar_voltar_salvar"
+        layout="@layout/toolbar_volta_salvar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,6 +20,7 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
 
@@ -26,47 +28,52 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnBuscar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nome" />
+                android:text="Nome"/>
 
             <EditText
                 android:id="@+id/edtNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_off"
-                android:hint="Nome"
+                android:hint="Arley Santana"
                 android:inputType="text"
-                android:padding="16dp" />
+                android:background="@drawable/bg_edit_off"
+                android:padding="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Telefone" />
+                android:text="Telefone"
+                android:layout_marginTop="24dp"/>
 
             <com.santalu.maskara.widget.MaskEditText
                 android:id="@+id/edtTelefone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_off"
+                android:hint="(21) 98888-7777"
                 android:inputType="number"
-                android:hint="(55) 55555-5555"
                 app:mask="(__) _____-____"
                 app:maskCharacter="_"
-                app:maskStyle="completable" />
+                app:maskStyle="completable"
+                android:background="@drawable/bg_edit_off"
+                android:padding="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="e-Mail" />
+                android:text="E-mail"
+                android:layout_marginTop="24dp"/>
 
             <EditText
                 android:id="@+id/edtEmail"
@@ -76,15 +83,15 @@
                 android:enabled="false"
                 android:clickable="false"
                 android:background="@drawable/bg_edit_off"
-                android:padding="16dp" />
+                android:padding="16dp"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminateTint="@color/color_laranja"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:indeterminateTint="@color/color_laranja"/>
 
         </LinearLayout>
 

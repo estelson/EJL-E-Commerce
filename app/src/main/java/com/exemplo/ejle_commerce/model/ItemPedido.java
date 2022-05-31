@@ -12,6 +12,9 @@ public class ItemPedido implements Serializable {
     private double valor;
     private int quantidade;
 
+    public ItemPedido() {
+    }
+
     @Exclude
     public int getId() {
         return id;
@@ -52,5 +55,4 @@ public class ItemPedido implements Serializable {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-
 }
